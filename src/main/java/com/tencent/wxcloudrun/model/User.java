@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * @Author：zhoutao
  * @Date：2023/1/17 15:40
  */
-@Table(name = "punch_card_team_members")
+@Table(name = "Users")
 @Data
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;

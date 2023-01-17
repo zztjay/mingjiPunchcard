@@ -2,10 +2,7 @@ package com.tencent.wxcloudrun.model;
 
 import lombok.Data;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -22,11 +19,18 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 唯一id
+    @Column(name = "gmtCreate")
     private LocalDateTime gmtCreate; // 创建时间
+    @Column(name = "gmtModified")
     private LocalDateTime gmtModified;// 修改时间
+    @Column(name = "teamCode")
     private String teamCode; // 组织唯一标识码
+    @Column(name = "memberOpenId")
     private String memberOpenId; // 用户的openId
+    @Column(name = "memberName")
     private String memberName; //用户名称，一开始默认用微信昵称
+    @Column(name = "memberNick")
     private String memberNick; // 用户微信昵称
+    @Column(name = "phoneNumber")
     private String phoneNumber; //手机号
 }

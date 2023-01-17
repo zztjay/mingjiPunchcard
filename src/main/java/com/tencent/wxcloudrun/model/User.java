@@ -19,10 +19,10 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 唯一id
-    @Column(name = "gmtCreate")
-    private LocalDateTime gmtCreate; // 创建时间
-    @Column(name = "gmtModified")
-    private LocalDateTime gmtModified;// 修改时间
+    @Column(name = "createdAt")
+    private LocalDateTime createdAt;// 创建时间
+    @Column(name = "updatedAt")
+    private LocalDateTime updatedAt;// 修改时间
     @Column(name = "teamCode")
     private String teamCode; // 组织唯一标识码
     @Column(name = "memberOpenId")

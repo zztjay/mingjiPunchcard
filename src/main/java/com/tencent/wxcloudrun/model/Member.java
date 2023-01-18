@@ -14,19 +14,20 @@ import java.time.LocalDateTime;
  * @Author：zhoutao
  * @Date：2023/1/17 15:40
  */
-@Table(name = "Users")
+@Table(name = "Members")
 @Data
 @NameStyle(Style.normal)
-public class User implements Serializable {
+public class Member implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 唯一id
     private LocalDateTime createdAt;// 创建时间
     private LocalDateTime updatedAt;// 修改时间
-    private String teamCode; // 组织唯一标识码
+    private Long activityId; // 活动id
     private String memberOpenId; // 用户的openId
-    private String memberName; //用户名称，一开始默认用微信昵称
-    private String memberNick; // 用户微信昵称
-    private String phoneNumber; //手机号
+    private String memberName; // 用户名称
+    private String deptName; // 部门
+    private String positionName; // 岗位
+    private String groupIdentifier; // 所属分组
 }

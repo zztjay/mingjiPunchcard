@@ -44,7 +44,7 @@ public class ActivityController {
      * @return API response json
      */
     @GetMapping(value = "/api/activity/get")
-    ApiResponse get(@RequestParam String activityId) {
+    ApiResponse get(@RequestParam Long activityId) {
         Activity activity = JMockData.mock(Activity.class);
         return ApiResponse.ok(activity);
 

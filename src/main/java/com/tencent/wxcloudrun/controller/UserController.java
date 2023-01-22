@@ -34,6 +34,7 @@ public class UserController {
     @PostMapping(value = "/api/user/register")
     ApiResponse register(@RequestBody UserRequest request) {
        String token = JMockData.mock(String.class);
+       log.warn("request is {} ", request);
        return ApiResponse.ok(token);
     }
 }

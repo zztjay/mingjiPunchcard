@@ -28,8 +28,8 @@ public class Activity implements Serializable {
     private String  activityName; // 活动名称
     private String  activityDesc;// 活动描述
     private String  activityPic;// 活动图片
-    private LocalDateTime activityStartTime;// 开始生效日期,活动类型：yyyyMMdd，周期类型：yyyyMM（月）
-    private LocalDateTime activityEndTime;// 结束生效日期,yyyyMMdd，周期类型：yyyyMM
+    private String activityStartTime;// 开始生效时间
+    private String activityEndTime;// 结束生效时间
     private int punchCardType;// 打卡类型，1：“整体文本法” 2.“标准造句法”
     private int punchCardFrequecy;// 打卡频次，1：“每天1次”，2. “每周6天”，3. “每周5天”
     private int canRepunchCard;// 是否允许补卡，0：不允许，1：允许

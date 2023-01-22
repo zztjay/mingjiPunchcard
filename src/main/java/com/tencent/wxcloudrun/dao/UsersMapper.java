@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.dao;
 
 import com.tencent.wxcloudrun.model.User;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
@@ -8,6 +9,6 @@ import tk.mybatis.mapper.common.Mapper;
  * @Author：zhoutao
  * @Date：2023/1/17 15:49
  */
-@org.apache.ibatis.annotations.Mapper
+@Repository
 public interface UsersMapper extends Mapper<User> {
 }

@@ -37,4 +37,10 @@ public class UserController {
        log.warn("request is {} ", request);
        return ApiResponse.ok(token);
     }
+
+    public static void main(String[] args) {
+        UserController userController  = new UserController();
+        System.out.println(userController.register(null));
+    }
 }
+

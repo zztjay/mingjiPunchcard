@@ -2,13 +2,17 @@ package com.tencent.wxcloudrun.controller;
 
 import com.github.jsonzou.jmockdata.JMockData;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.dto.ActivityDTO;
 import com.tencent.wxcloudrun.dto.UserRequest;
 import com.tencent.wxcloudrun.model.Activity;
+import com.tencent.wxcloudrun.model.Record;
 import com.tencent.wxcloudrun.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 活动的页面控制器
@@ -33,11 +37,9 @@ public class ActivityController {
      * @return API response json
      */
     @GetMapping(value = "/api/activity/query")
-    // todo mock接口
     ApiResponse query() {
-        String token = JMockData.mock(String.class);
-        return ApiResponse.ok(token);
-
+        List<ActivityDTO> activitys = JMockData.mock(ArrayList.class);
+        return ApiResponse.ok(activitys);
     }
     /**
      * 获得活动信息
@@ -47,16 +49,17 @@ public class ActivityController {
     ApiResponse get(@RequestParam Long activityId) {
         Activity activity = JMockData.mock(Activity.class);
         return ApiResponse.ok(activity);
-
     }
 
     /**
-     * 获得活动信息
+     * 报名活动
      * @return API response json
      */
     @PostMapping(value = "/api/activity/join")
-    ApiResponse join(@RequestParam String activityId) {
+    ApiResponse join(@RequestParam String activityId
+            , @RequestParam String userName) {
         return ApiResponse.ok();
-
     }
+
+
 }

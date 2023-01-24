@@ -31,21 +31,27 @@ public class Record {
     private String groupIdentifier; // 所属分组
     private int isRepunchCard; // 是否为补卡
     private String content; //打卡内容，使用json结构存储
-    private int type; //内部还是外部客户，1:内部，2:外部
-//● positive：正向
-//  ○ full：表示完整的
-//  ○ toWho：对象
-//  ○ scene：场景
-//  ○ action：行为
-//  ○ thoughts：感知
-//  ○ withWho：联动
-// ● inpositive：负向
-//  ○ full：表示完整的
-//  ○ toWho：对象
-//  ○ scene：场景
-//  ○ action：行为
-//  ○ thoughts：感知
-//  ○ withWho：联动
-//● iwant：我还想做什么
-//● thoughts：感想
+    //{
+        // ● type; //内部还是外部客户，1:内部，2:外部
+        // ● positive：正向
+        //  {
+        //  ○ full：表示完整的
+        //  ○ toWho：对象
+        //  ○ scene：场景
+        //  ○ action：行为
+        //  ○ thoughts：感知
+        //  ○ withWho：联动
+        //  }
+    // ● inpositive：负向
+        // {
+        //  ○ full：表示完整的
+        //  ○ toWho：对象
+        //  ○ scene：场景
+        //  ○ action：行为
+        //  ○ thoughts：感知
+        //  ○ withWho：联动
+        // }
+        // ● iwant：我还想做什么
+        // ● thoughts：感想
+    // }
 }

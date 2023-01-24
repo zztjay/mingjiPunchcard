@@ -6,5 +6,4 @@ import lombok.Data;
 public class UserRequest {
     private String nick; // 昵称
     private String avator; // 头像
-
 }

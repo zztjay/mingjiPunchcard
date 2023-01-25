@@ -53,7 +53,7 @@ public class RewardController {
      * 活动打卡评分服务
      * @return API response json
      */
-    @GetMapping(value = "/api/reward")
+    @PostMapping(value = "/api/reward")
     ApiResponse reward(@RequestParam long punchCardId,
                        @RequestParam int rewardType) {
         return ApiResponse.ok();

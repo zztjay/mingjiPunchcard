@@ -29,7 +29,7 @@ public class RewardController {
     ApiResponse comment(@RequestParam Long punchCardId, // 打卡记录id
                         @RequestParam Long rootCommentId, //  回复的根评论ID，第一次为空
                         @RequestParam int rootCommentContentType, //  评论内容类型，full. 完整句，positive. 正向，inpositive.负向，iwant：我还想做什么，thoughts：感想
-                        @RequestParam Long replyCommentId, //  被回复的评论ID，第一次为空
+                        @RequestParam Long replyCommentId, //  被回复的评论ID，评论为空
                         @RequestParam int type // 评论类型，1:评论，2:回复
                         ) {
         return ApiResponse.ok();

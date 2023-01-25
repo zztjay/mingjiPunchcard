@@ -24,13 +24,13 @@ import java.util.List;
 @Slf4j
 public class PunchCardController {
 
-
     /**
      * 活动打卡服务
      * @return API response json
      */
     @PostMapping(value = "/api/punchcard")
-    ApiResponse punchcard(@RequestBody Record record) {
+    ApiResponse punchcard(@RequestParam String content
+            , @RequestParam Long activityId) {
         return ApiResponse.ok();
     }
 
@@ -44,6 +44,16 @@ public class PunchCardController {
         return ApiResponse.ok(records);
     }
 
+
+    /**
+     * 查询打卡记录
+     * @return API response json
+     */
+    @GetMapping(value = "/api/punchcard/get")
+    ApiResponse get(@RequestParam Long recordId) {
+        PunchCardDTO record = JMockData.mock(PunchCardDTO.class);
+        return ApiResponse.ok(record);
+    }
 
 
 }

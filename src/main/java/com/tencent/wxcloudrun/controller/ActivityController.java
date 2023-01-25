@@ -1,8 +1,10 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.github.jsonzou.jmockdata.JMockData;
+import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.ActivityDTO;
+import com.tencent.wxcloudrun.dto.ActivityQuery;
 import com.tencent.wxcloudrun.dto.UserRequest;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Record;
@@ -37,8 +39,8 @@ public class ActivityController {
      * @return API response json
      */
     @GetMapping(value = "/api/activity/query")
-    ApiResponse query() {
-        List<ActivityDTO> activitys = JMockData.mock(ArrayList.class);
+    ApiResponse query(@RequestParam ActivityQuery query) {
+       Page<ActivityDTO> activitys = JMockData.mock(Page.class);
         return ApiResponse.ok(activitys);
     }
     /**

@@ -1,10 +1,10 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.github.jsonzou.jmockdata.JMockData;
+import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.CommentDTO;
-import com.tencent.wxcloudrun.model.Comment;
-import com.tencent.wxcloudrun.model.Record;
+import com.tencent.wxcloudrun.dto.CommentQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,9 +40,8 @@ public class RewardController {
      * @return API response json
      */
     @GetMapping(value = "/api/comment/query")
-    // todo 查询服务
-    ApiResponse query(@RequestParam String query) {
-        List<CommentDTO> comments = JMockData.mock(ArrayList.class);
+    ApiResponse query(@RequestParam CommentQuery query) {
+        Page<CommentDTO> comments = JMockData.mock(Page.class);
         return ApiResponse.ok(comments);
     }
 

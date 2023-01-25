@@ -1,9 +1,11 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.github.jsonzou.jmockdata.JMockData;
+import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.CommentDTO;
 import com.tencent.wxcloudrun.dto.PunchCardDTO;
+import com.tencent.wxcloudrun.dto.PunchCardQuery;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Comment;
 import com.tencent.wxcloudrun.model.Record;
@@ -37,8 +39,8 @@ public class PunchCardController {
      * @return API response json
      */
     @GetMapping(value = "/api/punchcard/query")
-    ApiResponse query(@RequestParam String record) {
-        List<PunchCardDTO> records = JMockData.mock(ArrayList.class);
+    ApiResponse query(@RequestParam PunchCardQuery query) {
+        Page<PunchCardDTO> records = JMockData.mock(Page.class);
         return ApiResponse.ok(records);
     }
 

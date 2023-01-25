@@ -37,9 +37,11 @@ public class Activity implements Serializable {
     private String  members;// 全部学生名单
     private String  coachs;// 全部教练列表，包含openId和名称
     private String  rewardRule;// 奖励规则，json结构
-            //type：积分类型，1.打卡 2.点赞、3.评级 4. 优选
-            //startTime：开始时间
-            //basePioint：基础值
-            //limit：积分上限
+            //{
+            //  type：积分类型，1.打卡 2.点赞、3.评级 4. 优选
+            //  startTime：开始时间
+            //  basePioint：基础值
+            //  limit：积分上限
+            //}
     private String  ext;// 扩展字段
 }

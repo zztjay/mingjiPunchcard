@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class ActivityController {
      * @return API response json
      */
     @GetMapping(value = "/api/activity/query")
-    ApiResponse query(@RequestParam ActivityQuery query) {
+    ApiResponse query(HttpServletRequest request, ActivityQuery query) {
        Page<ActivityDTO> activitys = JMockData.mock(Page.class);
         return ApiResponse.ok(activitys);
     }
@@ -48,7 +49,7 @@ public class ActivityController {
      * @return API response json
      */
     @GetMapping(value = "/api/activity/get")
-    ApiResponse get(@RequestParam Long activityId) {
+    ApiResponse get(@RequestParam long activityId) {
         Activity activity = JMockData.mock(Activity.class);
         return ApiResponse.ok(activity);
     }

@@ -30,7 +30,7 @@ public class PunchCardController {
      */
     @PostMapping(value = "/api/punchcard")
     ApiResponse punchcard(@RequestParam String content
-            , @RequestParam Long activityId) {
+            , @RequestParam long activityId) {
         return ApiResponse.ok();
     }
 
@@ -39,7 +39,7 @@ public class PunchCardController {
      * @return API response json
      */
     @GetMapping(value = "/api/punchcard/query")
-    ApiResponse query(@RequestParam PunchCardQuery query) {
+    ApiResponse query(PunchCardQuery query) {
         Page<PunchCardDTO> records = JMockData.mock(Page.class);
         return ApiResponse.ok(records);
     }
@@ -50,7 +50,7 @@ public class PunchCardController {
      * @return API response json
      */
     @GetMapping(value = "/api/punchcard/get")
-    ApiResponse get(@RequestParam Long recordId) {
+    ApiResponse get(@RequestParam long recordId) {
         PunchCardDTO record = JMockData.mock(PunchCardDTO.class);
         return ApiResponse.ok(record);
     }

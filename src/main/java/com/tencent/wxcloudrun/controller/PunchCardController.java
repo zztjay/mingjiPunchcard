@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,10 +41,11 @@ public class PunchCardController {
      */
     @GetMapping(value = "/api/punchcard/query")
     ApiResponse query(PunchCardQuery query) {
-        Page<PunchCardDTO> records = JMockData.mock(Page.class);
+        PunchCardDTO punchCardDTO = JMockData.mock(PunchCardDTO.class);
+        Page<PunchCardDTO> records = new Page<>();
+        records.setEntityList(Arrays.asList(punchCardDTO));
         return ApiResponse.ok(records);
     }
-
 
     /**
      * 查询打卡记录

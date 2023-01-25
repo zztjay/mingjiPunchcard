@@ -5,6 +5,7 @@ import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.ActivityDTO;
 import com.tencent.wxcloudrun.dto.ActivityQuery;
+import com.tencent.wxcloudrun.dto.PunchCardDTO;
 import com.tencent.wxcloudrun.dto.UserRequest;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Record;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,7 +43,9 @@ public class ActivityController {
      */
     @GetMapping(value = "/api/activity/query")
     ApiResponse query(HttpServletRequest request, ActivityQuery query) {
-       Page<ActivityDTO> activitys = JMockData.mock(Page.class);
+        Activity activity = JMockData.mock(Activity.class);
+        Page<Activity> activitys = new Page<>();
+        activitys.setEntityList(Arrays.asList(activity));
         return ApiResponse.ok(activitys);
     }
     /**

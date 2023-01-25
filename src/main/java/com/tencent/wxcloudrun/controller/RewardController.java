@@ -5,10 +5,12 @@ import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.CommentDTO;
 import com.tencent.wxcloudrun.dto.CommentQuery;
+import com.tencent.wxcloudrun.dto.PunchCardDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,7 +43,9 @@ public class RewardController {
      */
     @GetMapping(value = "/api/comment/query")
     ApiResponse query(CommentQuery query) {
-        Page<CommentDTO> comments = JMockData.mock(Page.class);
+        CommentDTO commentDTO = JMockData.mock(CommentDTO.class);
+        Page<CommentDTO> comments = new Page<>();
+        comments.setEntityList(Arrays.asList(commentDTO));
         return ApiResponse.ok(comments);
     }
 

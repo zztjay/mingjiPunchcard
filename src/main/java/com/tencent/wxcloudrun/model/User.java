@@ -25,8 +25,10 @@ public class User implements Serializable {
     private LocalDateTime createdAt;// 创建时间
     private LocalDateTime updatedAt;// 修改时间
     private String teamCode; // 组织唯一标识码
+    private String avator; // 头像链接
     private String memberOpenId; // 用户的openId
     private String memberName; //用户名称，一开始默认用微信昵称
     private String memberNick; // 用户微信昵称
     private String phoneNumber; //手机号
+    private String ext; // 扩展信息
 }

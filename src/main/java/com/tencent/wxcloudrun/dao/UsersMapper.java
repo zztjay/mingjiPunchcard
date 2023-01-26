@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.dao;
 
 import com.tencent.wxcloudrun.model.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -11,4 +12,5 @@ import tk.mybatis.mapper.common.Mapper;
  */
 @Repository
 public interface UsersMapper extends Mapper<User> {
+    public User getByOpenId(@Param("openId") String openId);
 }

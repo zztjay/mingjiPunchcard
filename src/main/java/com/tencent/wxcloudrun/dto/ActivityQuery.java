@@ -10,5 +10,5 @@ import lombok.Data;
  */
 @Data
 public class ActivityQuery extends QueryBase {
-
+    private String userOpenId; // 用户的openId
 }

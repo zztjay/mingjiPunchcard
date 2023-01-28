@@ -10,5 +10,6 @@ import lombok.Data;
  */
 @Data
 public class CommentQuery extends QueryBase {
-
+    private Long punchCardId;
+    private String receiveUserId;
 }

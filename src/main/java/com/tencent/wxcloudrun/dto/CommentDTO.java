@@ -22,9 +22,8 @@ public class CommentDTO {
     private Long id; // 唯一id
     private Long punchCardId; // 打卡记录id
     private Long rootCommentId; //  回复的根评论ID，第一次为空
-    private int rootCommentContentType; //  评论内容类型，full. 完整句，positive. 正向，inpositive.负向，iwant：我还想做什么，thoughts：感想
+    private String rootCommentContentType; //  评论内容类型，full. 完整句，positive. 正向，inpositive.负向，iwant：我还想做什么，thoughts：感想
     private String rootCommentContent; //  评论内容
-    private Long replyCommentId; //  被回复的评论ID，第一次为空
     private String  receiveUserName; // 被评论用户的名称
     private int type; // 评论类型，1:评论，2:回复
     private String content; // 评论内容

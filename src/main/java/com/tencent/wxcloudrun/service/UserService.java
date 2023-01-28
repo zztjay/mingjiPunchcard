@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.tencent.wxcloudrun.dao.UsersMapper;
 import com.tencent.wxcloudrun.model.Counter;
 import com.tencent.wxcloudrun.model.User;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
  * @Author：zhoutao
  * @Date：2023/1/17 16:38
  */
+@Service
 public class UserService {
     @Resource
     UsersMapper usersMapper;
@@ -20,7 +22,8 @@ public class UserService {
         Preconditions.checkArgument(StringUtils.isNotEmpty(user.getMemberOpenId())
             && StringUtils.isNotEmpty(user.getMemberNick()) );
         if(user.getId() != null && user.getId() > 0L){
-            return usersMapper.updateByPrimaryKey(user);
+             usersMapper.updateByPrimaryKey(user);
+             return user.getId().intValue();
         } else {
             return usersMapper.insert(user);
         }

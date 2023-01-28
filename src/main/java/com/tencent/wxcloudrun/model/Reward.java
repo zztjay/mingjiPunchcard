@@ -22,6 +22,16 @@ import java.time.LocalDateTime;
 @NameStyle(Style.normal)
 public class Reward implements Serializable {
     private static final long serialVersionUID = 1L;
+
+
+    public static final int REWARD_TYPE_PUNCH_CARD = 1;
+    public static final int REWARD_TYPE_THUMBS_UP = 2;
+    public static final int REWARD_TYPE_LEVE = 3;
+    public static final int REWARD_TYPE_BEST = 4;
+
+    public static final int REWARD_USRE_TYPE_MEMBER = 1;
+    public static final int REWARD_USRE_TYPE_COACH = 2;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 唯一id
@@ -29,6 +39,7 @@ public class Reward implements Serializable {
     private LocalDateTime updatedAt;// 修改时间
     private Long punchCardId; // 打卡记录id
     private int rewardType; // 奖励类型，1.打卡 2.点赞、3.评级 4. 优选
+    private String userOpenId; // 用户的openId
     private String giveRewardUserId; // 送出奖励用户的openId
     private int giveRewardUserType; // 奖励用户类型，1:成员，2: 教练
     private int rewardPoint; // 奖励分数

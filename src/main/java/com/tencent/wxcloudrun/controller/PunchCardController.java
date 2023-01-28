@@ -31,7 +31,7 @@ public class PunchCardController {
      */
     @PostMapping(value = "/api/punchcard")
     ApiResponse punchcard(@RequestParam String content
-            , @RequestParam long activityId) {
+            , @RequestParam long activityId, String punchCardTime) {
         return ApiResponse.ok();
     }
 
@@ -56,6 +56,5 @@ public class PunchCardController {
         PunchCardDTO record = JMockData.mock(PunchCardDTO.class);
         return ApiResponse.ok(record);
     }
-
 
 }

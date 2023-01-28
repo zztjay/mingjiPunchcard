@@ -29,10 +29,8 @@ public class RewardController {
      */
     @PostMapping(value = "/api/comment")
     ApiResponse comment(@RequestParam long punchCardId, // 打卡记录id
-                        @RequestParam long rootCommentId, //  回复的根评论ID，第一次为空
                         @RequestParam int rootCommentContentType, //  评论内容类型，full. 完整句，positive. 正向，inpositive.负向，iwant：我还想做什么，thoughts：感想
-                        @RequestParam long replyCommentId, //  被回复的评论ID，评论为空
-                        @RequestParam int type // 评论类型，1:评论，2:回复
+                        @RequestParam long replyCommentId //  被回复的评论ID，评论为空
                         ) {
         return ApiResponse.ok();
     }
@@ -55,7 +53,7 @@ public class RewardController {
      */
     @PostMapping(value = "/api/reward")
     ApiResponse reward(@RequestParam long punchCardId,
-                       @RequestParam int rewardType) {
+                       @RequestParam int rewardType,@RequestParam int rewardPoint) {
         return ApiResponse.ok();
     }
 

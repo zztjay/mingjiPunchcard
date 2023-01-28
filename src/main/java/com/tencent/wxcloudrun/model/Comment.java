@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 @Data
 @NameStyle(Style.normal)
 public class Comment {
+    public static final int COMMENT_TYPE_COMMENT = 1;
+    public static final int COMMENT_TYPE_REPLY = 2;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 唯一id
@@ -27,7 +29,8 @@ public class Comment {
     private LocalDateTime updatedAt;// 修改时间
     private Long punchCardId; // 打卡记录id
     private Long rootCommentId; //  回复的根评论ID，第一次为空
-    private int rootCommentContentType; //  评论内容类型，full. 完整句，positive. 正向，inpositive.负向，iwant：我还想做什么，thoughts：感想
+    private String rootCommentContentType; //  评论内容类型，full. 完整句，positive. 正向，inpositive.负向，iwant：我还想做什么，thoughts：感想
+    private String rootCommentContent; // 根评论的内容
     private Long replyCommentId; //  被回复的评论ID，第一次为空
     private int type; // 评论类型，1:评论，2:回复
     private String commentUserId; //  评论用户的openId

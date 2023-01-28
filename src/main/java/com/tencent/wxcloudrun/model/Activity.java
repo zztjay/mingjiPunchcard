@@ -18,6 +18,9 @@ import java.time.LocalDateTime;
 @Data
 @NameStyle(Style.normal)
 public class Activity implements Serializable {
+    public static final int IS_SUPPORT_REPUNCHCRD = 1;
+    public static final int IS_NOT_SUPPORT_REPUNCHCRD = 0;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

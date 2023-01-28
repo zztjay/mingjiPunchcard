@@ -58,9 +58,14 @@ public class ActivityService {
      *
      * @return API response json
      */
-    // todo
     public Page<Activity> query(ActivityQuery query) {
-        return null;
+        Page<Activity> page = new Page<>();
+        int count = activityMapper.count(query);
+        if(count > 0){
+            page.setEntityList(activityMapper.query(query));
+        }
+        page.setTotalRecords(count);
+        return page;
     }
 
     /**

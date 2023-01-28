@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -57,7 +58,7 @@ public class PunchCardService {
      * @return API response json
      */
     ApiResponse punchcard(String content
-            , long activityId, LocalDateTime punchCardTime ) {
+            , long activityId, LocalDateTime punchCardTime) {
         Activity activity = activityMapper.selectByPrimaryKey(activityId);
 
         Record record = new Record();
@@ -72,18 +73,18 @@ public class PunchCardService {
         record.setGroupIdentifier(member.getGroupIdentifier()); // 用户分组
 
         // 补卡逻辑，检查当前打卡日期
-        if(punchCardTime.getDayOfMonth() < LocalDateTime.now().getDayOfMonth()){
-            if(activity.getCanRepunchCard() == Activity.IS_SUPPORT_REPUNCHCRD){
+        if (punchCardTime.getDayOfMonth() < LocalDateTime.now().getDayOfMonth()) {
+            if (activity.getCanRepunchCard() == Activity.IS_SUPPORT_REPUNCHCRD) {
 
                 // 补卡次数判断
-                if(activity.getRepunchCardDays() < punchCardMapper.getRepunchCount(activityId, LoginContext.getOpenId())){
+                if (activity.getRepunchCardDays() < punchCardMapper.getRepunchCount(activityId, LoginContext.getOpenId())) {
                     record.setIsRepunchCard(Record.IS_REPUNCHCRD);
                 } else {
-                    ApiResponse.error("REACH_REPUNCHCARD_LIMIT","达到补卡上限");
+                    ApiResponse.error("REACH_REPUNCHCARD_LIMIT", "达到补卡上限");
                 }
 
             } else {
-                ApiResponse.error("NOT_SUPPORT_REPUNCHCARD","活动不支持补卡");
+                ApiResponse.error("NOT_SUPPORT_REPUNCHCARD", "活动不支持补卡");
             }
         }
 
@@ -97,9 +98,19 @@ public class PunchCardService {
      *
      * @return API response json
      */
-    // todo
     Page<PunchCardDTO> query(PunchCardQuery query) {
-        return null;
+        Page<PunchCardDTO> page = new Page<>();
+        int count = punchCardMapper.count(query);
+        if (count > 0) {
+            List<PunchCardDTO> punchCardDTOS = new ArrayList<>();
+            List<Record> records = punchCardMapper.query(query);
+            for (Record record : records) {
+                punchCardDTOS.add(getPunchCardRecord(record.getId()));
+            }
+            page.setEntityList(punchCardDTOS);
+        }
+        page.setTotalRecords(count);
+        return page;
     }
 
     /**
@@ -107,32 +118,32 @@ public class PunchCardService {
      *
      * @return API response json
      */
-    ApiResponse getPunchCardRecord(long recordId) {
+    PunchCardDTO getPunchCardRecord(long recordId) {
         Record record = punchCardMapper.selectByPrimaryKey(recordId);
-        if(!record.getMemberOpenId().equals(LoginContext.getOpenId())){
-            ApiResponse.error("OPEN_ID_NOT_MATCH","您没有权限");
+        if (!record.getMemberOpenId().equals(LoginContext.getOpenId())) {
+            ApiResponse.error("OPEN_ID_NOT_MATCH", "您没有权限");
         }
 
         PunchCardDTO punchCardDTO = new PunchCardDTO();
         punchCardDTO.setContent(record.getContent());
 
-        List<Reward> bestRecords = rewardMapper.getByRecordId(recordId,LoginContext.getOpenId(),Reward.REWARD_TYPE_BEST);
-        if(!CollectionUtils.isEmpty(bestRecords)){
+        List<Reward> bestRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_BEST);
+        if (!CollectionUtils.isEmpty(bestRecords)) {
             punchCardDTO.setBest(true); // 优选
         }
 
-        List<Reward> thumbsupRecords = rewardMapper.getByRecordId(recordId,LoginContext.getOpenId(),Reward.REWARD_TYPE_THUMBS_UP);
+        List<Reward> thumbsupRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_THUMBS_UP);
         punchCardDTO.setThumbsUp(thumbsupRecords.size()); // 点赞数
 
-        List<Reward> levelRecords = rewardMapper.getByRecordId(recordId,LoginContext.getOpenId(),Reward.REWARD_TYPE_LEVE);
-        if(CollectionUtils.isEmpty(levelRecords)){
+        List<Reward> levelRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_LEVE);
+        if (CollectionUtils.isEmpty(levelRecords)) {
             punchCardDTO.setLevel(levelRecords.get(0).getRewardPoint()); // 等级
         }
 
         punchCardDTO.setRecordId(recordId);
 
         punchCardDTO.setComments(rewardService.getComments(recordId)); // 评论列表
-        return ApiResponse.ok(record);
+        return punchCardDTO;
     }
 
 }

@@ -31,7 +31,7 @@ public class Record {
     private Long activityId; // 活动id
     private String memberOpenId; // 用户的openId
     private String groupIdentifier; // 所属分组
-    private int isRepunchCard = 0; // 是否为补卡
+    private Integer isRepunchCard = 0; // 是否为补卡
     private String content; //打卡内容，使用json结构存储
     //{
         // ● type; //内部还是外部客户，1:内部，2:外部

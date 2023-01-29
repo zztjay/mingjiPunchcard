@@ -38,9 +38,9 @@ public class Reward implements Serializable {
     private LocalDateTime createdAt;// 创建时间
     private LocalDateTime updatedAt;// 修改时间
     private Long punchCardId; // 打卡记录id
-    private int rewardType; // 奖励类型，1.打卡 2.点赞、3.评级 4. 优选
+    private Integer rewardType; // 奖励类型，1.打卡 2.点赞、3.评级 4. 优选
     private String userOpenId; // 用户的openId
     private String giveRewardUserId; // 送出奖励用户的openId
-    private int giveRewardUserType; // 奖励用户类型，1:成员，2: 教练
-    private int rewardPoint; // 奖励分数
+    private Integer giveRewardUserType; // 奖励用户类型，1:成员，2: 教练
+    private Integer rewardPoint; // 奖励分数
 }

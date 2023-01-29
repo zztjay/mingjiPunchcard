@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.dao.MembersMapper">
+
+    <select id="selectByUserName" resultType="com.tencent.wxcloudrun.model.Member" >
+        SELECT *
+        FROM Members
+        WHERE memberName = #{userName} and activityId = #{activityId} limit 1
+    </select>
+
+    <select id="selectByOpenId" resultType="com.tencent.wxcloudrun.model.Member" >
+        SELECT *
+        FROM Members
+        WHERE memberOpenId = #{openId} and activityId = #{activityId} limit 1
+    </select>
+</mapper>

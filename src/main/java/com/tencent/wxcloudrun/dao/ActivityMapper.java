@@ -14,6 +14,5 @@ import java.util.List;
 @Repository
 public interface ActivityMapper extends Mapper<Activity> {
     List<Activity> query(ActivityQuery query);
-
     int count(ActivityQuery query);
 }

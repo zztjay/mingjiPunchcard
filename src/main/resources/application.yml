@@ -4,10 +4,14 @@ server:
 
 spring:
   datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:mingji_punchcard}
+#    username: ${MYSQL_USERNAME}
+#    password: ${MySQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:mingji_punchcard}
-    username: ${MYSQL_USERNAME}
-    password: ${MySQL_PASSWORD}
+    url: jdbc:mysql://sh-cynosdbmysql-grp-fho1tody.sql.tencentcdb.com:24436/${MYSQL_DATABASE:mingji_punchcard}
+    username: root
+    password: ptSPV2cN
   mvc:
     view:
       suffix: .html

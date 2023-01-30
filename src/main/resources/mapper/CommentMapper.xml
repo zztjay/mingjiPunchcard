@@ -12,7 +12,7 @@
     <select id="getComments" resultType="com.tencent.wxcloudrun.model.Comment" >
         SELECT *
         FROM Comments
-        WHERE rootCommentId = #{rootCommentId} order by gmt_create asc
+        WHERE rootCommentId = #{rootCommentId} order by createdAt asc
     </select>
 
 </mapper>

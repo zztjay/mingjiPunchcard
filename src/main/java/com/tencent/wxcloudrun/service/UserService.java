@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 public class UserService {
     @Resource
     UsersMapper usersMapper;
+
     public int save(User user) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(user.getMemberOpenId())
             && StringUtils.isNotEmpty(user.getMemberNick()) );

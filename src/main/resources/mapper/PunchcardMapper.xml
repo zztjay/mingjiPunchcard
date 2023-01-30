@@ -4,9 +4,9 @@
 
 
     <select id="getRepunchCount" resultType="int" >
-        SELECT *
-        FROM Rewards
-        WHERE activityId = #{activityId} and openId = #{openId} and isRepunchCard = 1
+        SELECT count(*)
+        FROM Records
+        WHERE activityId = #{activityId} and memberOpenId = #{openId} and isRepunchCard = 1
     </select>
 
 </mapper>

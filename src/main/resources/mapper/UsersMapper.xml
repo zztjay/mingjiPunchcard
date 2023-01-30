@@ -5,7 +5,7 @@
     <select id="getByOpenId" resultType="com.tencent.wxcloudrun.model.User" parameterType="java.lang.String">
         SELECT *
         FROM Users
-        WHERE openId = #{openId}
+        WHERE memberOpenId = #{openId}
     </select>
 
 </mapper>

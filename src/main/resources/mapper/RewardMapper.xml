@@ -5,7 +5,7 @@
     <select id="getByRecordId" resultType="com.tencent.wxcloudrun.model.Reward" >
         SELECT *
         FROM Rewards
-        WHERE recordId = #{recordId} and openId = #{openId} and type = #{type}
+        WHERE punchCardId = #{recordId} and userOpenId = #{openId} and rewardType = #{type}
     </select>
 
 </mapper>

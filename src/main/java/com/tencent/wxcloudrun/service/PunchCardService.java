@@ -88,9 +88,9 @@ public class PunchCardService {
             }
         }
 
-        punchCardMapper.insert(record);
+       punchCardMapper.insert(record);
 
-        return ApiResponse.ok();
+        return ApiResponse.ok(record.getId());
     }
 
     /**

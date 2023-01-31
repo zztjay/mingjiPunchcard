@@ -14,7 +14,8 @@ public class LoginContext {
     private static Long userId; // 用户DB的ID
 
     public static String getOpenId() {
-        return openId;
+        return "3";
+//        return openId;
     }
 
     public static void setOpenId(String requestOpenId) {
@@ -22,7 +23,8 @@ public class LoginContext {
     }
 
     public static Long getUserId() {
-        return userId;
+        return 1L;
+//        return userId;
     }
 
     public static void setUserId(Long requestUserId) {

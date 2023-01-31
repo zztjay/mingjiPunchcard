@@ -19,14 +19,15 @@ public class UserService {
     @Resource
     UsersMapper usersMapper;
 
-    public int save(User user) {
+    public Long save(User user) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(user.getMemberOpenId())
             && StringUtils.isNotEmpty(user.getMemberNick()) );
         if(user.getId() != null && user.getId() > 0L){
              usersMapper.updateByPrimaryKey(user);
-             return user.getId().intValue();
+             return user.getId();
         } else {
-            return usersMapper.insert(user);
+            usersMapper.insert(user);
+            return user.getId();
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.tencent.wxcloudrun.model;
+package com.tencent.wxcloudrun.dto;
 
 import lombok.Data;
 
@@ -13,13 +13,5 @@ public class PunchCardContent {
     private InnerContent inpositive; // 正向
     private String iwant; // 我还想做什么
     private String thoughts; // 感想
-    class InnerContent{
-        public String full; // 表示完整的
-        public String toWho; // 对象
-        public String scene; // 场景
-        public String action; // 行为
-        public String thoughts; // 感知
-        public String withWho; // 联动
-    }
 
 }

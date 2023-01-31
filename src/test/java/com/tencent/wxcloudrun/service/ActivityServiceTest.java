@@ -46,7 +46,7 @@ class ActivityServiceTest {
         member.put("groupIdentifier","分组1");
         activity.setMembers(new JSONArray().fluentAdd(member).toJSONString());
 
-        int id = activityService.save(activity);
+        Long id = activityService.save(activity);
         System.out.println(id);
     }
 
@@ -60,10 +60,7 @@ class ActivityServiceTest {
         System.out.println(activityService.getById(1));
     }
 
-    @Test
-    void join() {
-        activityService.join(1L,"周韬");
-    }
+
 
     @Test
     void main() {

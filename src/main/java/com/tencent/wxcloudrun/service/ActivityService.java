@@ -39,16 +39,18 @@ public class ActivityService {
     @Resource
     MembersMapper membersMapper;
 
-    public int save(Activity activity) {
+    public Long save(Activity activity) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(
                 activity.getActivityName()) && null != activity.getActivityStartTime()
                 && null != activity.getActivityEndTime() && StringUtils.isNotEmpty(activity.getCoachs())
                 && StringUtils.isNotEmpty(activity.getMembers()));
         if (activity.getId() != null && activity.getId() > 0L) {
             activityMapper.updateByPrimaryKey(activity);
-            return activity.getId().intValue();
+            return activity.getId();
         } else {
-            return activityMapper.insert(activity);
+            // todo return的值是多少
+            activityMapper.insert(activity);
+            return activity.getId();
         }
     }
 

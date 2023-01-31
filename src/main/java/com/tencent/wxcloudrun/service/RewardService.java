@@ -109,7 +109,7 @@ public class RewardService {
             commentMapper.updateByPrimaryKey(comment);
         }
 
-        return ApiResponse.ok();
+        return ApiResponse.ok(commentId);
     }
 
     /**

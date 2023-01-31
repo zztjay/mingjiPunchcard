@@ -39,16 +39,16 @@ public class FullProductTest {
     void fullTest() {
 
         // 保存用户信息
-//        User user = new User();
-//        user.setMemberNick("韬");
-//        user.setMemberName("周韬");
-//        user.setAvator("www.baidu.com");
-//        user.setMemberOpenId("3");
-//        TeamEnum teamEnum = TeamEnum.getTeam("yuanli");
-//        user.setTeamCode(teamEnum.getTeamCode());
-//        System.out.println(userService.save(user));
+        User user = new User();
+        user.setMemberNick("韬");
+        user.setMemberName("周韬");
+        user.setAvator("www.baidu.com");
+        user.setMemberOpenId("3");
+        TeamEnum teamEnum = TeamEnum.getTeam("yuanli");
+        user.setTeamCode(teamEnum.getTeamCode());
+        System.out.println(userService.save(user));
 
-        // 创建活动信息
+//         创建活动信息
         Activity activity = JMockData.mock(Activity.class);
         activity.setCreatedAt(LocalDateTime.now());
         activity.setUpdatedAt(LocalDateTime.now());
@@ -67,15 +67,15 @@ public class FullProductTest {
         activityService.join(id, "周韬");
 
         PunchCardContent content = JMockData.mock(PunchCardContent.class);
-        long recordId = (int) (punchCardService.punchcard(JSON.toJSONString(content), 1L, LocalDateTime.now())).getData();
+        long recordId = (long) punchCardService.punchcard(JSON.toJSONString(content), 5L, LocalDateTime.now()).getData();
 
-        System.out.println(punchCardService.getPunchCardRecord(recordId));
-
-        long commentId = (int)rewardService.comment(recordId,"full",null,"写得真好").getData();
+       long commentId = (Long)rewardService.comment(recordId,"full",null,"写得真好").getData();
         rewardService.comment(recordId,null,commentId,"写得真好的回复");
         System.out.println(rewardService.getComments(recordId));
 
         rewardService.reward(recordId,Reward.REWARD_TYPE_THUMBS_UP,1);
+
+        System.out.println(punchCardService.getPunchCardRecord(recordId));
 
     }
 

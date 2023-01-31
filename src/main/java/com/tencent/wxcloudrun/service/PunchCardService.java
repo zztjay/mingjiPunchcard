@@ -59,6 +59,9 @@ public class PunchCardService {
      */
     ApiResponse punchcard(String content
             , long activityId, LocalDateTime punchCardTime) {
+        // 判断用户今天是否打卡 todo
+
+
         Activity activity = activityMapper.selectByPrimaryKey(activityId);
 
         Record record = new Record();
@@ -136,7 +139,7 @@ public class PunchCardService {
         punchCardDTO.setThumbsUp(thumbsupRecords.size()); // 点赞数
 
         List<Reward> levelRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_LEVE);
-        if (CollectionUtils.isEmpty(levelRecords)) {
+        if (!CollectionUtils.isEmpty(levelRecords)) {
             punchCardDTO.setLevel(levelRecords.get(0).getRewardPoint()); // 等级
         }
 

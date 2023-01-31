@@ -65,6 +65,7 @@ public class RewardService {
         Member commentMember = membersMapper.selectByOpenId(LoginContext.getOpenId(), record.getActivityId());
         Activity activity = activityMapper.selectByPrimaryKey(record.getActivityId());
 
+        comment.setPunchCardId(punchCardId);
         comment.setCommentUserId(LoginContext.getOpenId());
         comment.setCommentUserName(commentMember.getMemberName());
         if (activity.getCoachs().contains(LoginContext.getOpenId())) {
@@ -81,6 +82,7 @@ public class RewardService {
             comment.setReceiveUserId(receiveMember.getMemberOpenId());
             comment.setReceiveUserName(receiveMember.getMemberName());
             comment.setCommentUserType(Reward.REWARD_USRE_TYPE_MEMBER);
+            comment.setReceiveUserType(Reward.REWARD_USRE_TYPE_MEMBER);
 
             // 写入内容
             if (rootCommentContentType.equals("full")) {
@@ -88,6 +90,8 @@ public class RewardService {
             } else {
                 comment.setRootCommentContent(JSON.parseObject(record.getContent()).getString(rootCommentContentType));
             }
+
+            comment.setType(Comment.COMMENT_TYPE_COMMENT);
         }
         // 对评论的回复
         else if (StringUtil.isEmpty(rootCommentContentType)  && null != replyCommentId) {
@@ -99,17 +103,18 @@ public class RewardService {
             comment.setReceiveUserType(replyComment.getCommentUserType());
             comment.setRootCommentContent(replyComment.getRootCommentContent());
             comment.setRootCommentContentType(replyComment.getRootCommentContentType());
+            comment.setType(Comment.COMMENT_TYPE_REPLY);
         }
 
         // 针对内容的评论，要写入rootCommentId
-        long commentId = commentMapper.insert(comment);
+         commentMapper.insert(comment);
         if (!StringUtil.isEmpty(rootCommentContentType) && null == replyCommentId) {
-            comment.setRootCommentId(commentId);
-            comment.setId(commentId);
+            comment.setRootCommentId(comment.getId());
+            comment.setId(comment.getId());
             commentMapper.updateByPrimaryKey(comment);
         }
 
-        return ApiResponse.ok(commentId);
+        return ApiResponse.ok(comment.getId());
     }
 
     /**

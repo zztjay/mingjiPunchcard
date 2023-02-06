@@ -16,8 +16,8 @@ public class LoginContext {
 
     private String openId;  // 微信openId
 
-    public static void createLoginContext(String aliuid) {
-        holder.set(aliuid);
+    public static void createLoginContext(String openId) {
+        holder.set(openId);
     }
 
     public static String getOpenId() {

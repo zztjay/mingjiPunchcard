@@ -24,11 +24,14 @@ public class BaseFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 
         // 设置登陆上下文
-        LoginContext.setOpenId(httpRequest.getHeader(OPENID));
         String userId = httpRequest.getHeader(UERID);
         if(!StringUtils.isEmpty(userId)){
-            LoginContext.setUserId(Long.valueOf(userId));
+            LoginContext.createLoginContext(httpRequest.getHeader(OPENID));
         }
     }
 
+    @Override
+    public void destroy() {
+        LoginContext.destoryLoginContext();
+    }
 }

@@ -10,9 +10,9 @@ import lombok.Data;
  */
 @Data
 public class ActivityQuery extends QueryBase {
-    private String userOpenId; // 用户的openId
+    private String teamCode; // 用户的openId
 
-    public ActivityQuery(String userOpenId) {
-        this.userOpenId = userOpenId;
+    public ActivityQuery(String teamCode) {
+        this.teamCode = teamCode;
     }
 }

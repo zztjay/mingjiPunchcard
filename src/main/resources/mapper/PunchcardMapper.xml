@@ -9,4 +9,27 @@
         WHERE activityId = #{activityId} and memberOpenId = #{openId} and isRepunchCard = 1
     </select>
 
+    <select
+            id="query"
+            parameterType="com.tencent.wxcloudrun.common.QueryBase"
+            resultType="com.tencent.wxcloudrun.model.Record">
+        SELECT
+        *
+        FROM Records
+        WHERE 1 = 1
+        order by createdAt desc
+        <if test="startRow != null and pageSize != null">
+            LIMIT #{startRow}, #{pageSize}
+        </if>
+
+    </select>
+
+    <select
+            id="count"
+            parameterType="com.tencent.wxcloudrun.common.QueryBase"
+            resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM Records
+        WHERE 1 = 1
+    </select>
 </mapper>

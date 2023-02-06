@@ -9,9 +9,11 @@ import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dao.ActivityMapper;
 import com.tencent.wxcloudrun.dao.MembersMapper;
 import com.tencent.wxcloudrun.dao.PunchCardMapper;
+import com.tencent.wxcloudrun.dao.UsersMapper;
 import com.tencent.wxcloudrun.dto.ActivityQuery;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Member;
+import com.tencent.wxcloudrun.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +41,9 @@ public class ActivityService {
     @Resource
     MembersMapper membersMapper;
 
+    @Resource
+    UsersMapper usersMapper;
+
     public Long save(Activity activity) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(
                 activity.getActivityName()) && null != activity.getActivityStartTime()
@@ -46,12 +51,10 @@ public class ActivityService {
                 && StringUtils.isNotEmpty(activity.getMembers()));
         if (activity.getId() != null && activity.getId() > 0L) {
             activityMapper.updateByPrimaryKey(activity);
-            return activity.getId();
         } else {
-            // todo return的值是多少
             activityMapper.insert(activity);
-            return activity.getId();
         }
+        return activity.getId();
     }
 
 
@@ -61,6 +64,9 @@ public class ActivityService {
      * @return API response json
      */
     public Page<Activity> query(ActivityQuery query) {
+        User user =  usersMapper.getByOpenId(LoginContext.getOpenId());
+        query.setTeamCode(user.getTeamCode());
+
         Page<Activity> page = new Page<>();
         int count = activityMapper.count(query);
         if(count > 0){
@@ -85,7 +91,6 @@ public class ActivityService {
      *
      * @return API response json
      */
-    // todo
     public ApiResponse join(Long activityId, String userName) {
         Activity activity = getById(activityId);
 

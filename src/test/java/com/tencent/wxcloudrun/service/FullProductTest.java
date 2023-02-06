@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.jsonzou.jmockdata.JMockData;
 import com.tencent.wxcloudrun.constants.TeamEnum;
+import com.tencent.wxcloudrun.dto.ActivityQuery;
 import com.tencent.wxcloudrun.dto.PunchCardContent;
+import com.tencent.wxcloudrun.dto.PunchCardQuery;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Reward;
 import com.tencent.wxcloudrun.model.User;
@@ -77,6 +79,13 @@ public class FullProductTest {
 
         System.out.println(punchCardService.getPunchCardRecord(recordId));
 
+    }
+
+
+    @Test
+    public void queryTest(){
+        activityService.query(new ActivityQuery("yuanli"));
+        punchCardService.query(new PunchCardQuery());
     }
 
 

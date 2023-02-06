@@ -3,6 +3,7 @@ package com.tencent.wxcloudrun.filter;
 import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
 import javax.servlet.*;
@@ -16,6 +17,7 @@ import java.io.IOException;
  * @Date：2023/1/26 11:53
  */
 
+@Slf4j
 public class RegisterCheckFilter implements Filter {
 
     @Resource
@@ -36,6 +38,9 @@ public class RegisterCheckFilter implements Filter {
             HttpServletResponse  httpServletResponse = (HttpServletResponse) servletResponse;
             ApiResponse response =  ApiResponse.error("USER_NOT_REGISTER", "用户未注册");
             httpServletResponse.getWriter().print(JSON.toJSONString(response));
+
+            log.warn("RegisterCheckFilter, not register, openId:{}",openId);
+
             return;
         }
     }

@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.common;
 
+import jdk.jpackage.internal.Log;
 import lombok.Data;
 
 /**
@@ -10,24 +11,24 @@ import lombok.Data;
  */
 @Data
 public class LoginContext {
-    private static String openId;  // 微信openId
-    private static Long userId; // 用户DB的ID
+
+    public static ThreadLocal<String> holder = new ThreadLocal<>();
+
+    private String openId;  // 微信openId
+
+    public static void createLoginContext(String aliuid) {
+        holder.set(aliuid);
+    }
 
     public static String getOpenId() {
-        return "3";
-//        return openId;
+        return holder.get();
     }
 
-    public static void setOpenId(String requestOpenId) {
-        openId = requestOpenId;
+    /**
+     * 销毁threadlocal
+     */
+    public static void destoryLoginContext() {
+        holder.remove();
     }
 
-    public static Long getUserId() {
-        return 1L;
-//        return userId;
-    }
-
-    public static void setUserId(Long requestUserId) {
-        userId = requestUserId;
-    }
 }

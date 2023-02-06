@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class FilterConfig {
 
         @Bean
-        public FilterRegistrationBean companyUrlFilterRegister() {
+        public FilterRegistrationBean baseFilterRegister() {
             FilterRegistrationBean registration = new FilterRegistrationBean();
             //注入过滤器
             registration.setFilter(new BaseFilter());
@@ -25,5 +25,19 @@ public class FilterConfig {
             registration.setOrder(FilterRegistrationBean.HIGHEST_PRECEDENCE);
             return registration;
         }
+
+    @Bean
+    public FilterRegistrationBean regiterFilterRegister() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        //注入过滤器
+        registration.setFilter(new RegisterCheckFilter());
+        //拦截规则
+        registration.addUrlPatterns("/*");
+        //过滤器名称
+        registration.setName("registerCheckFilter");
+        //过滤器顺序
+        registration.setOrder(FilterRegistrationBean.LOWEST_PRECEDENCE);
+        return registration;
+    }
 
 }

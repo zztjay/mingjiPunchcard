@@ -16,7 +16,6 @@ import java.io.IOException;
 
 public class BaseFilter implements Filter {
     public static final String OPENID = "X-WX-OPENID";
-    public static final String UERID = "UER_ID";
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -24,10 +23,7 @@ public class BaseFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 
         // 设置登陆上下文
-        String userId = httpRequest.getHeader(UERID);
-        if(!StringUtils.isEmpty(userId)){
-            LoginContext.createLoginContext(httpRequest.getHeader(OPENID));
-        }
+        LoginContext.createLoginContext(httpRequest.getHeader(OPENID));
     }
 
     @Override

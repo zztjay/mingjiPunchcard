@@ -30,4 +30,12 @@ public class UserService {
             return user.getId();
         }
     }
+
+    public boolean isUserRegister(String openId){
+        User user = usersMapper.getByOpenId(openId);
+        if (user == null){
+            return false;
+        }
+        return true;
+    }
 }

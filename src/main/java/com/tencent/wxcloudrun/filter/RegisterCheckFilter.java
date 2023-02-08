@@ -33,6 +33,8 @@ public class RegisterCheckFilter implements Filter {
 
         String openId = httpRequest.getHeader(OPENID);
 
+        log.warn("RegisterCheckFilter, openId:{}",openId);
+
         // 用户未授权注册，返回用户授权注册
         if(!userService.isUserRegister(openId)){
             HttpServletResponse  httpServletResponse = (HttpServletResponse) servletResponse;

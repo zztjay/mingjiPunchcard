@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.filter;
 
 import com.tencent.wxcloudrun.common.LoginContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 
@@ -13,17 +14,20 @@ import java.io.IOException;
  * @Author：zhoutao
  * @Date：2023/1/26 11:53
  */
-
+@Slf4j
 public class BaseFilter implements Filter {
     public static final String OPENID = "X-WX-OPENID";
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
+
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 
         // 设置登陆上下文
         LoginContext.createLoginContext(httpRequest.getHeader(OPENID));
+
+        log.warn("BaseFilter, not register, openId:{}",LoginContext.getOpenId());
     }
 
     @Override

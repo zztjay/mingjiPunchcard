@@ -14,7 +14,7 @@ public class FilterConfig {
 
         @Bean
         public FilterRegistrationBean baseFilterRegister() {
-            FilterRegistrationBean registration = new FilterRegistrationBean();
+            FilterRegistrationBean<BaseFilter> registration = new FilterRegistrationBean();
             //注入过滤器
             registration.setFilter(new BaseFilter());
             //拦截规则
@@ -28,7 +28,7 @@ public class FilterConfig {
 
     @Bean
     public FilterRegistrationBean regiterFilterRegister() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
+        FilterRegistrationBean<RegisterCheckFilter> registration = new FilterRegistrationBean();
         //注入过滤器
         registration.setFilter(new RegisterCheckFilter());
         //拦截规则

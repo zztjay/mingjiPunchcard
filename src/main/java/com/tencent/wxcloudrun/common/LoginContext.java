@@ -1,6 +1,5 @@
 package com.tencent.wxcloudrun.common;
 
-import jdk.jpackage.internal.Log;
 import lombok.Data;
 
 /**

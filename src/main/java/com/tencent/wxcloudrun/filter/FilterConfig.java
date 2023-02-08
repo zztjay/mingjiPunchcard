@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.filter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @Date：2023/1/26 11:52
  */
 @Configuration
+@Slf4j
 public class FilterConfig {
 
         @Bean
@@ -23,6 +25,8 @@ public class FilterConfig {
             registration.setName("baseFilter");
             //过滤器顺序
             registration.setOrder(FilterRegistrationBean.HIGHEST_PRECEDENCE);
+
+            log.warn("baseFilterRegister init");
             return registration;
         }
 
@@ -37,6 +41,7 @@ public class FilterConfig {
         registration.setName("registerCheckFilter");
         //过滤器顺序
         registration.setOrder(FilterRegistrationBean.LOWEST_PRECEDENCE);
+        log.warn("regiterFilterRegister init");
         return registration;
     }
 

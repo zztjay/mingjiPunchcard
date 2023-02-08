@@ -21,11 +21,6 @@ public class BaseFilter implements Filter {
 
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-       log.warn("init BaseFilter");
-    }
-
-    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
 
@@ -34,7 +29,7 @@ public class BaseFilter implements Filter {
         // 设置登陆上下文
         LoginContext.createLoginContext(httpRequest.getHeader(OPENID));
 
-        log.warn("BaseFilter, not register, openId:{}",LoginContext.getOpenId());
+        filterChain.doFilter(servletRequest,servletResponse);
     }
 
     @Override

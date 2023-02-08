@@ -45,6 +45,8 @@ public class RegisterCheckFilter implements Filter {
 
             return;
         }
+
+        filterChain.doFilter(servletRequest,servletResponse);
     }
 
 }

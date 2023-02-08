@@ -6,6 +6,7 @@ import org.springframework.util.StringUtils;
 
 
 import javax.servlet.*;
+import javax.servlet.FilterConfig;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -17,6 +18,12 @@ import java.io.IOException;
 @Slf4j
 public class BaseFilter implements Filter {
     public static final String OPENID = "X-WX-OPENID";
+
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+       log.warn("init BaseFilter");
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)

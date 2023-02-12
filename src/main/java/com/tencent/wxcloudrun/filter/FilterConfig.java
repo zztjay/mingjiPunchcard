@@ -38,7 +38,7 @@ public class FilterConfig {
         //注入过滤器
         registration.setFilter(new RegisterCheckFilter());
         //拦截规则
-        registration.addUrlPatterns("/*");
+        registration.addUrlPatterns("/api/*");
         //过滤器名称
         registration.setName("registerCheckFilter");
         //过滤器顺序

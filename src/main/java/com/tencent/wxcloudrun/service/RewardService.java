@@ -55,7 +55,7 @@ public class RewardService {
      *
      * @return API response json
      */
-    ApiResponse comment(long punchCardId, // 打卡记录id
+    public ApiResponse comment(long punchCardId, // 打卡记录id
                         String rootCommentContentType, //  评论内容类型，full. 完整句，positive. 正向，inpositive.负向，iwant：我还想做什么，thoughts：感想
                         Long replyCommentId //  被回复的评论ID，评论为空 ,
                         , String content // 评论的内容
@@ -122,7 +122,7 @@ public class RewardService {
      *
      * @return API response json
      */
-    List<List<CommentDTO>> getComments(Long punchCardId) {
+    public  List<List<CommentDTO>> getComments(Long punchCardId) {
         List<List<CommentDTO>> punchCardComments = new ArrayList<>();
         List<Comment> rootComments = commentMapper.getRootComments(punchCardId);
         for (Comment rootComment : rootComments) {
@@ -153,7 +153,7 @@ public class RewardService {
      *
      * @return API response json
      */
-    ApiResponse reward(long punchCardId,
+    public   ApiResponse reward(long punchCardId,
                        int rewardType, int rewardPoint) {
 
         Reward reward = new Reward();

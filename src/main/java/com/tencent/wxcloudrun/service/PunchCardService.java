@@ -14,6 +14,7 @@ import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Member;
 import com.tencent.wxcloudrun.model.Record;
 import com.tencent.wxcloudrun.model.Reward;
+import com.tencent.wxcloudrun.util.DateUtil;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -23,10 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * 打卡业务逻辑处理
@@ -57,15 +55,12 @@ public class PunchCardService {
      *
      * @return API response json
      */
-    ApiResponse punchcard(String content
-            , long activityId, LocalDateTime punchCardTime) {
+    public ApiResponse punchcard(String content
+            , long activityId, String punchCardTime) {
         // 判断用户今天是否打卡 todo
-
-
         Activity activity = activityMapper.selectByPrimaryKey(activityId);
 
         Record record = new Record();
-        record.setCreatedAt(punchCardTime);
         record.setContent(content);
         record.setMemberOpenId(LoginContext.getOpenId());
         record.setActivityId(activityId);
@@ -76,7 +71,8 @@ public class PunchCardService {
         record.setGroupIdentifier(member.getGroupIdentifier()); // 用户分组
 
         // 补卡逻辑，检查当前打卡日期
-        if (punchCardTime.getDayOfMonth() < LocalDateTime.now().getDayOfMonth()) {
+        Date punchCardTimeDate = DateUtil.getStr2SDate(punchCardTime);
+        if (punchCardTimeDate.getDay() < LocalDateTime.now().getDayOfMonth()) {
             if (activity.getCanRepunchCard() == Activity.IS_SUPPORT_REPUNCHCRD) {
 
                 // 补卡次数判断
@@ -90,8 +86,10 @@ public class PunchCardService {
                 ApiResponse.error("NOT_SUPPORT_REPUNCHCARD", "活动不支持补卡");
             }
         }
+        // 设置打卡日期
+        record.setPunchCardTime(punchCardTime);
 
-       punchCardMapper.insert(record);
+        punchCardMapper.insert(record);
 
         return ApiResponse.ok(record.getId());
     }
@@ -101,7 +99,7 @@ public class PunchCardService {
      *
      * @return API response json
      */
-    Page<PunchCardDTO> query(PunchCardQuery query) {
+    public Page<PunchCardDTO> query(PunchCardQuery query) {
         Page<PunchCardDTO> page = new Page<>();
         int count = punchCardMapper.count(query);
         if (count > 0) {
@@ -121,7 +119,7 @@ public class PunchCardService {
      *
      * @return API response json
      */
-    PunchCardDTO getPunchCardRecord(long recordId) {
+    public PunchCardDTO getPunchCardRecord(long recordId) {
         Record record = punchCardMapper.selectByPrimaryKey(recordId);
         if (!record.getMemberOpenId().equals(LoginContext.getOpenId())) {
             ApiResponse.error("OPEN_ID_NOT_MATCH", "您没有权限");

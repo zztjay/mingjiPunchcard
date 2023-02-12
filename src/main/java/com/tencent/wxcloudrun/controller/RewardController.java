@@ -5,38 +5,46 @@ import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.CommentDTO;
 import com.tencent.wxcloudrun.dto.CommentQuery;
+import com.tencent.wxcloudrun.dto.CommentRequest;
 import com.tencent.wxcloudrun.dto.PunchCardDTO;
+import com.tencent.wxcloudrun.service.RewardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * 活动打卡页面控制器
+ *
  * @Author：zhoutao
  * @Date：2023/1/17 16:37
  */
 @RestController
 @Slf4j
 public class RewardController {
+    @Resource
+    RewardService rewardService;
 
 
     /**
      * 活动打卡评论服务
+     *
      * @return API response json
      */
-    @GetMapping(value = "/api/comment")
-    ApiResponse comment(@RequestParam long punchCardId, // 打卡记录id
-                        @RequestParam int rootCommentContentType, //  评论内容类型，full. 完整句，positive. 正向，inpositive.负向，iwant：我还想做什么，thoughts：感想
-                        @RequestParam long replyCommentId //  被回复的评论ID，评论为空
-                        ) {
-        return ApiResponse.ok();
+    @PostMapping(value = "/api/comment")
+    ApiResponse comment(@RequestBody CommentRequest commentRequest) {
+        return rewardService.comment(commentRequest.getPunchCardId()
+                , commentRequest.getRootCommentContentType()
+                , commentRequest.getReplyCommentId()
+                , commentRequest.getContent());
     }
 
     /**
      * 活动打卡评论查询服务，包含被评论的内容
+     *
      * @return API response json
      */
     @GetMapping(value = "/api/comment/query")
@@ -49,12 +57,13 @@ public class RewardController {
 
     /**
      * 活动打卡评分服务
+     *
      * @return API response json
      */
     @GetMapping(value = "/api/reward")
     ApiResponse reward(@RequestParam long punchCardId,
-                       @RequestParam int rewardType,@RequestParam int rewardPoint) {
-        return ApiResponse.ok();
+                       @RequestParam int rewardType, @RequestParam int rewardPoint) {
+        return rewardService.reward(punchCardId, rewardType, rewardPoint);
     }
 
 }

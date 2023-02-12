@@ -55,7 +55,7 @@ public class ActivityController {
     }
 
     /**
-     * 获得活动列表
+     * 获得管理员活动列表
      *
      * @return API response json
      */

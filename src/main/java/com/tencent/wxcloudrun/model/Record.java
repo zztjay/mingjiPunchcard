@@ -33,6 +33,7 @@ public class Record {
     private String groupIdentifier; // 所属分组
     private Integer isRepunchCard = 0; // 是否为补卡
     private String content; //打卡内容，使用json结构存储
+    private String punchCardTime; // 打卡日期
     //{
         // ● type; //内部还是外部客户，1:内部，2:外部
         // ● positive：正向

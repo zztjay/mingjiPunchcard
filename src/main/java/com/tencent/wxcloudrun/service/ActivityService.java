@@ -67,6 +67,7 @@ public class ActivityService {
      * @return API response json
      */
     public Page<Activity> query(ActivityQuery query) {
+        // todo 增加超级管理员逻辑
         User user =  usersMapper.getByOpenId(LoginContext.getOpenId());
         query.setTeamCode(user.getTeamCode());
 

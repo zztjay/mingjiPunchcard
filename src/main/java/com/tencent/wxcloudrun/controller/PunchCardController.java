@@ -6,14 +6,18 @@ import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.CommentDTO;
 import com.tencent.wxcloudrun.dto.PunchCardDTO;
 import com.tencent.wxcloudrun.dto.PunchCardQuery;
+import com.tencent.wxcloudrun.dto.PunchCardRequest;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Comment;
 import com.tencent.wxcloudrun.model.Record;
+import com.tencent.wxcloudrun.service.PunchCardService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,14 +31,17 @@ import java.util.List;
 @Slf4j
 public class PunchCardController {
 
+    @Resource
+    PunchCardService punchCardService;
+
     /**
      * 活动打卡服务
      * @return API response json
      */
-    @GetMapping(value = "/api/punchcard")
-    ApiResponse punchcard(@RequestParam String content
-            , @RequestParam long activityId, @RequestParam String punchCardTime) {
-        return ApiResponse.ok();
+    @PostMapping(value = "/api/punchcard")
+    ApiResponse punchcard(@RequestBody PunchCardRequest punchCardRequest) {
+       return punchCardService.punchcard(punchCardRequest.getContent()
+               ,punchCardRequest.getActivityId(),punchCardRequest.getPunchCardTime());
     }
 
     /**
@@ -43,9 +50,7 @@ public class PunchCardController {
      */
     @GetMapping(value = "/api/punchcard/query")
     ApiResponse query(PunchCardQuery query) {
-        PunchCardDTO punchCardDTO = JMockData.mock(PunchCardDTO.class);
-        Page<PunchCardDTO> records = new Page<>();
-        records.setEntityList(Arrays.asList(punchCardDTO));
+        Page<PunchCardDTO> records = punchCardService.query(query);
         return ApiResponse.ok(records);
     }
 

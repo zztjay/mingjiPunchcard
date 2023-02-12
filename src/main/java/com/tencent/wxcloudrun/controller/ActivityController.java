@@ -81,7 +81,7 @@ public class ActivityController {
      *
      * @return API response json
      */
-    @PostMapping(value = "/api/activity/join")
+    @GetMapping(value = "/api/activity/join")
     ApiResponse join(@RequestParam long activityId
             , @RequestParam String userName) {
         return activityService.join(activityId, userName);

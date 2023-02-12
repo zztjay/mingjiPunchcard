@@ -50,7 +50,7 @@ public class ActivityService {
     public Long save(Activity activity) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(
                 activity.getActivityName()) && null != activity.getActivityStartTime()
-                && null != activity.getActivityEndTime() && StringUtils.isNotEmpty(activity.getCoachs())
+                && null != activity.getActivityEndTime()
                 && StringUtils.isNotEmpty(activity.getMembers()));
         if (activity.getId() != null && activity.getId() > 0L) {
             activityMapper.updateByPrimaryKey(activity);

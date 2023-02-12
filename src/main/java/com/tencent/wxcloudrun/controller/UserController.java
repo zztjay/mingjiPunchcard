@@ -37,7 +37,7 @@ public class UserController {
      * 注册用户信息
      * @return API response json
      */
-    @PostMapping(value = "/api/user/register")
+    @PostMapping(value = "/user/register")
     ApiResponse register(HttpServletRequest servletRequest, @RequestBody UserRequest request) {
         String token = JMockData.mock(String.class);
         log.warn("request is {} ", request);

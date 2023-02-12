@@ -59,5 +59,5 @@ public class Activity implements Serializable {
     private String  ext;// 扩展字段
 
     @Transient
-    private Map<String, List<String>> groupMembers;
+    private Map<String, List<String>> groupMembers; // 分组名单
 }

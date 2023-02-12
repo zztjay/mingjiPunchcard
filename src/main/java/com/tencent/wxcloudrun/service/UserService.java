@@ -19,6 +19,10 @@ public class UserService {
     @Resource
     UsersMapper usersMapper;
 
+    public User getUser(String openId){
+        return usersMapper.getByOpenId(openId);
+    }
+
     public Long save(User user) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(user.getMemberOpenId())
             && StringUtils.isNotEmpty(user.getMemberNick()) );

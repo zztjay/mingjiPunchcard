@@ -39,19 +39,16 @@ public class UserController {
      */
     @PostMapping(value = "/user/register")
     ApiResponse register(HttpServletRequest servletRequest, @RequestBody UserRequest request) {
-        String token = JMockData.mock(String.class);
-        log.warn("request is {} ", request);
 
-//        User user = new User();
-//        user.setMemberOpenId(LoginContext.getOpenId());
-//        user.setMemberNick(request.getNick());
-//        user.setAvator(request.getAvator());
-//        user.setPhoneNumber(request.getPhoneNum());
-//        user.setMemberName(request.getUserName());
+        User user = new User();
+        user.setMemberOpenId(LoginContext.getOpenId());
+        user.setMemberNick(request.getNick());
+        user.setAvator(request.getAvator());
+        user.setPhoneNumber(request.getPhoneNum());
+        user.setMemberName(request.getUserName());
+        userService.save(user);
 
-//        userService.save(user);
-
-        return ApiResponse.ok(token);
+        return ApiResponse.ok();
     }
 
     /**
@@ -60,18 +57,13 @@ public class UserController {
      */
     @GetMapping(value = "/api/user/get")
     ApiResponse get(HttpServletRequest servletRequest) {
-        UserDTO user  = JMockData.mock(UserDTO.class);
-        log.warn("request is {} ", user);
-
-//        User user = new User();
-//        user.setMemberOpenId(LoginContext.getOpenId());
-//        user.setMemberNick(request.getNick());
-//        user.setAvator(request.getAvator());
-//        user.setPhoneNumber(request.getPhoneNum());
-//        user.setMemberName(request.getUserName());
-
-//        userService.save(user);
-
+        User user = userService.getUser(LoginContext.getOpenId());
+        UserDTO userDTO = new UserDTO();
+        userDTO.setPhoneNumber(user.getPhoneNumber());
+        userDTO.setAvator(user.getAvator());
+        userDTO.setMemberName(user.getMemberName());
+        userDTO.setManagerType(1); // todo
+        userDTO.setUserType(1); //  todo
         return ApiResponse.ok(user);
     }
 

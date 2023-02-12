@@ -10,8 +10,10 @@ import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Comment;
 import com.tencent.wxcloudrun.model.Record;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,9 +31,9 @@ public class PunchCardController {
      * 活动打卡服务
      * @return API response json
      */
-    @PostMapping(value = "/api/punchcard")
+    @GetMapping(value = "/api/punchcard")
     ApiResponse punchcard(@RequestParam String content
-            , @RequestParam long activityId, String punchCardTime) {
+            , @RequestParam long activityId, @RequestParam String punchCardTime) {
         return ApiResponse.ok();
     }
 

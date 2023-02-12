@@ -4,6 +4,7 @@ import com.github.jsonzou.jmockdata.JMockData;
 import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.CounterRequest;
+import com.tencent.wxcloudrun.dto.UserDTO;
 import com.tencent.wxcloudrun.dto.UserRequest;
 import com.tencent.wxcloudrun.model.Counter;
 import com.tencent.wxcloudrun.model.User;
@@ -51,6 +52,27 @@ public class UserController {
 //        userService.save(user);
 
         return ApiResponse.ok(token);
+    }
+
+    /**
+     * 注册用户信息
+     * @return API response json
+     */
+    @PostMapping(value = "/api/user/get")
+    ApiResponse get(HttpServletRequest servletRequest) {
+        UserDTO user  = JMockData.mock(UserDTO.class);
+        log.warn("request is {} ", user);
+
+//        User user = new User();
+//        user.setMemberOpenId(LoginContext.getOpenId());
+//        user.setMemberNick(request.getNick());
+//        user.setAvator(request.getAvator());
+//        user.setPhoneNumber(request.getPhoneNum());
+//        user.setMemberName(request.getUserName());
+
+//        userService.save(user);
+
+        return ApiResponse.ok(user);
     }
 
     public static void main(String[] args) {

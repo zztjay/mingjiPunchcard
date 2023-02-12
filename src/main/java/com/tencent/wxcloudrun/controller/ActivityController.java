@@ -88,7 +88,6 @@ public class ActivityController {
 
     }
 
-
     public static void main(String[] args) {
         String a = "2023-02-12 00:00:00";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

@@ -71,7 +71,7 @@ public class PunchCardService {
         record.setGroupIdentifier(member.getGroupIdentifier()); // 用户分组
 
         // 补卡逻辑，检查当前打卡日期
-        Date punchCardTimeDate = DateUtil.getStr2SDate(punchCardTime);
+        Date punchCardTimeDate = DateUtil.getymdStr2SDate(punchCardTime);
         if (punchCardTimeDate.getDay() < LocalDateTime.now().getDayOfMonth()) {
             if (activity.getCanRepunchCard() == Activity.IS_SUPPORT_REPUNCHCRD) {
 

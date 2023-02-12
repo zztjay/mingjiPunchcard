@@ -114,6 +114,7 @@ public class ActivityService {
                 groupMembers.get(groupIdentifier).add(memberName);
             } else {
                 groupMembers.put(groupIdentifier, new ArrayList<>());
+                groupMembers.get(groupIdentifier).add(memberName);
             }
         }
         return groupMembers;

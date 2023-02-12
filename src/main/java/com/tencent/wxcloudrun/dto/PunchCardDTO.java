@@ -18,5 +18,6 @@ public class PunchCardDTO implements Serializable {
     private int level;// 评级分数, 0:暂不标记 -1：不符合要求， >0：评级分数
     private boolean isBest = false; // 优选
     private String punchCardTime; //  打卡时间
+    private String userName; // 用户名称
     private List<List<CommentDTO>> comments; // 评论列表
 }

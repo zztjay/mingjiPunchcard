@@ -12,6 +12,7 @@ import com.tencent.wxcloudrun.dto.CommentDTO;
 import com.tencent.wxcloudrun.dto.CommentQuery;
 import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.model.Record;
+import com.tencent.wxcloudrun.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,6 +51,9 @@ public class RewardService {
     @Resource
     CommentMapper commentMapper;
 
+    @Resource
+    UsersMapper usersMapper;
+
     /**
      * 活动打卡评论服务
      *
@@ -65,6 +69,8 @@ public class RewardService {
         Member commentMember = membersMapper.selectByOpenId(LoginContext.getOpenId(), record.getActivityId());
         Activity activity = activityMapper.selectByPrimaryKey(record.getActivityId());
 
+        User user = usersMapper.getByOpenId(LoginContext.getOpenId());
+        comment.setAvatar(user.getAvator());
         comment.setPunchCardId(punchCardId);
         comment.setCommentUserId(LoginContext.getOpenId());
         comment.setCommentUserName(commentMember.getMemberName());
@@ -76,7 +82,7 @@ public class RewardService {
         comment.setContent(content);
 
         // 对内容的评论
-        if (!StringUtil.isEmpty(rootCommentContentType) && null == replyCommentId) {
+        if (!StringUtil.isEmpty(rootCommentContentType) && (null == replyCommentId || replyCommentId <=0)) {
             comment.setRootCommentContentType(rootCommentContentType);
             Member receiveMember = membersMapper.selectByOpenId(record.getMemberOpenId(), record.getActivityId());
             comment.setReceiveUserId(receiveMember.getMemberOpenId());
@@ -94,7 +100,7 @@ public class RewardService {
             comment.setType(Comment.COMMENT_TYPE_COMMENT);
         }
         // 对评论的回复
-        else if (StringUtil.isEmpty(rootCommentContentType)  && (null != replyCommentId || replyCommentId <=0)) {
+        else if (StringUtil.isEmpty(rootCommentContentType)  && null != replyCommentId ) {
             Comment replyComment = commentMapper.selectByPrimaryKey(replyCommentId);
             comment.setRootCommentId(replyComment.getRootCommentId());
             comment.setReplyCommentId(replyCommentId); // 被评论的id
@@ -134,6 +140,8 @@ public class RewardService {
                 commentDTO.setContent(comment.getContent());
                 commentDTO.setId(comment.getId());
                 commentDTO.setReceiveUserName(comment.getReceiveUserName());
+                commentDTO.setAvatar(comment.getAvatar());
+//                commentDTO.setCreateAt(DateUtil.getDate2Str(comment.getCreatedAt().da));
                 commentDTO.setPunchCardId(punchCardId);
                 commentDTO.setRootCommentId(comment.getRootCommentId());
                 commentDTO.setRootCommentContentType(comment.getRootCommentContentType());

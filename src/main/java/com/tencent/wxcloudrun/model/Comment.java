@@ -27,6 +27,8 @@ public class Comment {
     private Long id; // 唯一id
     private LocalDateTime createdAt;// 创建时间
     private LocalDateTime updatedAt;// 修改时间
+
+    private String avatar; // 头像
     private Long punchCardId; // 打卡记录id
     private Long rootCommentId; //  回复的根评论ID，第一次为空
     private String rootCommentContentType; //  评论内容类型，full. 完整句，positive. 正向，inpositive.负向，iwant：我还想做什么，thoughts：感想

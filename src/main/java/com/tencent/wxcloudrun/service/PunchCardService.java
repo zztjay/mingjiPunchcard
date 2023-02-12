@@ -10,10 +10,8 @@ import com.tencent.wxcloudrun.dao.PunchCardMapper;
 import com.tencent.wxcloudrun.dao.RewardMapper;
 import com.tencent.wxcloudrun.dto.PunchCardDTO;
 import com.tencent.wxcloudrun.dto.PunchCardQuery;
-import com.tencent.wxcloudrun.model.Activity;
-import com.tencent.wxcloudrun.model.Member;
+import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.model.Record;
-import com.tencent.wxcloudrun.model.Reward;
 import com.tencent.wxcloudrun.util.DateUtil;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
@@ -37,6 +35,9 @@ public class PunchCardService {
 
     @Resource
     PunchCardMapper punchCardMapper;
+
+    @Resource
+    UserService userService;
 
     @Resource
     RewardService rewardService;
@@ -128,6 +129,9 @@ public class PunchCardService {
         PunchCardDTO punchCardDTO = new PunchCardDTO();
         punchCardDTO.setPunchCardTime(record.getPunchCardTime());
         punchCardDTO.setContent(record.getContent());
+        Member member = membersMapper.selectByOpenId(record.getMemberOpenId(),
+                record.getActivityId());
+        punchCardDTO.setUserName(member.getMemberName());
 
         List<Reward> bestRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_BEST);
         if (!CollectionUtils.isEmpty(bestRecords)) {

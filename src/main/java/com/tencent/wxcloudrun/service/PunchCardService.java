@@ -126,6 +126,7 @@ public class PunchCardService {
         }
 
         PunchCardDTO punchCardDTO = new PunchCardDTO();
+        punchCardDTO.setPunchCardTime(record.getPunchCardTime());
         punchCardDTO.setContent(record.getContent());
 
         List<Reward> bestRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_BEST);

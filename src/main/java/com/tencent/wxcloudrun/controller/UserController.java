@@ -64,7 +64,7 @@ public class UserController {
         userDTO.setMemberName(user.getMemberName());
         userDTO.setManagerType(1); // todo
         userDTO.setUserType(1); //  todo
-        return ApiResponse.ok(user);
+        return ApiResponse.ok(userDTO);
     }
 
     public static void main(String[] args) {

@@ -58,7 +58,7 @@ public class UserController {
      * 注册用户信息
      * @return API response json
      */
-    @PostMapping(value = "/api/user/get")
+    @GetMapping(value = "/api/user/get")
     ApiResponse get(HttpServletRequest servletRequest) {
         UserDTO user  = JMockData.mock(UserDTO.class);
         log.warn("request is {} ", user);

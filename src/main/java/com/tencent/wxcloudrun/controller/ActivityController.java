@@ -9,6 +9,7 @@ import com.tencent.wxcloudrun.dto.PunchCardDTO;
 import com.tencent.wxcloudrun.dto.UserRequest;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Record;
+import com.tencent.wxcloudrun.service.ActivityService;
 import com.tencent.wxcloudrun.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -21,51 +22,59 @@ import java.util.List;
 
 /**
  * 活动的页面控制器
+ *
  * @Author：zhoutao
  * @Date：2023/1/17 16:37
  */
 @RestController
 @Slf4j
 public class ActivityController {
+    @Resource
+    ActivityService activityService;
 
     /**
      * 生成活动信息
+     *
      * @return API response json
      */
     @PostMapping(value = "/api/activity/save")
     ApiResponse save(@RequestBody Activity activity) {
-       return ApiResponse.ok();
+        activityService.save(activity);
+        return ApiResponse.ok();
     }
 
     /**
      * 获得活动列表
+     *
      * @return API response json
      */
     @GetMapping(value = "/api/activity/query")
     ApiResponse query(HttpServletRequest request, ActivityQuery query) {
-        Activity activity = JMockData.mock(Activity.class);
-        Page<Activity> activitys = new Page<>();
-        activitys.setEntityList(Arrays.asList(activity));
+        Page<Activity> activitys = activityService.query(query);
         return ApiResponse.ok(activitys);
     }
+
     /**
      * 获得活动信息
+     *
      * @return API response json
      */
     @GetMapping(value = "/api/activity/get")
     ApiResponse get(@RequestParam long activityId) {
-        Activity activity = JMockData.mock(Activity.class);
+        Activity activity = activityService.getById(activityId);
         return ApiResponse.ok(activity);
     }
 
     /**
      * 报名活动
+     *
      * @return API response json
      */
     @PostMapping(value = "/api/activity/join")
-    ApiResponse join(@RequestParam String activityId
+    ApiResponse join(@RequestParam Long activityId
             , @RequestParam String userName) {
-        return ApiResponse.ok();
+        return activityService.join(activityId, userName);
+
     }
 
 

@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.model;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import tk.mybatis.mapper.annotation.NameStyle;
@@ -8,6 +9,8 @@ import tk.mybatis.mapper.code.Style;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 团队活动表
@@ -54,4 +57,7 @@ public class Activity implements Serializable {
         //  limit：积分上限
         //}]
     private String  ext;// 扩展字段
+
+    @Transient
+    private Map<String, List<String>> groupMembers;
 }

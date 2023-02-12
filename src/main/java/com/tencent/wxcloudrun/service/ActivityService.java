@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.jsonzou.jmockdata.JMockData;
 import com.github.jsonzou.jmockdata.util.StringUtils;
 import com.google.common.base.Preconditions;
@@ -15,6 +16,7 @@ import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Member;
 import com.tencent.wxcloudrun.model.User;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,9 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -86,9 +86,37 @@ public class ActivityService {
      */
     public Activity getById(long activityId) {
         Preconditions.checkArgument(activityId >= 0);
-        return activityMapper.selectByPrimaryKey(activityId);
+        Activity activity = activityMapper.selectByPrimaryKey(activityId);
+        // 提交分组信息
+        if(StringUtils.isNotEmpty(activity.getMembers())) {
+            activity.setGroupMembers(getGroupMembers(activity.getMembers()));
+        }
+        return activity;
     }
 
+    private Map<String,List<String>>  getGroupMembers(String members){
+        Map<String,List<String>> groupMembers = new HashMap<>();
+        String memberInfos[] = members.split("\\r?\\n");
+        if(memberInfos.length == 0){
+            return groupMembers;
+        }
+        for (String memberInfo : memberInfos) {
+            String[] result = memberInfo.split(",");
+            if (result.length != 4) {
+                return groupMembers;
+            }
+            String memberName = result[0]; // 用户名称
+            String groupIdentifier = result[3]; // 所属分组
+
+            // 格式化数据
+            if(groupMembers.containsKey(groupIdentifier)){
+                groupMembers.get(groupIdentifier).add(memberName);
+            } else {
+                groupMembers.put(groupIdentifier, new ArrayList<>());
+            }
+        }
+        return groupMembers;
+    }
     /**
      * 报名活动
      *

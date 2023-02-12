@@ -163,7 +163,7 @@ public class RewardService {
      */
     public   ApiResponse reward(long punchCardId,
                        int rewardType, int rewardPoint) {
-
+        // todo 积分计算逻辑
         Reward reward = new Reward();
         reward.setRewardPoint(rewardPoint);
         reward.setRewardType(rewardType);

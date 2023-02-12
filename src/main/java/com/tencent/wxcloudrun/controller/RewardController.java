@@ -43,7 +43,7 @@ public class RewardController {
     }
 
     /**
-     * 活动打卡评论查询服务，包含被评论的内容
+     * 活动打卡评论查询服务，包含被评论的内容，也就是消息接口
      *
      * @return API response json
      */

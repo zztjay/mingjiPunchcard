@@ -10,5 +10,7 @@ import lombok.Data;
  */
 @Data
 public class PunchCardQuery extends QueryBase {
+    private Long activityId; //活动id
+    private String punchCardTime; // 打卡日期
 
 }

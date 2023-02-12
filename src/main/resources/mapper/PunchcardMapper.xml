@@ -17,6 +17,12 @@
         *
         FROM Records
         WHERE 1 = 1
+        <if test="activityId != null ">
+            and activityId = #{activityId}
+        </if>
+        <if test="punchCardTime != null ">
+            and punchCardTime = #{punchCardTime}
+        </if>
         order by createdAt desc
         <if test="startRow != null and pageSize != null">
             LIMIT #{startRow}, #{pageSize}
@@ -31,5 +37,11 @@
         SELECT count(*)
         FROM Records
         WHERE 1 = 1
+        <if test="activityId != null ">
+            and activityId = #{activityId}
+        </if>
+        <if test="punchCardTime != null ">
+            and punchCardTime = #{punchCardTime}
+        </if>
     </select>
 </mapper>

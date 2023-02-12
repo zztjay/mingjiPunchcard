@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import tk.mybatis.mapper.annotation.NameStyle;
 import tk.mybatis.mapper.code.Style;
@@ -31,7 +32,9 @@ public class Activity implements Serializable {
     private String  activityName; // 活动名称
     private String  activityDesc;// 活动描述
     private String  activityPic;// 活动图片
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime activityStartTime;// 开始生效时间
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime activityEndTime;// 结束生效时间
     private Integer punchCardType;// 打卡类型，1：“整体文本法” 2.“标准造句法”
     private Integer punchCardFrequecy;// 打卡频次，1：“每天1次”，2. “每周6天”，3. “每周5天”

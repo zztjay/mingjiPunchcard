@@ -94,7 +94,7 @@ public class RewardService {
             comment.setType(Comment.COMMENT_TYPE_COMMENT);
         }
         // 对评论的回复
-        else if (StringUtil.isEmpty(rootCommentContentType)  && null != replyCommentId) {
+        else if (StringUtil.isEmpty(rootCommentContentType)  && (null != replyCommentId || replyCommentId <=0)) {
             Comment replyComment = commentMapper.selectByPrimaryKey(replyCommentId);
             comment.setRootCommentId(replyComment.getRootCommentId());
             comment.setReplyCommentId(replyCommentId); // 被评论的id
@@ -108,7 +108,7 @@ public class RewardService {
 
         // 针对内容的评论，要写入rootCommentId
          commentMapper.insert(comment);
-        if (!StringUtil.isEmpty(rootCommentContentType) && null == replyCommentId) {
+        if (!StringUtil.isEmpty(rootCommentContentType) && (null == replyCommentId || replyCommentId <= 0)) {
             comment.setRootCommentId(comment.getId());
             comment.setId(comment.getId());
             commentMapper.updateByPrimaryKey(comment);

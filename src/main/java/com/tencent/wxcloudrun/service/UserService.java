@@ -24,8 +24,7 @@ public class UserService {
     }
 
     public Long save(User user) {
-        Preconditions.checkArgument(StringUtils.isNotEmpty(user.getMemberOpenId())
-            && StringUtils.isNotEmpty(user.getMemberNick()) );
+        Preconditions.checkArgument(StringUtils.isNotEmpty(user.getMemberOpenId()) );
         if(user.getId() != null && user.getId() > 0L){
              usersMapper.updateByPrimaryKey(user);
              return user.getId();

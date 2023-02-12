@@ -42,7 +42,10 @@ public class RegisterCheckFilter implements Filter {
             HttpServletResponse  httpServletResponse = (HttpServletResponse) servletResponse;
             ApiResponse response =  ApiResponse.error("USER_NOT_REGISTER", "用户未注册");
             httpServletResponse.getWriter().print(JSON.toJSONString(response));
+
             log.warn("RegisterCheckFilter, not register, openId:{}",openId);
+
+            return;
         }
 
         filterChain.doFilter(servletRequest,servletResponse);

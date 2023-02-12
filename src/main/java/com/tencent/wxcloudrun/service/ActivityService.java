@@ -44,6 +44,9 @@ public class ActivityService {
     @Resource
     UsersMapper usersMapper;
 
+    @Resource
+    UserService userService;
+
     public Long save(Activity activity) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(
                 activity.getActivityName()) && null != activity.getActivityStartTime()
@@ -124,6 +127,13 @@ public class ActivityService {
                 member.setPositionName(positionName);
                 member.setGroupIdentifier(groupIdentifier);
                 membersMapper.insert(member);
+
+                // 更新用户的名称
+                User user = usersMapper.getByOpenId(LoginContext.getOpenId());
+                if(user!=null && StringUtils.isEmpty(user.getMemberName())){
+                    user.setMemberName(memberName);
+                    userService.save(user);
+                }
 
                 break;
             }

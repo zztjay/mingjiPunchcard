@@ -140,6 +140,7 @@ public class RewardService {
                 commentDTO.setContent(comment.getContent());
                 commentDTO.setId(comment.getId());
                 commentDTO.setReceiveUserName(comment.getReceiveUserName());
+                commentDTO.setCommentUserName(comment.getCommentUserName());
                 commentDTO.setAvatar(comment.getAvatar());
 //                commentDTO.setCreateAt(DateUtil.getDate2Str(comment.getCreatedAt().da));
                 commentDTO.setPunchCardId(punchCardId);

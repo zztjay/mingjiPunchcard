@@ -60,7 +60,7 @@ public class PunchCardController {
      */
     @GetMapping(value = "/api/punchcard/get")
     ApiResponse get(@RequestParam long recordId) {
-        PunchCardDTO record = JMockData.mock(PunchCardDTO.class);
+        PunchCardDTO record = punchCardService.getPunchCardRecord(recordId);
         return ApiResponse.ok(record);
     }
 

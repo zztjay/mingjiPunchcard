@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 /**
  * 团队成员业务器
+ *
  * @Author：zhoutao
  * @Date：2023/1/17 16:38
  */
@@ -19,24 +20,26 @@ public class UserService {
     @Resource
     UsersMapper usersMapper;
 
-    public User getUser(String openId){
+    public User getUser(String openId) {
         return usersMapper.getByOpenId(openId);
     }
 
     public Long save(User user) {
-        Preconditions.checkArgument(StringUtils.isNotEmpty(user.getMemberOpenId()) );
-        if(user.getId() != null && user.getId() > 0L){
-             usersMapper.updateByPrimaryKey(user);
-             return user.getId();
+        Preconditions.checkArgument(StringUtils.isNotEmpty(user.getMemberOpenId()));
+        User userDB = getUser(user.getMemberOpenId());
+        if (userDB != null) {
+            user.setId(userDB.getId());
+            usersMapper.updateByPrimaryKey(user);
+            return user.getId();
         } else {
             usersMapper.insert(user);
             return user.getId();
         }
     }
 
-    public boolean isUserRegister(String openId){
+    public boolean isUserRegister(String openId) {
         User user = usersMapper.getByOpenId(openId);
-        if (user == null){
+        if (user == null) {
             return false;
         }
         return true;

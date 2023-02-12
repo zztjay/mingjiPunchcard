@@ -6,6 +6,7 @@
         SELECT *
         FROM Users
         WHERE memberOpenId = #{openId}
+        limit 1
     </select>
 
 </mapper>

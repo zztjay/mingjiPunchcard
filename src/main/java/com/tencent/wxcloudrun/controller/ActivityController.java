@@ -50,8 +50,8 @@ public class ActivityController {
         JSONArray coaches = new JSONArray();
         coaches.add(coach);
         activity.setCoachs(coaches.toJSONString());
-        activityService.save(activity);
-        return ApiResponse.ok();
+       Long id=  activityService.save(activity);
+        return ApiResponse.ok(id);
     }
 
     /**

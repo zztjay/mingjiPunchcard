@@ -12,5 +12,6 @@ import lombok.Data;
 public class PunchCardQuery extends QueryBase {
     private Long activityId; //活动id
     private String punchCardTime; // 打卡日期
+    private String openId; // 用户的openId
 
 }

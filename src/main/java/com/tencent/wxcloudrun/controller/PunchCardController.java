@@ -46,7 +46,7 @@ public class PunchCardController {
      */
     @PostMapping(value = "/api/punchcard")
     ApiResponse punchcard(@RequestBody PunchCardRequest punchCardRequest) {
-       return punchCardService.punchcard(punchCardRequest.getContent()
+       return punchCardService.punchcard(punchCardRequest.getId(),punchCardRequest.getContent()
                ,punchCardRequest.getActivityId(),punchCardRequest.getPunchCardTime());
     }
 

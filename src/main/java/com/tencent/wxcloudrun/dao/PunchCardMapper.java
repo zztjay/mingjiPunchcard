@@ -12,7 +12,8 @@ import java.util.List;
 
 @Repository
 public interface PunchCardMapper extends Mapper<Record> {
-    public int getRepunchCount(@Param("activityId")long activityId, @Param("openId") String openId); // 获取用户补卡次数
+    public int getRepunchCount(@Param("activityId")long activityId,
+                               @Param("openId") String openId); // 获取用户补卡次数
 
     List<Record> query(PunchCardQuery query);
 

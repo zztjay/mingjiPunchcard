@@ -56,43 +56,61 @@ public class PunchCardService {
      *
      * @return API response json
      */
-    public ApiResponse punchcard(String content
+    public ApiResponse punchcard(Long id, String content
             , long activityId, String punchCardTime) {
-        // 判断用户今天是否打卡 todo
-        Activity activity = activityMapper.selectByPrimaryKey(activityId);
 
-        Record record = new Record();
-        record.setContent(content);
-        record.setMemberOpenId(LoginContext.getOpenId());
-        record.setActivityId(activityId);
-        record.setTeamCode(activity.getTeamCode());
-
-        Member member = membersMapper.selectByOpenId(LoginContext.getOpenId()
-                , activityId);
-        record.setGroupIdentifier(member.getGroupIdentifier()); // 用户分组
-
-        // 补卡逻辑，检查当前打卡日期
-        Date punchCardTimeDate = DateUtil.getymdStr2SDate(punchCardTime);
-        if (punchCardTimeDate.getDay() < LocalDateTime.now().getDayOfMonth()) {
-            if (activity.getCanRepunchCard() == Activity.IS_SUPPORT_REPUNCHCRD) {
-
-                // 补卡次数判断
-                if (activity.getRepunchCardDays() < punchCardMapper.getRepunchCount(activityId, LoginContext.getOpenId())) {
-                    record.setIsRepunchCard(Record.IS_REPUNCHCRD);
-                } else {
-                    ApiResponse.error("REACH_REPUNCHCARD_LIMIT", "达到补卡上限");
-                }
-
-            } else {
-                ApiResponse.error("NOT_SUPPORT_REPUNCHCARD", "活动不支持补卡");
+        // 新提交打卡的校验
+        if(id == null) {
+            // 判断用户在某一天是否打过卡
+            PunchCardQuery query = new PunchCardQuery();
+            query.setPunchCardTime(punchCardTime);
+            query.setActivityId(activityId);
+            query.setOpenId(LoginContext.getOpenId());
+            if (punchCardMapper.count(query) > 0) {
+                return ApiResponse.error("USER_ALREAD_PUNCH_CARD", "您已经打过卡，请勿重复打卡");
             }
+
+            Activity activity = activityMapper.selectByPrimaryKey(activityId);
+
+            Record record = new Record();
+            record.setId(id);
+            record.setContent(content);
+            record.setMemberOpenId(LoginContext.getOpenId());
+            record.setActivityId(activityId);
+            record.setTeamCode(activity.getTeamCode());
+
+            Member member = membersMapper.selectByOpenId(LoginContext.getOpenId()
+                    , activityId);
+            record.setGroupIdentifier(member.getGroupIdentifier()); // 用户分组
+
+            // 补卡逻辑，检查当前打卡日期
+            Date punchCardTimeDate = DateUtil.getymdStr2SDate(punchCardTime);
+            if (punchCardTimeDate.getDay() < LocalDateTime.now().getDayOfMonth()) {
+                if (activity.getCanRepunchCard() == Activity.IS_SUPPORT_REPUNCHCRD) {
+
+                    // 补卡次数判断
+                    if (activity.getRepunchCardDays() < punchCardMapper.getRepunchCount(activityId, LoginContext.getOpenId())) {
+                        record.setIsRepunchCard(Record.IS_REPUNCHCRD);
+                    } else {
+                        ApiResponse.error("REACH_REPUNCHCARD_LIMIT", "达到补卡上限");
+                    }
+
+                } else {
+                    ApiResponse.error("NOT_SUPPORT_REPUNCHCARD", "活动不支持补卡");
+                }
+            }
+            // 设置打卡日期
+            record.setPunchCardTime(punchCardTime);
+            punchCardMapper.insert(record);
+            return ApiResponse.ok(record.getId());
         }
-        // 设置打卡日期
-        record.setPunchCardTime(punchCardTime);
-
-        punchCardMapper.insert(record);
-
-        return ApiResponse.ok(record.getId());
+        // 更新打卡记录
+        else {
+            Record record = punchCardMapper.selectByPrimaryKey(id);
+            record.setContent(content);
+            punchCardMapper.updateByPrimaryKey(record);
+            return ApiResponse.ok(record.getId());
+        }
     }
 
     /**

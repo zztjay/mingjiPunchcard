@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
  */
 @Data
 public class PunchCardRequest {
+    private Long id;
     private String content;
     private long activityId;
     private String punchCardTime;

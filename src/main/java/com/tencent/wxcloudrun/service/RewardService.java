@@ -102,6 +102,12 @@ public class RewardService {
         // 对评论的回复
         else if (StringUtil.isEmpty(rootCommentContentType)  && null != replyCommentId ) {
             Comment replyComment = commentMapper.selectByPrimaryKey(replyCommentId);
+
+            // 检查是否自己回复自己
+            if(replyComment.getCommentUserId().equals(LoginContext.getOpenId())){
+                return ApiResponse.error("USER_CANT_REPLY_SELF","用户不能自己回复自己");
+            }
+
             comment.setRootCommentId(replyComment.getRootCommentId());
             comment.setReplyCommentId(replyCommentId); // 被评论的id
             comment.setReceiveUserId(replyComment.getCommentUserId()); // 被评论用户ID，就是上一条评论的评论者

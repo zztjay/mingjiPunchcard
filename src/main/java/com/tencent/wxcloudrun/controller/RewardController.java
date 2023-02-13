@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.github.jsonzou.jmockdata.JMockData;
+import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.CommentDTO;
@@ -48,10 +49,12 @@ public class RewardController {
      * @return API response json
      */
     @GetMapping(value = "/api/comment/query")
-    ApiResponse query(CommentQuery query) {
-        CommentDTO commentDTO = JMockData.mock(CommentDTO.class);
-        Page<CommentDTO> comments = new Page<>();
-        comments.setEntityList(Arrays.asList(commentDTO));
+    ApiResponse query(int pageSize, int currentPage) {
+        CommentQuery commentQuery = new CommentQuery();
+        commentQuery.setUserId(LoginContext.getOpenId());
+        commentQuery.setPageSize(pageSize);
+        commentQuery.setCurrentPage(currentPage);
+        Page<List<CommentDTO>> comments = rewardService.query(commentQuery);
         return ApiResponse.ok(comments);
     }
 

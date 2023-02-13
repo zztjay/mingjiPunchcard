@@ -129,17 +129,34 @@ public class RewardService {
         return ApiResponse.ok(comment.getId());
     }
 
+    public Page<List<CommentDTO>> query(CommentQuery query){
+        Page<List<CommentDTO>> page = new Page<>();
+        int total = commentMapper.countRootComments(query);
+        if( total > 0){
+            List<Comment> rootComments = commentMapper.queryRootComments(query);
+            List<List<CommentDTO>> punchCardComments = build(rootComments);
+            page.setEntityList(punchCardComments);
+        }
+        page.setTotalRecords(total);
+        page.setCurrentPage(query.getCurrentPage());
+        return page;
+    }
+
     /**
      * 活动打卡评论查询服务，包含被评论的内容
      *
      * @return API response json
      */
     public  List<List<CommentDTO>> getComments(Long punchCardId) {
-        List<List<CommentDTO>> punchCardComments = new ArrayList<>();
         List<Comment> rootComments = commentMapper.getRootComments(punchCardId);
+        List<List<CommentDTO>> punchCardComments = build(rootComments);
+        return punchCardComments;
+    }
+
+    private List<List<CommentDTO>> build(List<Comment> rootComments){
+        List<List<CommentDTO>> punchCardComments = new ArrayList<>();
         for (Comment rootComment : rootComments) {
             List<CommentDTO> commentList = new ArrayList<>();
-
             List<Comment> comments = commentMapper.getComments(rootComment.getRootCommentId());
             for (Comment comment : comments) {
                 CommentDTO commentDTO = new CommentDTO();
@@ -149,7 +166,7 @@ public class RewardService {
                 commentDTO.setCommentUserName(comment.getCommentUserName());
                 commentDTO.setAvatar(comment.getAvatar());
 //                commentDTO.setCreateAt(DateUtil.getDate2Str(comment.getCreatedAt().da));
-                commentDTO.setPunchCardId(punchCardId);
+                commentDTO.setPunchCardId(comment.getPunchCardId());
                 commentDTO.setRootCommentId(comment.getRootCommentId());
                 commentDTO.setRootCommentContentType(comment.getRootCommentContentType());
                 commentDTO.setRootCommentContent(comment.getRootCommentContent());
@@ -159,7 +176,6 @@ public class RewardService {
 
             punchCardComments.add(commentList);
         }
-
         return punchCardComments;
     }
 

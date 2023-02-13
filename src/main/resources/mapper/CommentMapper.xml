@@ -15,4 +15,34 @@
         WHERE rootCommentId = #{rootCommentId} order by createdAt asc
     </select>
 
+    <select
+            id="queryRootComments"
+            parameterType="com.tencent.wxcloudrun.common.QueryBase"
+            resultType="com.tencent.wxcloudrun.model.Comment">
+        SELECT
+        *
+        FROM Comments
+        WHERE 1 = 1
+        and replyCommentId is null
+        and type = 1
+        and receiveUserId = #{openId}
+        order by createdAt desc
+        <if test="startRow != null and pageSize != null">
+            LIMIT #{startRow}, #{pageSize}
+        </if>
+
+    </select>
+
+    <select
+            id="countRootComments"
+            parameterType="com.tencent.wxcloudrun.common.QueryBase"
+            resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM Comments
+        WHERE 1 = 1
+          and replyCommentId is null
+          and type = 1
+          and receiveUserId = #{openId}
+    </select>
+
 </mapper>

@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.jsonzou.jmockdata.JMockData;
 import com.github.jsonzou.jmockdata.util.StringUtils;
@@ -7,6 +8,7 @@ import com.google.common.base.Preconditions;
 import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.constants.CoachEnum;
 import com.tencent.wxcloudrun.dao.ActivityMapper;
 import com.tencent.wxcloudrun.dao.MembersMapper;
 import com.tencent.wxcloudrun.dao.PunchCardMapper;
@@ -52,6 +54,17 @@ public class ActivityService {
                 activity.getActivityName()) && null != activity.getActivityStartTime()
                 && null != activity.getActivityEndTime()
                 && StringUtils.isNotEmpty(activity.getMembers()));
+
+        // 解析教练逻辑
+        JSONArray coaches = new JSONArray();
+        for (CoachEnum coachEnum : CoachEnum.values()) {
+            JSONObject coach = new JSONObject();
+            coach.put("openId", coachEnum.getOpenId());
+            coach.put("name", coachEnum.getName());
+            coaches.add(coach);
+        }
+        activity.setCoachs(coaches.toJSONString());
+
         if (activity.getId() != null && activity.getId() > 0L) {
             activityMapper.updateByPrimaryKey(activity);
         } else {
@@ -68,12 +81,12 @@ public class ActivityService {
      */
     public Page<Activity> query(ActivityQuery query) {
         // todo 增加超级管理员逻辑
-        User user =  usersMapper.getByOpenId(LoginContext.getOpenId());
+        User user = usersMapper.getByOpenId(LoginContext.getOpenId());
         query.setTeamCode(user.getTeamCode());
 
         Page<Activity> page = new Page<>();
         int count = activityMapper.count(query);
-        if(count > 0){
+        if (count > 0) {
             page.setEntityList(activityMapper.query(query));
         }
         page.setTotalRecords(count);
@@ -89,16 +102,16 @@ public class ActivityService {
         Preconditions.checkArgument(activityId >= 0);
         Activity activity = activityMapper.selectByPrimaryKey(activityId);
         // 提交分组信息
-        if(StringUtils.isNotEmpty(activity.getMembers())) {
+        if (StringUtils.isNotEmpty(activity.getMembers())) {
             activity.setGroupMembers(getGroupMembers(activity.getMembers()));
         }
         return activity;
     }
 
-    private Map<String,List<String>>  getGroupMembers(String members){
-        Map<String,List<String>> groupMembers = new HashMap<>();
+    private Map<String, List<String>> getGroupMembers(String members) {
+        Map<String, List<String>> groupMembers = new HashMap<>();
         String memberInfos[] = members.split("\\r?\\n");
-        if(memberInfos.length == 0){
+        if (memberInfos.length == 0) {
             return groupMembers;
         }
         for (String memberInfo : memberInfos) {
@@ -110,7 +123,7 @@ public class ActivityService {
             String groupIdentifier = result[3]; // 所属分组
 
             // 格式化数据
-            if(groupMembers.containsKey(groupIdentifier)){
+            if (groupMembers.containsKey(groupIdentifier)) {
                 groupMembers.get(groupIdentifier).add(memberName);
             } else {
                 groupMembers.put(groupIdentifier, new ArrayList<>());
@@ -119,6 +132,7 @@ public class ActivityService {
         }
         return groupMembers;
     }
+
     /**
      * 报名活动
      *
@@ -160,7 +174,7 @@ public class ActivityService {
 
                 // 更新用户的名称
                 User user = usersMapper.getByOpenId(LoginContext.getOpenId());
-                if(user!=null && StringUtils.isEmpty(user.getMemberName())){
+                if (user != null && StringUtils.isEmpty(user.getMemberName())) {
                     user.setMemberName(memberName);
                     userService.save(user);
                 }

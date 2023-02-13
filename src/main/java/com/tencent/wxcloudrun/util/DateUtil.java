@@ -10,6 +10,7 @@ import org.joda.time.format.DateTimeFormat;
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.*;
 
 import static java.util.Calendar.DAY_OF_MONTH;
@@ -112,6 +113,9 @@ public class DateUtil {
         return getDate2Str("yyyy-MM-dd HH:mm:ss", date);
     }
 
+    public static Date asDate(java.time.LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
     public static String getDate2ymdStr(Date date) {
         if (date == null) {
             return "";

@@ -7,9 +7,11 @@ import com.github.jsonzou.jmockdata.JMockData;
 import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.constants.CoachEnum;
 import com.tencent.wxcloudrun.dao.*;
 import com.tencent.wxcloudrun.dto.CommentDTO;
 import com.tencent.wxcloudrun.dto.CommentQuery;
+import com.tencent.wxcloudrun.dto.PunchCardDTO;
 import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.model.Record;
 import com.tencent.wxcloudrun.util.DateUtil;
@@ -41,6 +43,9 @@ public class RewardService {
 
     @Resource
     MembersMapper membersMapper;
+
+    @Resource
+    PunchCardService punchCardService;
 
     @Resource
     ActivityMapper activityMapper;
@@ -85,8 +90,10 @@ public class RewardService {
         if (!StringUtil.isEmpty(rootCommentContentType) && (null == replyCommentId || replyCommentId <=0)) {
             comment.setRootCommentContentType(rootCommentContentType);
             Member receiveMember = membersMapper.selectByOpenId(record.getMemberOpenId(), record.getActivityId());
+            User receiveUser = usersMapper.getByOpenId(record.getMemberOpenId());
             comment.setReceiveUserId(receiveMember.getMemberOpenId());
             comment.setReceiveUserName(receiveMember.getMemberName());
+            comment.setReceiveUserAvator(receiveUser.getAvator());
             comment.setCommentUserType(Reward.REWARD_USRE_TYPE_MEMBER);
             comment.setReceiveUserType(Reward.REWARD_USRE_TYPE_MEMBER);
 
@@ -112,7 +119,11 @@ public class RewardService {
             comment.setReplyCommentId(replyCommentId); // 被评论的id
             comment.setReceiveUserId(replyComment.getCommentUserId()); // 被评论用户ID，就是上一条评论的评论者
             comment.setReceiveUserName(replyComment.getCommentUserName());// 被评论用户名称，就是上一条评论的评论者
-            comment.setReceiveUserType(replyComment.getCommentUserType());
+            comment.setReceiveUserType(replyComment.getCommentUserType()); // 被评论用户的类型
+
+            User receiveUser = usersMapper.getByOpenId(replyComment.getCommentUserId()); // 被评论用户的头像
+            comment.setReceiveUserAvator(receiveUser.getAvator());
+
             comment.setRootCommentContent(replyComment.getRootCommentContent());
             comment.setRootCommentContentType(replyComment.getRootCommentContentType());
             comment.setType(Comment.COMMENT_TYPE_REPLY);
@@ -156,6 +167,9 @@ public class RewardService {
     private List<List<CommentDTO>> build(List<Comment> rootComments){
         List<List<CommentDTO>> punchCardComments = new ArrayList<>();
         for (Comment rootComment : rootComments) {
+
+            Record punchcard = punchCardMapper.selectByPrimaryKey(rootComment.getPunchCardId());
+
             List<CommentDTO> commentList = new ArrayList<>();
             List<Comment> comments = commentMapper.getComments(rootComment.getRootCommentId());
             for (Comment comment : comments) {
@@ -163,14 +177,17 @@ public class RewardService {
                 commentDTO.setContent(comment.getContent());
                 commentDTO.setId(comment.getId());
                 commentDTO.setReceiveUserName(comment.getReceiveUserName());
+                commentDTO.setReceiveUserAvator(comment.getReceiveUserAvator());
                 commentDTO.setCommentUserName(comment.getCommentUserName());
                 commentDTO.setAvatar(comment.getAvatar());
-//                commentDTO.setCreateAt(DateUtil.getDate2Str(comment.getCreatedAt().da));
+                commentDTO.setCreateAt(DateUtil.getDate2Str(DateUtil.asDate(comment.getCreatedAt())));
                 commentDTO.setPunchCardId(comment.getPunchCardId());
                 commentDTO.setRootCommentId(comment.getRootCommentId());
                 commentDTO.setRootCommentContentType(comment.getRootCommentContentType());
                 commentDTO.setRootCommentContent(comment.getRootCommentContent());
                 commentDTO.setType(comment.getType());
+                commentDTO.setPunchCardTime(DateUtil.getDate2yymmddStr(DateUtil.asDate(punchcard.getCreatedAt()))); // 打卡时间
+                commentDTO.setCoach(CoachEnum.isCoach(comment.getCommentUserId())); // 是否为教练
                 commentList.add(commentDTO);
             }
 

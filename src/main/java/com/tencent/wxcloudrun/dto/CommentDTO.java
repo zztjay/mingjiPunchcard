@@ -25,9 +25,13 @@ public class CommentDTO {
     private String rootCommentContentType; //  评论内容类型，full. 完整句，positive. 正向，inpositive.负向，iwant：我还想做什么，thoughts：感想
     private String rootCommentContent; //  评论内容
     private String  receiveUserName; // 被评论用户的名称
+    private String receiveUserAvator; // 被评论用户的头像
     private String  commentUserName; // 评论用户的名称
-    private String avatar; //  用户头像
+    private String avatar; //  评论用户头像
     private String createAt; // 评论时间
     private int type; // 评论类型，1:评论，2:回复
     private String content; // 评论内容
+    private boolean isCoach; // 评论者是否是教练
+    private String punchCardTime; // 打卡时间
+
 }

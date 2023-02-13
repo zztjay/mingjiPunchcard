@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.jsonzou.jmockdata.JMockData;
 import com.github.jsonzou.jmockdata.util.StringUtils;
+import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.constants.CoachEnum;
@@ -60,6 +61,20 @@ public class ActivityController {
         Page<Activity> activitys = activityService.query(query);
         return ApiResponse.ok(activitys);
     }
+
+    /**
+     * 获得管理员活动列表
+     *
+     * @return API response json
+     */
+    @GetMapping(value = "/api/activity/signlist")
+    ApiResponse signList(HttpServletRequest request, ActivityQuery query) {
+        List<Activity> activitys = activityService.signList(LoginContext.getOpenId());
+        return ApiResponse.ok(activitys);
+    }
+
+
+
 
     /**
      * 获得活动信息

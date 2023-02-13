@@ -13,4 +13,10 @@
         FROM Members
         WHERE memberOpenId = #{openId} and activityId = #{activityId} limit 1
     </select>
+
+    <select id="getSignList" resultType="java.lang.Long" >
+        SELECT activityId
+        FROM Members
+        WHERE memberOpenId = #{openId}
+    </select>
 </mapper>

@@ -3,6 +3,8 @@ package com.tencent.wxcloudrun.controller;
 import com.github.jsonzou.jmockdata.JMockData;
 import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.constants.CoachEnum;
+import com.tencent.wxcloudrun.constants.SuperManagerEnum;
 import com.tencent.wxcloudrun.dto.CounterRequest;
 import com.tencent.wxcloudrun.dto.UserDTO;
 import com.tencent.wxcloudrun.dto.UserRequest;
@@ -62,8 +64,12 @@ public class UserController {
         userDTO.setPhoneNumber(user.getPhoneNumber());
         userDTO.setAvator(user.getAvator());
         userDTO.setMemberName(user.getMemberName());
-        userDTO.setManagerType(1); // todo
-        userDTO.setUserType(1); //  todo
+        if(SuperManagerEnum.isSuper(LoginContext.getOpenId())){
+            userDTO.setManagerType(UserDTO.MANAGER_TYPE_SUPER);  // 超级管理员
+        }
+        if(CoachEnum.isCoach(LoginContext.getOpenId())){
+            userDTO.setUserType(UserDTO.USER_TYPE_COACH); // 教练
+        }
         return ApiResponse.ok(userDTO);
     }
 

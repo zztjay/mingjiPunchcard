@@ -9,6 +9,7 @@ import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.constants.CoachEnum;
+import com.tencent.wxcloudrun.constants.SuperManagerEnum;
 import com.tencent.wxcloudrun.dao.ActivityMapper;
 import com.tencent.wxcloudrun.dao.MembersMapper;
 import com.tencent.wxcloudrun.dao.PunchCardMapper;
@@ -17,6 +18,7 @@ import com.tencent.wxcloudrun.dto.ActivityQuery;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Member;
 import com.tencent.wxcloudrun.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +38,7 @@ import java.util.stream.Stream;
  * @Date：2023/1/26 11:11
  */
 @Service
+@Slf4j
 public class ActivityService {
     @Resource
     ActivityMapper activityMapper;
@@ -73,18 +76,29 @@ public class ActivityService {
         return activity.getId();
     }
 
-
+    public List<Activity> signList(String openId) {
+        List<Activity> activityList = new ArrayList<>();
+        List<Long> activityIds = membersMapper.getSignList(openId);
+        for (Long activityId : activityIds) {
+            Activity activity = getById(activityId);
+            activityList.add(activity);
+        }
+        return activityList;
+    }
     /**
      * 获得报名活动列表
      *
      * @return API response json
      */
     public Page<Activity> query(ActivityQuery query) {
-        // todo 增加超级管理员逻辑
+        Page<Activity> page = new Page<>();
+        // 超级管理员校验逻辑
+        if(null == SuperManagerEnum.getByOpenId(LoginContext.getOpenId())){
+            log.warn("user is not supermanager，openId:{}",LoginContext.getOpenId());
+            return page;
+        }
         User user = usersMapper.getByOpenId(LoginContext.getOpenId());
         query.setTeamCode(user.getTeamCode());
-
-        Page<Activity> page = new Page<>();
         int count = activityMapper.count(query);
         if (count > 0) {
             page.setEntityList(activityMapper.query(query));

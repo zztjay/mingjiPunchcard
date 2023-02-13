@@ -1,13 +1,12 @@
 package com.tencent.wxcloudrun.constants;
 
-import lombok.Data;
-
 /**
+ * 超级管理员枚举
  * @Author：zhoutao
  * @Date：2023/1/29 16:39
  */
 
-public enum CoachEnum {
+public enum SuperManagerEnum {
     guohui("1","国晖"),
     yinshao("2","英少");
     private String openId;
@@ -21,13 +20,13 @@ public enum CoachEnum {
         return name;
     }
 
-    CoachEnum(String openId, String name) {
+    SuperManagerEnum(String openId, String name) {
         this.openId = openId;
         this.name = name;
     }
 
-    public static CoachEnum getByName(String name){
-        for (CoachEnum value : CoachEnum.values()) {
+    public static SuperManagerEnum getByName(String name){
+        for (SuperManagerEnum value : SuperManagerEnum.values()) {
             if(value.getName().equals(name)){
                 return value;
             }
@@ -35,8 +34,8 @@ public enum CoachEnum {
         return null;
     }
 
-    public static CoachEnum getByOpenId(String openId){
-        for (CoachEnum value : CoachEnum.values()) {
+    public static SuperManagerEnum getByOpenId(String openId){
+        for (SuperManagerEnum value : SuperManagerEnum.values()) {
             if(value.getOpenId().equals(openId)){
                 return value;
             }
@@ -44,7 +43,7 @@ public enum CoachEnum {
         return null;
     }
 
-    public static boolean isCoach(String openId){
+    public static boolean isSuper(String openId){
         return getByOpenId(openId) != null;
     }
 }

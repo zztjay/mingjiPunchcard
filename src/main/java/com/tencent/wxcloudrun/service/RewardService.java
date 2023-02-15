@@ -268,7 +268,7 @@ public class RewardService {
         }
         rewardMapper.insert(reward);
 
-        return ApiResponse.ok();
+        return ApiResponse.ok(reward.getId());
     }
 
 }

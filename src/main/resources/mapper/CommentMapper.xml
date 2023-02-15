@@ -15,18 +15,24 @@
         WHERE rootCommentId = #{rootCommentId} order by createdAt asc
     </select>
 
+    <select id="getCommentsReverse" resultType="com.tencent.wxcloudrun.model.Comment" >
+        SELECT *
+        FROM Comments
+        WHERE rootCommentId = #{rootCommentId} and id <![CDATA[ <= ]]> #{lastCommentId}
+        order by createdAt asc
+    </select>
+
     <select
-            id="queryRootComments"
+            id="queryLatestComments"
             parameterType="com.tencent.wxcloudrun.common.QueryBase"
             resultType="com.tencent.wxcloudrun.model.Comment">
-        SELECT
-        *
-        FROM Comments
-        WHERE 1 = 1
-        and replyCommentId is null
-        and type = 1
-        and receiveUserId = #{openId}
-        order by createdAt desc
+
+        select a.* from Comments a,
+        (
+        select rootCommentId,max(createdAt) createdAt from Comments
+        where receiveUserId = #{userId} group by rootCommentId) b
+        where a.rootCommentId = b.rootCommentId and a.createdAt = b.createdAt
+        and receiveUserId = #{userId}
         <if test="startRow != null and pageSize != null">
             LIMIT #{startRow}, #{pageSize}
         </if>
@@ -34,15 +40,15 @@
     </select>
 
     <select
-            id="countRootComments"
+            id="countLatestComments"
             parameterType="com.tencent.wxcloudrun.common.QueryBase"
             resultType="java.lang.Integer">
-        SELECT count(*)
-        FROM Comments
-        WHERE 1 = 1
-          and replyCommentId is null
-          and type = 1
-          and receiveUserId = #{openId}
+        SELECT count(*) from Comments a,
+        (
+        select rootCommentId,max(createdAt) createdAt from Comments
+        where receiveUserId = #{userId} group by rootCommentId ) b
+        where a.rootCommentId = b.rootCommentId and a.createdAt = b.createdAt
+        and receiveUserId = #{userId}
     </select>
 
 </mapper>

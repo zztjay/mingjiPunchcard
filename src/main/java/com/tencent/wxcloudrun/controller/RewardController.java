@@ -54,7 +54,7 @@ public class RewardController {
         commentQuery.setUserId(LoginContext.getOpenId());
         commentQuery.setPageSize(pageSize);
         commentQuery.setCurrentPage(currentPage);
-        Page<List<CommentDTO>> comments = rewardService.query(commentQuery);
+        Page<List<CommentDTO>> comments = rewardService.getUserLastComments(commentQuery);
         return ApiResponse.ok(comments);
     }
 

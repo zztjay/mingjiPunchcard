@@ -64,7 +64,7 @@ public class PunchCardController {
      * 查询打卡日历
      * @return API response json
      */
-    @GetMapping(value = "/api/punchcard/query")
+    @GetMapping(value = "/api/punchcard/calender")
     ApiResponse calender(Long activityId) {
 
         // 计算总共的活动时间

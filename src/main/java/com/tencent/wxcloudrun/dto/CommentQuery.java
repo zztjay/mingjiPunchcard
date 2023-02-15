@@ -13,4 +13,11 @@ import java.util.List;
 @Data
 public class CommentQuery extends QueryBase {
     private String userId;
+
+    public CommentQuery(String userId) {
+        this.userId = userId;
+    }
+
+    public CommentQuery() {
+    }
 }

@@ -17,6 +17,10 @@ import java.util.List;
 public interface CommentMapper extends Mapper<Comment> {
     List<Comment> getRootComments(@Param("punchCardId")  Long punchCardId);
     List<Comment> getComments(@Param("rootCommentId") Long rootCommentId);
-    List<Comment> queryRootComments(CommentQuery query);
-    int countRootComments(CommentQuery query);
+
+    List<Comment> getCommentsReverse(@Param("rootCommentId") Long rootCommentId,
+                                     @Param("lastCommentId") Long lastCommentId);
+
+    List<Comment> queryLatestComments(CommentQuery query);
+    int countLatestComments(CommentQuery query);
 }

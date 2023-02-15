@@ -140,17 +140,49 @@ public class RewardService {
         return ApiResponse.ok(comment.getId());
     }
 
-    public Page<List<CommentDTO>> query(CommentQuery query){
+    public Page<List<CommentDTO>> getUserLastComments(CommentQuery query){
         Page<List<CommentDTO>> page = new Page<>();
-        int total = commentMapper.countRootComments(query);
+        int total = commentMapper.countLatestComments(query);
         if( total > 0){
-            List<Comment> rootComments = commentMapper.queryRootComments(query);
-            List<List<CommentDTO>> punchCardComments = build(rootComments);
+            List<Comment> rootComments = commentMapper.queryLatestComments(query);
+            List<List<CommentDTO>> punchCardComments = buildReverse(rootComments);
             page.setEntityList(punchCardComments);
         }
         page.setTotalRecords(total);
         page.setCurrentPage(query.getCurrentPage());
         return page;
+    }
+
+    private List<List<CommentDTO>> buildReverse(List<Comment> lastComments){
+        List<List<CommentDTO>> punchCardComments = new ArrayList<>();
+        for (Comment lastComment : lastComments) {
+
+            Record punchcard = punchCardMapper.selectByPrimaryKey(lastComment.getPunchCardId());
+
+            List<CommentDTO> commentList = new ArrayList<>();
+            List<Comment> comments = commentMapper.getCommentsReverse(lastComment.getRootCommentId(),lastComment.getId());
+            for (Comment comment : comments) {
+                CommentDTO commentDTO = new CommentDTO();
+                commentDTO.setContent(comment.getContent());
+                commentDTO.setId(comment.getId());
+                commentDTO.setReceiveUserName(comment.getReceiveUserName());
+                commentDTO.setReceiveUserAvator(comment.getReceiveUserAvator());
+                commentDTO.setCommentUserName(comment.getCommentUserName());
+                commentDTO.setAvatar(comment.getAvatar());
+                commentDTO.setCreateAt(DateUtil.getDate2Str(DateUtil.asDate(comment.getCreatedAt())));
+                commentDTO.setPunchCardId(comment.getPunchCardId());
+                commentDTO.setRootCommentId(comment.getRootCommentId());
+                commentDTO.setRootCommentContentType(comment.getRootCommentContentType());
+                commentDTO.setRootCommentContent(comment.getRootCommentContent());
+                commentDTO.setType(comment.getType());
+                commentDTO.setPunchCardTime(DateUtil.getDate2yymmddStr(DateUtil.asDate(punchcard.getCreatedAt()))); // 打卡时间
+                commentDTO.setCoach(CoachEnum.isCoach(comment.getCommentUserId())); // 是否为教练
+                commentList.add(commentDTO);
+            }
+
+            punchCardComments.add(commentList);
+        }
+        return punchCardComments;
     }
 
     /**

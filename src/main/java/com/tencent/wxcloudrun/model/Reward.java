@@ -42,5 +42,6 @@ public class Reward implements Serializable {
     private String userOpenId; // 用户的openId
     private String giveRewardUserId; // 送出奖励用户的openId
     private Integer giveRewardUserType; // 奖励用户类型，1:成员，2: 教练
-    private Integer rewardPoint; // 奖励分数
+    private Integer rewardPoint; // 奖励积分，通过积分规则计算
+    private Integer rewardLevel; // 奖励等级
 }

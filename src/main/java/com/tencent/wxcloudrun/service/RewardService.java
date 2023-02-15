@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.github.jsonzou.jmockdata.JMockData;
@@ -16,7 +17,9 @@ import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.model.Record;
 import com.tencent.wxcloudrun.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,10 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tk.mybatis.mapper.util.StringUtil;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 评论和奖励业务处理器
@@ -234,10 +234,10 @@ public class RewardService {
      * @return API response json
      */
     public   ApiResponse reward(long punchCardId,
-                       int rewardType, int rewardPoint) {
-        // todo 积分计算逻辑
+                       int rewardType, int rewardLevel) {
+
         Reward reward = new Reward();
-        reward.setRewardPoint(rewardPoint);
+        reward.setRewardLevel(rewardLevel);
         reward.setRewardType(rewardType);
         reward.setPunchCardId(punchCardId);
         Record record = punchCardMapper.selectByPrimaryKey(punchCardId);
@@ -247,12 +247,25 @@ public class RewardService {
         reward.setGiveRewardUserId(LoginContext.getOpenId());
 
         Activity activity = activityMapper.selectByPrimaryKey(record.getActivityId());
-        if (activity.getCoachs().contains(LoginContext.getOpenId())) {
+        if (CoachEnum.isCoach(LoginContext.getOpenId())) {
             reward.setGiveRewardUserType(Reward.REWARD_USRE_TYPE_COACH);
         } else {
             reward.setGiveRewardUserType(Reward.REWARD_USRE_TYPE_MEMBER);
         }
 
+        // 计算获得积分
+        JSONArray rewardRules = JSONArray.parseArray(activity.getRewardRule());
+        for (JSONObject rule : rewardRules.toJavaList(JSONObject.class)) {
+            Date now = new Date();
+            // 积分计算逻辑，评级需要3和4等级的才可以
+            if(rule.getInteger("type") == rewardType && rule.getDate("startTime").before(now)){
+                if(rewardType == Reward.REWARD_TYPE_LEVE && (rewardLevel == 3 || rewardLevel == 4)){
+                    reward.setRewardPoint(rule.getInteger("basePoint"));
+                } else {
+                    reward.setRewardPoint(rule.getInteger("basePoint"));
+                }
+            }
+        }
         rewardMapper.insert(reward);
 
         return ApiResponse.ok();

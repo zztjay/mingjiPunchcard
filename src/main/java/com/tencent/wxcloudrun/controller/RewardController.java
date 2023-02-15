@@ -65,8 +65,8 @@ public class RewardController {
      */
     @GetMapping(value = "/api/reward")
     ApiResponse reward(@RequestParam long punchCardId,
-                       @RequestParam int rewardType, @RequestParam int rewardPoint) {
-        return rewardService.reward(punchCardId, rewardType, rewardPoint);
+                       @RequestParam int rewardType, @RequestParam int rewardLevel) {
+        return rewardService.reward(punchCardId, rewardType, rewardLevel);
     }
 
 }

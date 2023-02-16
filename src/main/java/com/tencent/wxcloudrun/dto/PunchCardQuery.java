@@ -4,7 +4,7 @@ import com.tencent.wxcloudrun.common.QueryBase;
 import lombok.Data;
 
 /**
- * 奖励查询
+ * 打卡查询
  * @Author：zhoutao
  * @Date：2023/1/25 16:47
  */

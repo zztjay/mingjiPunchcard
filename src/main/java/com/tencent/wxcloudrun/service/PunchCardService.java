@@ -51,6 +51,18 @@ public class PunchCardService {
     @Resource
     RewardMapper rewardMapper;
 
+
+    public ApiResponse delete(Long id){
+        Record record = punchCardMapper.selectByPrimaryKey(id);
+        if (null!=record  && !record.getMemberOpenId().equals(LoginContext.getOpenId())) {
+            ApiResponse.error("OPEN_ID_NOT_MATCH", "您没有权限删除");
+        }
+
+        punchCardMapper.deleteByPrimaryKey(id);
+
+        return ApiResponse.ok();
+    }
+
     /**
      * 活动打卡服务
      *

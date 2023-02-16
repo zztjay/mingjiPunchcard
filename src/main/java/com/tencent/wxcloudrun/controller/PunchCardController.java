@@ -52,6 +52,15 @@ public class PunchCardController {
     }
 
     /**
+     * 活动打卡服务
+     * @return API response json
+     */
+    @GetMapping(value = "/api/punchcard/delete")
+    ApiResponse delete(Long id) {
+        return punchCardService.delete(id);
+    }
+
+    /**
      * 查询打卡列表
      * @return API response json
      */

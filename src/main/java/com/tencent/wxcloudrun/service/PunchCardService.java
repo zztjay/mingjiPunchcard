@@ -60,7 +60,7 @@ public class PunchCardService {
             , long activityId, String punchCardTime) {
 
         // 新提交打卡的校验
-        if(id == null) {
+        if (id == null) {
             // 判断用户在某一天是否打过卡
             PunchCardQuery query = new PunchCardQuery();
             query.setPunchCardTime(punchCardTime);
@@ -161,7 +161,8 @@ public class PunchCardService {
 
         List<Reward> levelRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_LEVE);
         if (!CollectionUtils.isEmpty(levelRecords)) {
-            punchCardDTO.setLevel(levelRecords.get(0).getRewardLevel()); // 等级
+            Integer level = levelRecords.get(0).getRewardLevel();
+            punchCardDTO.setLevel(level != null ? level : 0); // 等级
         }
 
         punchCardDTO.setRecordId(recordId);

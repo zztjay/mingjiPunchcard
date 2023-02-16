@@ -64,7 +64,7 @@ public class ActivityService {
                 && StringUtils.isNotEmpty(activity.getMembers()));
 
         // 检查是否为超级管理员
-        if(SuperManagerEnum.isSuper(LoginContext.getOpenId())){
+        if(!SuperManagerEnum.isSuper(LoginContext.getOpenId())){
             return ApiResponse.error("USER_HAS_NO_PERMISSION","用户没有权限创建活动");
         }
 

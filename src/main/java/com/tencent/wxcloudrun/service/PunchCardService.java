@@ -161,7 +161,7 @@ public class PunchCardService {
 
         List<Reward> levelRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_LEVE);
         if (!CollectionUtils.isEmpty(levelRecords)) {
-            punchCardDTO.setLevel(levelRecords.get(0).getRewardPoint()); // 等级
+            punchCardDTO.setLevel(levelRecords.get(0).getRewardLevel()); // 等级
         }
 
         punchCardDTO.setRecordId(recordId);

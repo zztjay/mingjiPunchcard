@@ -243,6 +243,8 @@ public class RewardService {
         Record record = punchCardMapper.selectByPrimaryKey(punchCardId);
         reward.setUserOpenId(record.getMemberOpenId());
 
+        // todo 需要做检查，只有教练才可以给用户评级和评优
+
         // 补充其他信息
         reward.setGiveRewardUserId(LoginContext.getOpenId());
 

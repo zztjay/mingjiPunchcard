@@ -87,8 +87,12 @@ public class RewardService {
         comment.setContent(content);
 
         // 对内容的评论
-        if (!StringUtil.isEmpty(rootCommentContentType) && (null == replyCommentId || replyCommentId <=0)) {
-            comment.setRootCommentContentType(rootCommentContentType);
+        if (null == replyCommentId || replyCommentId <=0) {
+            if(!StringUtil.isEmpty(rootCommentContentType)){
+                comment.setRootCommentContentType(rootCommentContentType);
+            } else {
+                comment.setRootCommentContentType("full");
+            }
             Member receiveMember = membersMapper.selectByOpenId(record.getMemberOpenId(), record.getActivityId());
             User receiveUser = usersMapper.getByOpenId(record.getMemberOpenId());
             comment.setReceiveUserId(receiveMember.getMemberOpenId());
@@ -107,7 +111,7 @@ public class RewardService {
             comment.setType(Comment.COMMENT_TYPE_COMMENT);
         }
         // 对评论的回复
-        else if (StringUtil.isEmpty(rootCommentContentType)  && null != replyCommentId ) {
+        else if ( null != replyCommentId ) {
             Comment replyComment = commentMapper.selectByPrimaryKey(replyCommentId);
 
             // 检查是否自己回复自己

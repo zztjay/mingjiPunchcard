@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Data
 public class PunchCardDTO implements Serializable {
+    private Long activityId;
     private String content; // 打卡内容，使用json结构存储
     private Long recordId; // 打卡id
     private int thumbsUp; // 点赞数

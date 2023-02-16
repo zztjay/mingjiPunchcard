@@ -175,6 +175,7 @@ public class PunchCardService {
 
         User user = userService.getUser(LoginContext.getOpenId());
         punchCardDTO.setAvtar(user.getAvator());
+        punchCardDTO.setActivityId(record.getActivityId());
 
         punchCardDTO.setComments(rewardService.getComments(recordId)); // 评论列表
         return punchCardDTO;

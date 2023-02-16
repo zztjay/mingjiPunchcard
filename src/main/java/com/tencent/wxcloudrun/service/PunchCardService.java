@@ -145,11 +145,15 @@ public class PunchCardService {
         }
 
         PunchCardDTO punchCardDTO = new PunchCardDTO();
+        punchCardDTO.setCreateAt(DateUtil.getDate2Str(DateUtil.asDate(record.getCreatedAt())));
         punchCardDTO.setPunchCardTime(record.getPunchCardTime());
         punchCardDTO.setContent(record.getContent());
         Member member = membersMapper.selectByOpenId(record.getMemberOpenId(),
                 record.getActivityId());
         punchCardDTO.setUserName(member.getMemberName());
+        punchCardDTO.setDeptName(member.getDeptName());
+        punchCardDTO.setPositionName(member.getPositionName());
+        punchCardDTO.setGroupIdentifier(member.getGroupIdentifier());
 
         List<Reward> bestRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_BEST);
         if (!CollectionUtils.isEmpty(bestRecords)) {
@@ -164,8 +168,13 @@ public class PunchCardService {
             Integer level = levelRecords.get(0).getRewardLevel();
             punchCardDTO.setLevel(level != null ? level : 0); // 等级
         }
-
         punchCardDTO.setRecordId(recordId);
+
+        Activity activity = activityMapper.selectByPrimaryKey(record.getActivityId());
+        punchCardDTO.setPunchCardType(activity.getPunchCardType());
+
+        User user = userService.getUser(LoginContext.getOpenId());
+        punchCardDTO.setAvtar(user.getAvator());
 
         punchCardDTO.setComments(rewardService.getComments(recordId)); // 评论列表
         return punchCardDTO;

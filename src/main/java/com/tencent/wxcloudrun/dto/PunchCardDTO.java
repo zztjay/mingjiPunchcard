@@ -19,5 +19,13 @@ public class PunchCardDTO implements Serializable {
     private boolean isBest = false; // 优选
     private String punchCardTime; //  打卡时间
     private String userName; // 用户名称
+
+    private Integer punchCardType; // 打卡类型，1：“整体文本法” 2.“标准造句法”
+    private String avtar; // 头像
+    private String createAt; // 打卡时间
+    private String positionName; // 职位
+    private String deptName; // 部门信息
+    private String groupIdentifier; // 分组信息
+
     private List<List<CommentDTO>> comments; // 评论列表
 }

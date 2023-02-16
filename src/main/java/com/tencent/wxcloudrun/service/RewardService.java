@@ -238,7 +238,7 @@ public class RewardService {
      * @return API response json
      */
     public   ApiResponse reward(long punchCardId,
-                       int rewardType, int rewardLevel) {
+                       int rewardType, Integer rewardLevel) {
 
         Reward reward = new Reward();
         reward.setRewardLevel(rewardLevel);

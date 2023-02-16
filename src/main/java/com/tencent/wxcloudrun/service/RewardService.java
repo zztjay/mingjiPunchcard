@@ -237,7 +237,7 @@ public class RewardService {
      *
      * @return API response json
      */
-    public   ApiResponse reward(long punchCardId,
+    public  ApiResponse reward(long punchCardId,
                        int rewardType, Integer rewardLevel) {
 
         Reward reward = new Reward();

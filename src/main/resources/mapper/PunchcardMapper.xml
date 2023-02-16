@@ -17,6 +17,7 @@
         *
         FROM Records
         WHERE 1 = 1
+
         <if test="activityId != null ">
             and activityId = #{activityId}
         </if>
@@ -40,6 +41,7 @@
         SELECT count(*)
         FROM Records
         WHERE 1 = 1
+
         <if test="activityId != null ">
             and activityId = #{activityId}
         </if>

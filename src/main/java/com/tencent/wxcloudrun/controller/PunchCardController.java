@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.github.jsonzou.jmockdata.JMockData;
+import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.CommentDTO;
@@ -65,7 +66,7 @@ public class PunchCardController {
      * @return API response json
      */
     @GetMapping(value = "/api/punchcard/calender")
-    ApiResponse calender(Long activityId) {
+    public ApiResponse calender(Long activityId) {
 
         // 计算总共的活动时间
         Activity activity = activityService.getById(activityId);
@@ -77,6 +78,7 @@ public class PunchCardController {
         PunchCardQuery query = new PunchCardQuery();
         query.setActivityId(activityId);
         query.setPageSize(days.intValue());
+        query.setOpenId(LoginContext.getOpenId());
         Page<PunchCardDTO> records = punchCardService.query(query);
 
         return ApiResponse.ok(records);

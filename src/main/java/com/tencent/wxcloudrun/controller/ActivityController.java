@@ -47,8 +47,8 @@ public class ActivityController {
      */
     @PostMapping(value = "/api/activity/save")
     ApiResponse save(@RequestBody Activity activity) {
-        Long id = activityService.save(activity);
-        return ApiResponse.ok(id);
+       return activityService.save(activity);
+
     }
 
     /**

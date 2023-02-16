@@ -52,11 +52,16 @@ public class ActivityService {
     @Resource
     UserService userService;
 
-    public Long save(Activity activity) {
+    public ApiResponse save(Activity activity) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(
                 activity.getActivityName()) && null != activity.getActivityStartTime()
                 && null != activity.getActivityEndTime()
                 && StringUtils.isNotEmpty(activity.getMembers()));
+
+        // 检查是否为超级管理员
+        if(SuperManagerEnum.isSuper(LoginContext.getOpenId())){
+            return ApiResponse.error("USER_HAS_NO_PERMISSION","用户没有权限创建活动");
+        }
 
         // 解析教练逻辑
         JSONArray coaches = new JSONArray();
@@ -73,7 +78,7 @@ public class ActivityService {
         } else {
             activityMapper.insert(activity);
         }
-        return activity.getId();
+        return ApiResponse.ok(activity.getId());
     }
 
     public List<Activity> signList(String openId) {

@@ -10,14 +10,13 @@ import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.constants.CoachEnum;
 import com.tencent.wxcloudrun.constants.SuperManagerEnum;
-import com.tencent.wxcloudrun.dao.ActivityMapper;
-import com.tencent.wxcloudrun.dao.MembersMapper;
-import com.tencent.wxcloudrun.dao.PunchCardMapper;
-import com.tencent.wxcloudrun.dao.UsersMapper;
+import com.tencent.wxcloudrun.dao.*;
 import com.tencent.wxcloudrun.dto.ActivityQuery;
 import com.tencent.wxcloudrun.dto.PunchCardQuery;
+import com.tencent.wxcloudrun.dto.RewardQuery;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Member;
+import com.tencent.wxcloudrun.model.Reward;
 import com.tencent.wxcloudrun.model.User;
 import com.tencent.wxcloudrun.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -56,6 +56,9 @@ public class ActivityService {
 
     @Resource
     UserService userService;
+
+    @Resource
+    RewardMapper rewardMapper;
 
     public ApiResponse save(Activity activity) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(
@@ -97,24 +100,37 @@ public class ActivityService {
     }
 
     private void addStatistic(Activity activity){
+        JSONObject statistic = new JSONObject();
+
+        // 活动打卡天数
+        Date startDate = DateUtil.asDate(activity.getActivityStartTime());
+        Date endDate = new Date();
+        Long punchCardDays = DateUtil.getBetweenDays(startDate,endDate);
+        statistic.put("punchCardDays",punchCardDays);
 
         // 打卡数，打卡率
         PunchCardQuery query = new PunchCardQuery();
         query.setActivityId(activity.getId());
         query.setOpenId(LoginContext.getOpenId());
-        int punchCardCount = punchCardMapper.count(query); // 打卡数
-
-        Date startDate = DateUtil.asDate(activity.getActivityStartTime());
-        Date endDate = new Date();
-        Long punchCardDays = DateUtil.getBetweenDays(startDate,endDate); // 打卡天数
+        int punchCardCount = punchCardMapper.count(query);
+        statistic.put("punchCardCount",punchCardCount);// 用户打卡天数
+        statistic.put("punchCardRate",(double)punchCardCount/punchCardDays); // 打卡率
 
         // 获赞总数，日均点赞数
+        Integer thumbsupTotal = rewardMapper.count(new RewardQuery(activity.getId(),
+                null,LoginContext.getOpenId(), Reward.REWARD_TYPE_THUMBS_UP, null));
+        statistic.put("thumbsupTotal",thumbsupTotal); // 获赞总数
 
+        statistic.put("thumbsupAvg",(double)thumbsupTotal/punchCardDays); // 每天获赞数
 
         // 总积分，排名
+        int sumRewardPoint = rewardMapper.sumRewardPoint(new RewardQuery(activity.getId(),LoginContext.getOpenId()));
+        statistic.put("sumRewardPoint",sumRewardPoint); // 获得总积分数
+        int sumRewardPointRank = rewardMapper.sumRewardPointRank(
+                new RewardQuery(activity.getId(),LoginContext.getOpenId(),sumRewardPoint));
+        statistic.put("sumRewardPointRank",sumRewardPointRank); // 获得总积分数
 
-
-        return;
+        activity.setStatistic(statistic);
     }
     /**
      * 获得报名活动列表
@@ -146,10 +162,14 @@ public class ActivityService {
     public Activity getById(long activityId) {
         Preconditions.checkArgument(activityId >= 0);
         Activity activity = activityMapper.selectByPrimaryKey(activityId);
+
         // 提交分组信息
         if (StringUtils.isNotEmpty(activity.getMembers())) {
             activity.setGroupMembers(getGroupMembers(activity.getMembers()));
         }
+        // 提取活动信息
+        addStatistic(activity);
+
         return activity;
     }
 

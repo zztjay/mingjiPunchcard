@@ -60,4 +60,7 @@ public class Activity implements Serializable {
 
     @Transient
     private Map<String, List<String>> groupMembers; // 分组名单
+
+    @Transient
+    private JSONObject statistic; // 统计数据
 }

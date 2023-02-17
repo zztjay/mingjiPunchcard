@@ -233,6 +233,20 @@ public class RewardService {
     }
 
     /**
+     * 取消打卡
+     * @param punchCardId
+     * @param rewardType
+     * @return
+     */
+    public  ApiResponse cancel(long punchCardId, int rewardType){
+        Reward reward = rewardMapper.getByGiveUserId(punchCardId,LoginContext.getOpenId(),rewardType);
+        if(null != reward){
+           rewardMapper.deleteByPrimaryKey(reward.getId());
+        }
+        return ApiResponse.ok();
+    }
+
+    /**
      * 活动打卡评分服务
      *
      * @return API response json
@@ -240,18 +254,23 @@ public class RewardService {
     public  ApiResponse reward(long punchCardId,
                        int rewardType, Integer rewardLevel) {
 
+        // 如果是评级和优选，已经存在了，则进行更新
         Reward reward = new Reward();
+        if(rewardType == Reward.REWARD_TYPE_LEVE || rewardType == Reward.REWARD_TYPE_BEST){
+            if(!CoachEnum.isCoach(LoginContext.getOpenId())){
+                return ApiResponse.error("NO_PERMISSION","您没有权限打分！");
+            }
+            reward  = rewardMapper.getByGiveUserId(punchCardId,LoginContext.getOpenId(),rewardType);
+        }
         reward.setRewardLevel(rewardLevel);
         reward.setRewardType(rewardType);
         reward.setPunchCardId(punchCardId);
         Record record = punchCardMapper.selectByPrimaryKey(punchCardId);
+        reward.setActivityId(record.getActivityId());
         reward.setUserOpenId(record.getMemberOpenId());
-
-        // todo 需要做检查，只有教练才可以给用户评级和评优
 
         // 补充其他信息
         reward.setGiveRewardUserId(LoginContext.getOpenId());
-
         Activity activity = activityMapper.selectByPrimaryKey(record.getActivityId());
         if (CoachEnum.isCoach(LoginContext.getOpenId())) {
             reward.setGiveRewardUserType(Reward.REWARD_USRE_TYPE_COACH);
@@ -272,7 +291,13 @@ public class RewardService {
                 }
             }
         }
-        rewardMapper.insert(reward);
+
+        // 更新或者保存记录
+        if(reward.getId() != null && reward.getId() >0){
+            rewardMapper.updateByPrimaryKey(reward);
+        } else {
+            rewardMapper.insert(reward);
+        }
 
         return ApiResponse.ok(reward.getId());
     }

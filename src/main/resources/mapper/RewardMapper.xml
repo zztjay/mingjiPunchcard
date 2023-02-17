@@ -2,10 +2,134 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tencent.wxcloudrun.dao.RewardMapper">
 
+
+
     <select id="getByRecordId" resultType="com.tencent.wxcloudrun.model.Reward" >
         SELECT *
         FROM Rewards
         WHERE punchCardId = #{recordId} and userOpenId = #{openId} and rewardType = #{type}
+    </select>
+
+    <select id="getByGiveUserId" resultType="com.tencent.wxcloudrun.model.Reward" >
+        SELECT *
+        FROM Rewards
+        WHERE punchCardId = #{recordId} and giveRewardUserId = #{giveRewardUserId} and rewardType = #{type}
+    </select>
+
+    <select
+            id="query"
+            parameterType="com.tencent.wxcloudrun.common.QueryBase"
+            resultType="com.tencent.wxcloudrun.model.Reward">
+        SELECT
+        *
+        FROM Rewards
+        WHERE 1 = 1
+        <if test="activityId != null ">
+            and activityId = #{activityId}
+        </if>
+        <if test="recordId != null ">
+            and punchCardId = #{recordId}
+        </if>
+        <if test="openId != null ">
+            and userOpenId = #{openId}
+        </if>
+        <if test="giveRewardUserId != null ">
+            and giveRewardUserId = #{giveRewardUserId}
+        </if>
+        <if test="type != null ">
+            and rewardType = #{type}
+        </if>
+        order by createdAt desc
+        <if test="startRow != null and pageSize != null">
+            LIMIT #{startRow}, #{pageSize}
+        </if>
+
+    </select>
+
+    <select
+            id="count"
+            parameterType="com.tencent.wxcloudrun.common.QueryBase"
+            resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM Rewards
+        WHERE 1 = 1
+
+        <if test="activityId != null ">
+            and activityId = #{activityId}
+        </if>
+        <if test="recordId != null ">
+            and punchCardId = #{recordId}
+        </if>
+        <if test="openId != null ">
+            and userOpenId = #{openId}
+        </if>
+        <if test="giveRewardUserId != null ">
+            and giveRewardUserId = #{giveRewardUserId}
+        </if>
+        <if test="type != null ">
+            and rewardType = #{type}
+        </if>
+    </select>
+
+    <select
+            id="sumRewardPoint"
+            parameterType="com.tencent.wxcloudrun.common.QueryBase"
+            resultType="int">
+        SELECT
+            COALESCE(sum(rewardPoint),0)
+        FROM
+            Rewards
+        WHERE 1 = 1
+        <if test="activityId != null ">
+            and activityId = #{activityId}
+        </if>
+        <if test="recordId != null ">
+            and punchCardId = #{recordId}
+        </if>
+        <if test="openId != null ">
+            and userOpenId = #{openId}
+        </if>
+        <if test="giveRewardUserId != null ">
+            and giveRewardUserId = #{giveRewardUserId}
+        </if>
+        <if test="type != null ">
+            and rewardType = #{type}
+        </if>
+    </select>
+
+
+    <select
+            id="sumRewardPointRank"
+            parameterType="com.tencent.wxcloudrun.common.QueryBase"
+            resultType="int">
+
+        SELECT
+            count(*)
+        from
+        (
+            SELECT
+                COALESCE(sum(rewardPoint),0) as sumRewardPoints, userOpenId
+            FROM
+                Rewards
+            WHERE 1 = 1
+            <if test="activityId != null ">
+                and activityId = #{activityId}
+            </if>
+            <if test="recordId != null ">
+                and punchCardId = #{recordId}
+            </if>
+            <if test="openId != null ">
+                and userOpenId = #{openId}
+            </if>
+            <if test="giveRewardUserId != null ">
+                and giveRewardUserId = #{giveRewardUserId}
+            </if>
+            <if test="type != null ">
+                and rewardType = #{type}
+            </if>
+            GROUP BY userOpenId
+        ) a
+            where a.sumRewardPoints <![CDATA[ <= ]]> #{sumRewardPoints}
     </select>
 
 </mapper>

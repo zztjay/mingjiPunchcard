@@ -69,4 +69,14 @@ public class RewardController {
         return rewardService.reward(punchCardId, rewardType, rewardLevel);
     }
 
+    /**
+     * 活动打卡取消评分服务
+     *
+     */
+    @GetMapping(value = "/api/reward/cancel")
+    ApiResponse cancel(@RequestParam long punchCardId,
+                       @RequestParam int rewardType) {
+        return rewardService.cancel(punchCardId, rewardType);
+    }
+
 }

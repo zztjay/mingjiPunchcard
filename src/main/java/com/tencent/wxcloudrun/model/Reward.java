@@ -37,6 +37,7 @@ public class Reward implements Serializable {
     private Long id; // 唯一id
     private LocalDateTime createdAt;// 创建时间
     private LocalDateTime updatedAt;// 修改时间
+    private Long activityId; // 活动id
     private Long punchCardId; // 打卡记录id
     private Integer rewardType; // 奖励类型，1.打卡 2.点赞、3.评级 4. 优选
     private String userOpenId; // 用户的openId

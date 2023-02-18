@@ -51,7 +51,7 @@ public class PunchCardController {
      * @return API response json
      */
     @PostMapping(value = "/api/punchcard")
-    ApiResponse punchcard(@RequestBody PunchCardRequest punchCardRequest) {
+    public  ApiResponse punchcard(@RequestBody PunchCardRequest punchCardRequest) {
         return punchCardService.punchcard(punchCardRequest.getId(), punchCardRequest.getContent()
                 , punchCardRequest.getActivityId(), punchCardRequest.getPunchCardTime());
     }
@@ -62,7 +62,7 @@ public class PunchCardController {
      * @return API response json
      */
     @GetMapping(value = "/api/punchcard/delete")
-    ApiResponse delete(Long id) {
+    public   ApiResponse delete(Long id) {
         return punchCardService.delete(id);
     }
 
@@ -72,7 +72,7 @@ public class PunchCardController {
      * @return API response json
      */
     @GetMapping(value = "/api/punchcard/query")
-    ApiResponse query(PunchCardQuery query) {
+    public   ApiResponse query(PunchCardQuery query) {
         List<PunchCardDTO> resultList = new ArrayList<>();
         if (query.isUserRecordToTop()) {
             PunchCardDTO topPunchCard = punchCardService.getRecord(LoginContext.getOpenId(), query.getPunchCardTime(), query.getActivityId());
@@ -123,7 +123,7 @@ public class PunchCardController {
      * @return API response json
      */
     @GetMapping(value = "/api/punchcard/get")
-    ApiResponse get(@RequestParam long recordId) {
+    public   ApiResponse get(@RequestParam long recordId) {
         PunchCardDTO record = punchCardService.getPunchCardRecord(recordId);
         return ApiResponse.ok(record);
     }

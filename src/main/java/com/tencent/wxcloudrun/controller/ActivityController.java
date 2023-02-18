@@ -46,7 +46,7 @@ public class ActivityController {
      * @return API response json
      */
     @PostMapping(value = "/api/activity/save")
-    ApiResponse save(@RequestBody Activity activity) {
+    public ApiResponse save(@RequestBody Activity activity) {
        return activityService.save(activity);
 
     }
@@ -57,7 +57,7 @@ public class ActivityController {
      * @return API response json
      */
     @GetMapping(value = "/api/activity/query")
-    ApiResponse query(HttpServletRequest request, ActivityQuery query) {
+    public  ApiResponse query(HttpServletRequest request, ActivityQuery query) {
         Page<Activity> activitys = activityService.query(query);
         return ApiResponse.ok(activitys);
     }
@@ -68,7 +68,7 @@ public class ActivityController {
      * @return API response json
      */
     @GetMapping(value = "/api/activity/signlist")
-    ApiResponse signList(HttpServletRequest request, ActivityQuery query) {
+    public ApiResponse signList(HttpServletRequest request, ActivityQuery query) {
         List<Activity> activitys = activityService.signList(LoginContext.getOpenId());
         return ApiResponse.ok(activitys);
     }
@@ -93,7 +93,7 @@ public class ActivityController {
      * @return API response json
      */
     @GetMapping(value = "/api/activity/join")
-    ApiResponse join(@RequestParam long activityId
+    public ApiResponse join(@RequestParam long activityId
             , @RequestParam String userName) {
         return activityService.join(activityId, userName);
 

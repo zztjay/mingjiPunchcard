@@ -50,8 +50,6 @@ public class RegisterCheckFilter implements Filter {
             return;
         }
 
-        LoginContext.createLoginContext(openId);
-
         filterChain.doFilter(servletRequest,servletResponse);
     }
 

@@ -36,7 +36,7 @@ public class RewardController {
      * @return API response json
      */
     @PostMapping(value = "/api/comment")
-    ApiResponse comment(@RequestBody CommentRequest commentRequest) {
+    public   ApiResponse comment(@RequestBody CommentRequest commentRequest) {
         return rewardService.comment(commentRequest.getPunchCardId()
                 , commentRequest.getRootCommentContentType()
                 , commentRequest.getReplyCommentId()
@@ -49,7 +49,7 @@ public class RewardController {
      * @return API response json
      */
     @GetMapping(value = "/api/comment/query")
-    ApiResponse query(int pageSize, int currentPage) {
+    public      ApiResponse query(int pageSize, int currentPage) {
         CommentQuery commentQuery = new CommentQuery();
         commentQuery.setUserId(LoginContext.getOpenId());
         commentQuery.setPageSize(pageSize);
@@ -64,7 +64,7 @@ public class RewardController {
      * @return API response json
      */
     @GetMapping(value = "/api/reward")
-    ApiResponse reward(@RequestParam long punchCardId,
+    public   ApiResponse reward(@RequestParam long punchCardId,
                        @RequestParam int rewardType, Integer rewardLevel) {
         return rewardService.reward(punchCardId, rewardType, rewardLevel);
     }
@@ -74,7 +74,7 @@ public class RewardController {
      *
      */
     @GetMapping(value = "/api/reward/cancel")
-    ApiResponse cancel(@RequestParam long punchCardId,
+    public   ApiResponse cancel(@RequestParam long punchCardId,
                        @RequestParam int rewardType) {
         return rewardService.cancel(punchCardId, rewardType);
     }

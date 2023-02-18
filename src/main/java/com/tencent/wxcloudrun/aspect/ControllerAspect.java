@@ -15,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 
 import javax.servlet.http.HttpServletRequest;
+
 /**
  * @Author：zhoutao
  * @Date：2023/2/18 21:54
@@ -26,10 +27,10 @@ public class ControllerAspect {
 
     /**
      * 定义一个切点，后续通知方法将会使用该节点来进行获取
-     *      将Controller层中的所有方法作为切面与业务逻辑交互点
+     * 将Controller层中的所有方法作为切面与业务逻辑交互点
      */
     @Pointcut("execution(public * com.tencent.wxcloudrun.controller.*.*(..))")
-    public void controllerPointcut(){
+    public void controllerPointcut() {
 
     }
 
@@ -39,43 +40,40 @@ public class ControllerAspect {
      * 业务内容前面执行一些信息、业务内容后面再执行一些信息
      *
      * @param proceedingJoinPoint
-     *
      * @return 返回请求方法返回的结果
      */
     @Around("controllerPointcut()")
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
-            long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
 
-            // 开始打印请求日志
-            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            HttpServletRequest request = attributes.getRequest();
+        // 开始打印请求日志
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
 
-            // 设置登陆态
-            LoginContext.createLoginContext(request.getHeader(CommonConstants.OPENID));
+        // 设置登陆态
+        LoginContext.createLoginContext(request.getHeader(CommonConstants.OPENID));
 
-            // 获取签名
-            Signature signature = proceedingJoinPoint.getSignature();
-            String name = signature.getName();
+        // 获取签名
+        Signature signature = proceedingJoinPoint.getSignature();
+        String name = signature.getName();
 
-            // 打印请求信息
-            log.info("-----Aspect 开始-----");
-            log.info("请求地址：{} {}", request.getRequestURL().toString(), request.getMethod());
-            log.info("类名方法：{} {}", signature.getDeclaringTypeName(), name);
-            log.info("远程地址：{}", request.getRemoteAddr());
-            try {
-
-                // 获取返回结果
-                Object result = proceedingJoinPoint.proceed();
-                log.info("返回结果：{}", JSONObject.toJSONString(result));
-
+        // 打印请求信息
+        StringBuilder logInfo = new StringBuilder("-----Aspect 开始-----").append("\n");
+        logInfo.append("请求地址：").append(request.getRequestURL().toString()).append(",").append(request.getMethod()).append("\n");
+        logInfo.append("类名方法：").append(signature.getDeclaringTypeName()).append(",").append(name).append("\n");
+        try {
+            // 获取返回结果
+            Object result = proceedingJoinPoint.proceed();
+            logInfo.append("返回结果:").append(JSONObject.toJSONString(result)).append("\n");
             return result;
         } catch (Throwable e) {
-            log.error("方法调用异常",e);
-            return ApiResponse.error("EXCEPTION","系统异常");
-        }finally {
+            log.error("方法调用异常", e);
+            return ApiResponse.error("EXCEPTION", "系统异常");
+        } finally {
             LoginContext.destoryLoginContext();
-            log.info("-----Aspect 结束 耗时：{}ms-----", System.currentTimeMillis() - startTime);
+            logInfo.append("-----Aspect 结束 耗时：").append(System.currentTimeMillis() - startTime).append(" ms-----");
+            log.info(logInfo.toString());
         }
     }
 }

@@ -43,12 +43,9 @@ public class UserController {
     @PostMapping(value = "/user/register")
    public ApiResponse register(HttpServletRequest servletRequest, @RequestBody UserRequest request) {
 
-        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
-
-        String openId = httpRequest.getHeader(CommonConstants.OPENID);
 
         User user = new User();
-        user.setMemberOpenId(openId);
+        user.setMemberOpenId(LoginContext.getOpenId());
         user.setMemberNick(request.getNick());
         user.setAvator(request.getAvator());
         user.setPhoneNumber(request.getPhoneNum());
@@ -63,7 +60,7 @@ public class UserController {
      * @return API response json
      */
     @GetMapping(value = "/api/user/get")
-    ApiResponse get(HttpServletRequest servletRequest) {
+    public ApiResponse get(HttpServletRequest servletRequest) {
         UserDTO userDTO = new UserDTO();
         User user = userService.getUser(LoginContext.getOpenId());
         if(user == null){

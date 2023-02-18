@@ -32,6 +32,17 @@
             <version>2.0.1</version>
         </dependency>
         <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.8.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.8.9</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.jsonzou</groupId>
             <artifactId>jmockdata</artifactId>
             <version>4.3.0</version>

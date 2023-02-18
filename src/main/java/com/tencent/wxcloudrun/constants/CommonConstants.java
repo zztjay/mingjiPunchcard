@@ -12,4 +12,6 @@ public class CommonConstants {
 
     public static final int CURRENTP_PAGE_FIRST = 1;
 
+    public static final String OPENID = "X-WX-OPENID";
+
 }

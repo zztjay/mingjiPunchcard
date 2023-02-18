@@ -212,7 +212,11 @@ public class RewardService {
                 commentDTO.setReceiveUserName(comment.getReceiveUserName());
                 commentDTO.setReceiveUserAvator(comment.getReceiveUserAvator());
                 commentDTO.setCommentUserName(comment.getCommentUserName());
-                commentDTO.setAvatar(comment.getAvatar());
+
+                // 用户头像信息
+                User user = usersMapper.getByOpenId(comment.getCommentUserId());
+                commentDTO.setAvatar(user.getAvator());
+
                 commentDTO.setCreateAt(DateUtil.getDate2Str(DateUtil.asDate(comment.getCreatedAt())));
                 commentDTO.setPunchCardId(comment.getPunchCardId());
                 commentDTO.setRootCommentId(comment.getRootCommentId());

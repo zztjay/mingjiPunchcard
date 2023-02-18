@@ -49,4 +49,8 @@ public enum CoachEnum {
     public static boolean isCoach(String openId){
         return getByOpenId(openId) != null;
     }
+
+    public static void main(String[] args) {
+        System.out.println(isCoach("oOPIl45BU7yfmV-0bYYKX-Os64G0"));
+    }
 }

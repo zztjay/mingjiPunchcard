@@ -104,18 +104,21 @@ public class PunchCardService {
 
             // 补卡逻辑，检查当前打卡日期
             Date punchCardTimeDate = DateUtil.getymdStr2SDate(punchCardTime);
+            if(punchCardTimeDate.before(DateUtil.asDate(activity.getActivityStartTime()))){
+                return ApiResponse.error("PUNCHCARD_TIME_BEFORE_START_TIME","打卡时间早于活动开始时间！");
+            }
             if (punchCardTimeDate.getDay() < LocalDateTime.now().getDayOfMonth()) {
                 if (activity.getCanRepunchCard() == Activity.IS_SUPPORT_REPUNCHCRD) {
 
                     // 补卡次数判断
-                    if (activity.getRepunchCardDays() < punchCardMapper.getRepunchCount(activityId, LoginContext.getOpenId())) {
+                    if (activity.getRepunchCardDays() > punchCardMapper.getRepunchCount(activityId, LoginContext.getOpenId())) {
                         record.setIsRepunchCard(Record.IS_REPUNCHCRD);
                     } else {
-                        ApiResponse.error("REACH_REPUNCHCARD_LIMIT", "达到补卡上限");
+                      return   ApiResponse.error("REACH_REPUNCHCARD_LIMIT", "达到补卡上限");
                     }
 
                 } else {
-                    ApiResponse.error("NOT_SUPPORT_REPUNCHCARD", "活动不支持补卡");
+                   return ApiResponse.error("NOT_SUPPORT_REPUNCHCARD", "活动不支持补卡");
                 }
             }
             // 设置打卡日期

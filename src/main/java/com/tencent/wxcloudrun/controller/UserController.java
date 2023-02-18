@@ -41,7 +41,7 @@ public class UserController {
      * @return API response json
      */
     @PostMapping(value = "/user/register")
-    ApiResponse register(HttpServletRequest servletRequest, @RequestBody UserRequest request) {
+   public ApiResponse register(HttpServletRequest servletRequest, @RequestBody UserRequest request) {
 
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 

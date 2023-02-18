@@ -82,7 +82,7 @@ public class ActivityController {
      * @return API response json
      */
     @GetMapping(value = "/api/activity/get")
-    ApiResponse get(@RequestParam long activityId) {
+    public ApiResponse get(@RequestParam long activityId) {
         Activity activity = activityService.getById(activityId);
         return ApiResponse.ok(activity);
     }

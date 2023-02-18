@@ -186,16 +186,16 @@ public class PunchCardService {
         RewardQuery bestQuery = new RewardQuery();
         bestQuery.setRecordId(recordId);
         bestQuery.setType(Reward.REWARD_TYPE_BEST);
-        if(rewardMapper.sumRewardPoint(bestQuery) > 0){
+        if(rewardMapper.count(bestQuery) > 0){
             punchCardDTO.setBest(true); // 优选
         }
 
         RewardQuery thumbsupQuery = new RewardQuery();
         thumbsupQuery.setRecordId(recordId);
         thumbsupQuery.setType(Reward.REWARD_TYPE_THUMBS_UP);
-        punchCardDTO.setThumbsUp(rewardMapper.sumRewardPoint(thumbsupQuery)); // 总点赞数
+        punchCardDTO.setThumbsUp(rewardMapper.count(thumbsupQuery)); // 总点赞数
         thumbsupQuery.setGiveRewardUserId(LoginContext.getOpenId()); // 当前用户是否点赞
-        if(rewardMapper.sumRewardPoint(thumbsupQuery) > 0){
+        if(rewardMapper.count(thumbsupQuery) > 0){
             punchCardDTO.setUserThumbsup(true);
         }
 

@@ -60,6 +60,7 @@ public class ControllerAspect {
 
         // 打印请求信息
         StringBuilder logInfo = new StringBuilder("-----Aspect 开始-----").append("\n");
+        logInfo.append("openUid:").append(LoginContext.getOpenId()).append("\n");
         logInfo.append("请求地址：").append(request.getRequestURL().toString()).append(",").append(request.getMethod()).append("\n");
         logInfo.append("类名方法：").append(signature.getDeclaringTypeName()).append(",").append(name).append("\n");
         try {

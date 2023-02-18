@@ -17,4 +17,6 @@ public interface MembersMapper extends Mapper<Member> {
 
     public List<Long> getSignList(@Param("openId")String openId);
 
+    public int sumMembers(@Param("activityId") Long activityId);
+
 }

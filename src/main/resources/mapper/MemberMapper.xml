@@ -19,4 +19,12 @@
         FROM Members
         WHERE memberOpenId = #{openId}
     </select>
+
+    <select id="sumMembers" resultType="java.lang.Integer" >
+        SELECT COALESCE(sum(*),0)
+        FROM Members
+        WHERE  activityId = #{activityId}
+    </select>
+
+
 </mapper>

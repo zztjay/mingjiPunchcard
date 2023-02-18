@@ -19,7 +19,7 @@
         SELECT *
         FROM Comments
         WHERE rootCommentId = #{rootCommentId} and id <![CDATA[ <= ]]> #{lastCommentId}
-        order by createdAt desc
+        order by createdAt asc
     </select>
 
     <select
@@ -33,6 +33,7 @@
         where receiveUserId = #{userId} group by rootCommentId) b
         where a.rootCommentId = b.rootCommentId and a.createdAt = b.createdAt
         and receiveUserId = #{userId}
+        order by a.createdAt desc
         <if test="startRow != null and pageSize != null">
             LIMIT #{startRow}, #{pageSize}
         </if>

@@ -116,6 +116,9 @@ public class PunchCardService {
             // 设置打卡日期
             record.setPunchCardTime(punchCardTime);
             punchCardMapper.insert(record);
+
+            // 添加打卡积分
+            rewardService.reward(record.getId(),Reward.REWARD_TYPE_PUNCH_CARD,null);
             return ApiResponse.ok(record.getId());
         }
         // 更新打卡记录

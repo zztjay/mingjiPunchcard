@@ -13,7 +13,7 @@
     <select id="getByGiveUserId" resultType="com.tencent.wxcloudrun.model.Reward" >
         SELECT *
         FROM Rewards
-        WHERE punchCardId = #{recordId} and giveRewardUserId = #{giveRewardUserId} and rewardType = #{type}
+        WHERE punchCardId = #{recordId} and giveRewardUserId = #{giveRewardUserId} and rewardType = #{type} limit 1
     </select>
 
     <select

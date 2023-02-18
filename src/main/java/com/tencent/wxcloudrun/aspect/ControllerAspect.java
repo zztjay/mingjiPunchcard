@@ -1,4 +1,4 @@
-package com.tencent.wxcloudrun;
+package com.tencent.wxcloudrun.aspect;
 
 import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.config.ApiResponse;
@@ -33,6 +33,7 @@ public class ControllerAspect {
 
     }
 
+
     /**
      * 环绕通知
      * 业务内容前面执行一些信息、业务内容后面再执行一些信息
@@ -43,7 +44,6 @@ public class ControllerAspect {
      */
     @Around("controllerPointcut()")
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-
 
             long startTime = System.currentTimeMillis();
 

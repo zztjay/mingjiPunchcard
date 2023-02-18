@@ -59,8 +59,11 @@ public class UserController {
      */
     @GetMapping(value = "/api/user/get")
     ApiResponse get(HttpServletRequest servletRequest) {
-        User user = userService.getUser(LoginContext.getOpenId());
         UserDTO userDTO = new UserDTO();
+        User user = userService.getUser(LoginContext.getOpenId());
+        if(user == null){
+            return ApiResponse.ok(userDTO);
+        }
         userDTO.setPhoneNumber(user.getPhoneNumber());
         userDTO.setAvator(user.getAvator());
         userDTO.setMemberName(user.getMemberName());

@@ -7,7 +7,7 @@
     <select id="getByRecordId" resultType="com.tencent.wxcloudrun.model.Reward" >
         SELECT *
         FROM Rewards
-        WHERE punchCardId = #{recordId} and userOpenId = #{openId} and rewardType = #{type}
+        WHERE punchCardId = #{recordId}  and rewardType = #{type}
     </select>
 
     <select id="getByGiveUserId" resultType="com.tencent.wxcloudrun.model.Reward" >

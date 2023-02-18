@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Repository
 public interface RewardMapper extends Mapper<Reward> {
-    List<Reward> getByRecordId(@Param("recordId") Long recordId, @Param("openId") String openId,
+    List<Reward> getByRecordId(@Param("recordId") Long recordId,
                                       @Param("type") int type);
 
     Reward getByGiveUserId(@Param("recordId") Long recordId, @Param("giveRewardUserId") String giveRewardUserId,

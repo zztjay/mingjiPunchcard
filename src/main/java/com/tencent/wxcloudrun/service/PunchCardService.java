@@ -199,7 +199,7 @@ public class PunchCardService {
             punchCardDTO.setUserThumbsup(true);
         }
 
-        List<Reward> levelRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_LEVE);
+        List<Reward> levelRecords = rewardMapper.getByRecordId(recordId, Reward.REWARD_TYPE_LEVE);
         if (!CollectionUtils.isEmpty(levelRecords)) {
             Integer level = levelRecords.get(0).getRewardLevel();
             punchCardDTO.setLevel(level != null ? level : 0); // 等级
@@ -209,7 +209,7 @@ public class PunchCardService {
         Activity activity = activityMapper.selectByPrimaryKey(record.getActivityId());
         punchCardDTO.setPunchCardType(activity.getPunchCardType());
 
-        User user = userService.getUser(LoginContext.getOpenId());
+        User user = userService.getUser(record.getMemberOpenId());
         punchCardDTO.setAvtar(user.getAvator());
         punchCardDTO.setActivityId(record.getActivityId());
 

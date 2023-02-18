@@ -102,12 +102,7 @@ public class RewardService {
             comment.setReceiveUserType(Reward.REWARD_USRE_TYPE_MEMBER);
 
             // 写入内容
-            if (rootCommentContentType.equals("full")) {
-                comment.setRootCommentContent(record.getContent());
-            } else {
-                comment.setRootCommentContent(JSON.parseObject(record.getContent()).getString(rootCommentContentType));
-            }
-
+            comment.setRootCommentContent(record.getContent());
             comment.setType(Comment.COMMENT_TYPE_COMMENT);
         }
         // 对评论的回复

@@ -57,7 +57,7 @@ public class PunchCardService {
     public ApiResponse delete(Long id){
         Record record = punchCardMapper.selectByPrimaryKey(id);
         if (null!=record  && !record.getMemberOpenId().equals(LoginContext.getOpenId())) {
-            ApiResponse.error("OPEN_ID_NOT_MATCH", "您没有权限删除");
+            return  ApiResponse.error("OPEN_ID_NOT_MATCH", "您没有权限删除");
         }
         punchCardMapper.deleteByPrimaryKey(id);
 

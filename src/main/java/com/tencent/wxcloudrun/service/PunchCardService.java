@@ -5,10 +5,7 @@ import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.constants.CoachEnum;
-import com.tencent.wxcloudrun.dao.ActivityMapper;
-import com.tencent.wxcloudrun.dao.MembersMapper;
-import com.tencent.wxcloudrun.dao.PunchCardMapper;
-import com.tencent.wxcloudrun.dao.RewardMapper;
+import com.tencent.wxcloudrun.dao.*;
 import com.tencent.wxcloudrun.dto.PunchCardDTO;
 import com.tencent.wxcloudrun.dto.PunchCardQuery;
 import com.tencent.wxcloudrun.dto.RewardQuery;
@@ -53,6 +50,9 @@ public class PunchCardService {
     @Resource
     RewardMapper rewardMapper;
 
+    @Resource
+    CommentMapper commentMapper;
+
 
     public ApiResponse delete(Long id){
         Record record = punchCardMapper.selectByPrimaryKey(id);
@@ -63,6 +63,9 @@ public class PunchCardService {
 
         // 取消点赞积分
         rewardService.cancel(id,Reward.REWARD_TYPE_PUNCH_CARD);
+
+        // 删除评论信息
+        commentMapper.deleteByPunchCardId(id);
 
         return ApiResponse.ok();
     }

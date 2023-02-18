@@ -52,4 +52,11 @@
         and receiveUserId = #{userId}
     </select>
 
+    <select id="deleteByPunchCardId"  >
+        DELETE
+        FROM Comments
+        WHERE punchCardId = #{punchCardId}
+    </select>
+
+
 </mapper>

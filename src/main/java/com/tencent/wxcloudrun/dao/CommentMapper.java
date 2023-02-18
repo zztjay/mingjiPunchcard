@@ -23,4 +23,6 @@ public interface CommentMapper extends Mapper<Comment> {
 
     List<Comment> queryLatestComments(CommentQuery query);
     int countLatestComments(CommentQuery query);
+
+    void deleteByPunchCardId(@Param("punchCardId")  Long punchCardId );
 }

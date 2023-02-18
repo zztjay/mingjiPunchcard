@@ -132,6 +132,7 @@ public class ActivityService {
         int sumRewardPointRank = rewardMapper.sumRewardPointRank(
                 new RewardQuery(activity.getId(),LoginContext.getOpenId(),sumRewardPoint));
         statistic.put("sumRewardPointRank",sumRewardPointRank); // 获得总积分数
+        statistic.put("sumMembers",membersMapper.sumMembers(activity.getId())); // 总的参赛用户
 
         activity.setStatistic(statistic);
     }

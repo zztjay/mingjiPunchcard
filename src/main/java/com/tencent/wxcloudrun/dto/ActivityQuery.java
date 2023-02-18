@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 public class ActivityQuery extends QueryBase {
-    private String teamCode; // 用户的openId
+    private String teamCode;
 
     public ActivityQuery(String teamCode) {
         this.teamCode = teamCode;

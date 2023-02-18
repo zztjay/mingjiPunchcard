@@ -21,7 +21,7 @@
     </select>
 
     <select id="sumMembers" resultType="java.lang.Integer" >
-        SELECT COALESCE(sum(*),0)
+        SELECT COALESCE(count(*),0)
         FROM Members
         WHERE  activityId = #{activityId}
     </select>

@@ -248,14 +248,21 @@ public class RewardService {
      */
     public  ApiResponse reward(long punchCardId,
                        int rewardType, Integer rewardLevel) {
-
-        // 如果是评级和优选，已经存在了，则进行更新
-        Reward reward = new Reward();
-        if(rewardType == Reward.REWARD_TYPE_LEVE || rewardType == Reward.REWARD_TYPE_BEST){
+        if( rewardType == Reward.REWARD_TYPE_LEVE || rewardType == Reward.REWARD_TYPE_BEST){
             if(!CoachEnum.isCoach(LoginContext.getOpenId())){
                 return ApiResponse.error("NO_PERMISSION","您没有权限打分！");
             }
-            reward  = rewardMapper.getByGiveUserId(punchCardId,LoginContext.getOpenId(),rewardType);
+        }
+
+        // 如果是评级和优选，已经存在了，则进行更新
+        Reward reward = rewardMapper.getByGiveUserId(punchCardId,LoginContext.getOpenId(),rewardType);
+        if(reward != null  && (rewardType == Reward.REWARD_TYPE_THUMBS_UP
+                ||  rewardType == Reward.REWARD_TYPE_PUNCH_CARD) ){
+            log.warn("repeat reward, reward:{}",reward);
+            return ApiResponse.ok();
+        }
+        if(null == reward){
+            reward = new Reward();
         }
         reward.setRewardLevel(rewardLevel);
         reward.setRewardType(rewardType);

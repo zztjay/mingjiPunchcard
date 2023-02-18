@@ -30,7 +30,7 @@ public class PunchCardDTO implements Serializable {
     private String groupIdentifier; // 分组信息
 
     private boolean canEdit;// 是否为当前登陆人的打卡
-    private boolean isCoach; // 是否是教练
+    private boolean isCoach = false; // 是否是教练
 
     private List<List<CommentDTO>> comments; // 评论列表
 }

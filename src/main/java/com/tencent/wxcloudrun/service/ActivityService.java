@@ -106,7 +106,7 @@ public class ActivityService {
         Date startDate = DateUtil.asDate(activity.getActivityStartTime());
         Date endDate = new Date();
         Long punchCardDays = DateUtil.getBetweenDays(startDate,endDate);
-        statistic.put("punchCardDays",punchCardDays);
+        statistic.put("punchCardDays",punchCardDays); // 活动进行总天数
 
         // 打卡数，打卡率
         PunchCardQuery query = new PunchCardQuery();

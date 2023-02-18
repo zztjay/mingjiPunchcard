@@ -30,7 +30,7 @@
         select a.* from Comments a,
         (
         select rootCommentId,max(createdAt) createdAt from Comments
-        where receiveUserId = #{userId} group by rootCommentId) b
+        where receiveUserId = #{userId} and commentUserId != receiveUserId group by rootCommentId) b
         where a.rootCommentId = b.rootCommentId and a.createdAt = b.createdAt
         and receiveUserId = #{userId}
         order by a.createdAt desc
@@ -47,7 +47,7 @@
         SELECT count(*) from Comments a,
         (
         select rootCommentId,max(createdAt) createdAt from Comments
-        where receiveUserId = #{userId} group by rootCommentId ) b
+        where receiveUserId = #{userId} and commentUserId != receiveUserId group by rootCommentId ) b
         where a.rootCommentId = b.rootCommentId and a.createdAt = b.createdAt
         and receiveUserId = #{userId}
     </select>

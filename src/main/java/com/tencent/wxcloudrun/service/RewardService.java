@@ -281,15 +281,17 @@ public class RewardService {
         }
 
         // 计算获得积分
-        JSONArray rewardRules = JSONArray.parseArray(activity.getRewardRule());
-        for (JSONObject rule : rewardRules.toJavaList(JSONObject.class)) {
-            Date now = new Date();
-            // 积分计算逻辑，评级需要3和4等级的才可以
-            if(rule.getInteger("type") == rewardType && rule.getDate("startTime").before(now)){
-                if(rewardType == Reward.REWARD_TYPE_LEVE && (rewardLevel == 3 || rewardLevel == 4)){
-                    reward.setRewardPoint(rule.getInteger("basePoint"));
-                } else {
-                    reward.setRewardPoint(rule.getInteger("basePoint"));
+        if(StringUtil.isNotEmpty(activity.getRewardRule())){
+            JSONArray rewardRules = JSONArray.parseArray(activity.getRewardRule());
+            for (JSONObject rule : rewardRules.toJavaList(JSONObject.class)) {
+                Date now = new Date();
+                // 积分计算逻辑，评级需要3和4等级的才可以
+                if(rule.getInteger("type") == rewardType && rule.getDate("startTime").before(now)){
+                    if(rewardType == Reward.REWARD_TYPE_LEVE && (rewardLevel == 3 || rewardLevel == 4)){
+                        reward.setRewardPoint(rule.getInteger("basePoint"));
+                    } else {
+                        reward.setRewardPoint(rule.getInteger("basePoint"));
+                    }
                 }
             }
         }

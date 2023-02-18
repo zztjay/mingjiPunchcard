@@ -59,8 +59,10 @@ public class PunchCardService {
         if (null!=record  && !record.getMemberOpenId().equals(LoginContext.getOpenId())) {
             ApiResponse.error("OPEN_ID_NOT_MATCH", "您没有权限删除");
         }
-
         punchCardMapper.deleteByPrimaryKey(id);
+
+        // 取消点赞积分
+        rewardService.cancel(id,Reward.REWARD_TYPE_PUNCH_CARD);
 
         return ApiResponse.ok();
     }

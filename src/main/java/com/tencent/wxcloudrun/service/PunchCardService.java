@@ -11,6 +11,7 @@ import com.tencent.wxcloudrun.dao.PunchCardMapper;
 import com.tencent.wxcloudrun.dao.RewardMapper;
 import com.tencent.wxcloudrun.dto.PunchCardDTO;
 import com.tencent.wxcloudrun.dto.PunchCardQuery;
+import com.tencent.wxcloudrun.dto.RewardQuery;
 import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.model.Record;
 import com.tencent.wxcloudrun.util.DateUtil;
@@ -182,19 +183,20 @@ public class PunchCardService {
         punchCardDTO.setCanEdit(LoginContext.getOpenId().equals(record.getMemberOpenId()));
         punchCardDTO.setCoach(CoachEnum.isCoach(LoginContext.getOpenId()));
 
-        List<Reward> bestRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_BEST);
-        if (!CollectionUtils.isEmpty(bestRecords)) {
+        RewardQuery bestQuery = new RewardQuery();
+        bestQuery.setRecordId(recordId);
+        bestQuery.setType(Reward.REWARD_TYPE_BEST);
+        if(rewardMapper.sumRewardPoint(bestQuery) > 0){
             punchCardDTO.setBest(true); // 优选
-
         }
 
-
-        List<Reward> thumbsupRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_THUMBS_UP);
-        punchCardDTO.setThumbsUp(thumbsupRecords.size()); // 点赞数
-        for (Reward thumbsupRecord : thumbsupRecords) {
-            if (thumbsupRecord.getGiveRewardUserId().equals(LoginContext.getOpenId())){
-                punchCardDTO.setUserThumbsup(true);
-            }
+        RewardQuery thumbsupQuery = new RewardQuery();
+        thumbsupQuery.setRecordId(recordId);
+        thumbsupQuery.setType(Reward.REWARD_TYPE_THUMBS_UP);
+        punchCardDTO.setThumbsUp(rewardMapper.sumRewardPoint(thumbsupQuery)); // 总点赞数
+        thumbsupQuery.setGiveRewardUserId(LoginContext.getOpenId()); // 当前用户是否点赞
+        if(rewardMapper.sumRewardPoint(thumbsupQuery) > 0){
+            punchCardDTO.setUserThumbsup(true);
         }
 
         List<Reward> levelRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_LEVE);

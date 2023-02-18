@@ -174,7 +174,7 @@ public class ActivityService {
 
         // 提交分组信息
         if (StringUtils.isNotEmpty(activity.getMembers())) {
-            activity.setGroupMembers(getGroupMembers(activity.getMembers()));
+            activity.setGroupMembers(getGroupMembers(activity.getMembers(),activityId));
         }
         // 提取活动信息
         addStatistic(activity);
@@ -182,12 +182,19 @@ public class ActivityService {
         return activity;
     }
 
-    private Map<String, List<String>> getGroupMembers(String members) {
-        Map<String, List<String>> groupMembers = new HashMap<>();
+    private Map<String, Map<String,Boolean>> getGroupMembers(String members, Long activityId) {
+
+        Map<String, Map<String,Boolean>> groupMembers = new LinkedHashMap<>();
         String memberInfos[] = members.split("\\r?\\n");
         if (memberInfos.length == 0) {
             return groupMembers;
         }
+        Set<String> signSet = new HashSet<>();
+        List<Member> signMembers = membersMapper.selectByActivityId(activityId);
+        for (Member signMember : signMembers) {
+            signSet.add(signMember.getMemberName());
+        }
+
         for (String memberInfo : memberInfos) {
             String[] result = memberInfo.split(",");
             if (result.length != 4) {
@@ -198,10 +205,18 @@ public class ActivityService {
 
             // 格式化数据
             if (groupMembers.containsKey(groupIdentifier)) {
-                groupMembers.get(groupIdentifier).add(memberName);
+                if(signSet.contains(memberName)){
+                    groupMembers.get(groupIdentifier).put(memberName,true);
+                }else {
+                    groupMembers.get(groupIdentifier).put(memberName,false);
+                }
             } else {
-                groupMembers.put(groupIdentifier, new ArrayList<>());
-                groupMembers.get(groupIdentifier).add(memberName);
+                groupMembers.put(groupIdentifier, new LinkedHashMap<>());
+                if(signSet.contains(memberName)){
+                    groupMembers.get(groupIdentifier).put(memberName,true);
+                }else {
+                    groupMembers.get(groupIdentifier).put(memberName,false);
+                }
             }
         }
         return groupMembers;

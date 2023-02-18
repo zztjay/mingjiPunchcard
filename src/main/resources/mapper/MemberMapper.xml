@@ -14,6 +14,12 @@
         WHERE memberOpenId = #{openId} and activityId = #{activityId} limit 1
     </select>
 
+    <select id="selectByActivityId" resultType="com.tencent.wxcloudrun.model.Member" >
+        SELECT *
+        FROM Members
+        WHERE activityId = #{activityId}
+    </select>
+
     <select id="getSignList" resultType="java.lang.Long" >
         SELECT activityId
         FROM Members

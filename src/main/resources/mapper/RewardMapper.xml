@@ -135,7 +135,7 @@
     <select id="deleteByPunchCardId"  >
         DELETE
         FROM Rewards
-        WHERE recordId = #{recordId}
+        WHERE punchCardId = #{recordId}
     </select>
 
 </mapper>

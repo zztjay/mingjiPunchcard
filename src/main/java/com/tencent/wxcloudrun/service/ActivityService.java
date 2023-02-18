@@ -114,17 +114,22 @@ public class ActivityService {
         query.setOpenId(LoginContext.getOpenId());
         int punchCardCount = punchCardMapper.count(query);
         statistic.put("punchCardCount",punchCardCount);// 用户打卡天数
-        statistic.put("punchCardRate",new BigDecimal((double)punchCardCount/punchCardDays).setScale
-                (2,BigDecimal.ROUND_HALF_DOWN).toString()); // 打卡率
+
+        if(null != punchCardDays &&  punchCardDays > 0){
+            statistic.put("punchCardRate",new BigDecimal((double)punchCardCount/punchCardDays).setScale
+                    (2,BigDecimal.ROUND_HALF_DOWN).toString()); // 打卡率
+        }
+
 
         // 获赞总数，日均点赞数
         Integer thumbsupTotal = rewardMapper.count(new RewardQuery(activity.getId(),
                 null,LoginContext.getOpenId(), Reward.REWARD_TYPE_THUMBS_UP, null));
         statistic.put("thumbsupTotal",thumbsupTotal); // 获赞总数
 
-        statistic.put("thumbsupAvg",new BigDecimal((double)thumbsupTotal/punchCardDays).setScale
-                (2,BigDecimal.ROUND_HALF_DOWN).toString() ); // 每天获赞数
-
+        if(null != punchCardDays &&  punchCardDays > 0){
+            statistic.put("thumbsupAvg",new BigDecimal((double)thumbsupTotal/punchCardDays).setScale
+                    (2,BigDecimal.ROUND_HALF_DOWN).toString() ); // 每天获赞数
+        }
 
         // 总积分，排名
         int sumRewardPoint = rewardMapper.sumRewardPoint(new RewardQuery(activity.getId(),LoginContext.getOpenId()));

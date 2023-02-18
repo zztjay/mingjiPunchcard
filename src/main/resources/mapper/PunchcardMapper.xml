@@ -27,6 +27,15 @@
         <if test="punchCardTime != null ">
             and punchCardTime = #{punchCardTime}
         </if>
+
+        <if test="ingoreRecordIds != null and ingoreRecordIds.size > 0">
+            AND id not in
+            <foreach collection="ingoreRecordIds" item="ingoreRecordId" open=" (" close=")" separator=",">
+                <!-- 每次遍历要拼接的串 -->
+                #{ingoreRecordId}
+            </foreach>
+        </if>
+
         order by createdAt desc
         <if test="startRow != null and pageSize != null">
             LIMIT #{startRow}, #{pageSize}
@@ -51,5 +60,13 @@
         <if test="punchCardTime != null ">
             and punchCardTime = #{punchCardTime}
         </if>
+        <if test="ingoreRecordIds != null and ingoreRecordIds.size > 0">
+            AND id not in
+            <foreach collection="ingoreRecordIds" item="ingoreRecordId" open=" (" close=")" separator=",">
+                <!-- 每次遍历要拼接的串 -->
+                #{ingoreRecordId}
+            </foreach>
+        </if>
+
     </select>
 </mapper>

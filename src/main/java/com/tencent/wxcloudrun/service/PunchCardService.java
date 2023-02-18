@@ -126,6 +126,17 @@ public class PunchCardService {
         }
     }
 
+    public PunchCardDTO getRecord(String openId, String punchCardTime, Long activityId) {
+        PunchCardQuery query = new PunchCardQuery();
+        query.setPunchCardTime(punchCardTime);
+        query.setActivityId(activityId);
+        query.setOpenId(openId);
+        Page<PunchCardDTO> page = query(query);
+        if(page.getTotalRecords() >= 0){
+            return page.getEntityList().get(0);
+        }
+        return null;
+    }
     /**
      * 查询活动打卡
      *

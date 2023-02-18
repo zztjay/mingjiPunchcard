@@ -1,9 +1,12 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.github.jsonzou.jmockdata.JMockData;
+import com.github.jsonzou.jmockdata.util.StringUtils;
+import com.google.common.base.Preconditions;
 import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.constants.CommonConstants;
 import com.tencent.wxcloudrun.dto.CommentDTO;
 import com.tencent.wxcloudrun.dto.PunchCardDTO;
 import com.tencent.wxcloudrun.dto.PunchCardQuery;
@@ -28,6 +31,7 @@ import java.util.List;
 
 /**
  * 活动打卡页面控制器
+ *
  * @Author：zhoutao
  * @Date：2023/1/17 16:37
  */
@@ -43,16 +47,18 @@ public class PunchCardController {
 
     /**
      * 活动打卡服务
+     *
      * @return API response json
      */
     @PostMapping(value = "/api/punchcard")
     ApiResponse punchcard(@RequestBody PunchCardRequest punchCardRequest) {
-       return punchCardService.punchcard(punchCardRequest.getId(),punchCardRequest.getContent()
-               ,punchCardRequest.getActivityId(),punchCardRequest.getPunchCardTime());
+        return punchCardService.punchcard(punchCardRequest.getId(), punchCardRequest.getContent()
+                , punchCardRequest.getActivityId(), punchCardRequest.getPunchCardTime());
     }
 
     /**
      * 活动打卡服务
+     *
      * @return API response json
      */
     @GetMapping(value = "/api/punchcard/delete")
@@ -61,17 +67,35 @@ public class PunchCardController {
     }
 
     /**
-     * 查询打卡列表
+     * 查询活动的打卡列表
+     *
      * @return API response json
      */
     @GetMapping(value = "/api/punchcard/query")
     ApiResponse query(PunchCardQuery query) {
+        List<PunchCardDTO> resultList = new ArrayList<>();
+        if (query.isUserRecordToTop()) {
+            PunchCardDTO topPunchCard = punchCardService.getRecord(LoginContext.getOpenId(), query.getPunchCardTime(), query.getActivityId());
+            if (null != topPunchCard) {
+                query.getIngoreRecordIds().add(topPunchCard.getRecordId());
+                // 查询记录
+                Page<PunchCardDTO> records = punchCardService.query(query);
+                if (query.getCurrentPage() == CommonConstants.CURRENTP_PAGE_FIRST) {
+                    resultList.add(topPunchCard);
+                    resultList.addAll(records.getEntityList());
+                    records.setEntityList(resultList);
+                }
+                return ApiResponse.ok(records);
+            }
+
+        }
         Page<PunchCardDTO> records = punchCardService.query(query);
         return ApiResponse.ok(records);
     }
 
     /**
      * 查询打卡日历
+     *
      * @return API response json
      */
     @GetMapping(value = "/api/punchcard/calender")
@@ -81,7 +105,7 @@ public class PunchCardController {
         Activity activity = activityService.getById(activityId);
         Date startDate = DateUtil.asDate(activity.getActivityStartTime());
         Date endDate = DateUtil.asDate(activity.getActivityEndTime());
-        Long days = DateUtil.getBetweenDays(startDate,endDate);
+        Long days = DateUtil.getBetweenDays(startDate, endDate);
 
         // 查询所有的打卡日历
         PunchCardQuery query = new PunchCardQuery();
@@ -95,6 +119,7 @@ public class PunchCardController {
 
     /**
      * 查询打卡记录
+     *
      * @return API response json
      */
     @GetMapping(value = "/api/punchcard/get")

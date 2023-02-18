@@ -9,4 +9,7 @@ public class CommonConstants {
     public static final String ERROR_CODE = "errcode";
     public static final String ERROR_MSG = "errmsg";
     public static final int ERROR_CODE_SUCCESS = 0;
+
+    public static final int CURRENTP_PAGE_FIRST = 1;
+
 }

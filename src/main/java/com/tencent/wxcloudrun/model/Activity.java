@@ -66,4 +66,7 @@ public class Activity implements Serializable {
 
     @Transient
     private Integer leftRepunchCardDays;// 剩余补卡天数
+
+    @Transient
+    private boolean userSigned = false; // 用户已报名
 }

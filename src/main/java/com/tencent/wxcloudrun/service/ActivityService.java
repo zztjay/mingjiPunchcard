@@ -202,6 +202,10 @@ public class ActivityService {
            activity.setLeftRepunchCardDays(activity.getRepunchCardDays() - repunchCount);
         }
 
+        // 用户是否已报名
+        if(null != membersMapper.selectByOpenId(LoginContext.getOpenId(), activityId)){
+            activity.setUserSigned(true);
+        }
 
         return activity;
     }

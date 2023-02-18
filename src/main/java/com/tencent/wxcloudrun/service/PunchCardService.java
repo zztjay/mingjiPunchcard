@@ -160,8 +160,7 @@ public class PunchCardService {
         punchCardDTO.setCreateAt(DateUtil.getDate2Str(DateUtil.asDate(record.getCreatedAt())));
         punchCardDTO.setPunchCardTime(record.getPunchCardTime());
         punchCardDTO.setContent(record.getContent());
-        Member member = membersMapper.selectByOpenId(record.getMemberOpenId(),
-                record.getActivityId());
+        Member member = membersMapper.selectByOpenId(record.getMemberOpenId(), record.getActivityId());
         punchCardDTO.setUserName(member.getMemberName());
         punchCardDTO.setDeptName(member.getDeptName());
         punchCardDTO.setPositionName(member.getPositionName());
@@ -170,10 +169,17 @@ public class PunchCardService {
         List<Reward> bestRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_BEST);
         if (!CollectionUtils.isEmpty(bestRecords)) {
             punchCardDTO.setBest(true); // 优选
+
         }
+
 
         List<Reward> thumbsupRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_THUMBS_UP);
         punchCardDTO.setThumbsUp(thumbsupRecords.size()); // 点赞数
+        for (Reward thumbsupRecord : thumbsupRecords) {
+            if (thumbsupRecord.getGiveRewardUserId().equals(LoginContext.getOpenId())){
+                punchCardDTO.setUserThumbsup(true);
+            }
+        }
 
         List<Reward> levelRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_LEVE);
         if (!CollectionUtils.isEmpty(levelRecords)) {

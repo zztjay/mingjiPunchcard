@@ -16,6 +16,7 @@ public class PunchCardDTO implements Serializable {
     private String content; // 打卡内容，使用json结构存储
     private Long recordId; // 打卡id
     private int thumbsUp; // 点赞数
+    private boolean userThumbsup; // 用户点过赞
     private int level;// 评级分数, 0:暂不标记 -1：不符合要求， >0：评级分数
     private boolean isBest = false; // 优选
     private String punchCardTime; //  打卡时间

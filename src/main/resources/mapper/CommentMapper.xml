@@ -19,7 +19,7 @@
         SELECT *
         FROM Comments
         WHERE rootCommentId = #{rootCommentId} and id <![CDATA[ <= ]]> #{lastCommentId}
-        order by createdAt asc
+        order by createdAt desc
     </select>
 
     <select

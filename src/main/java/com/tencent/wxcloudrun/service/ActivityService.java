@@ -262,7 +262,7 @@ public class ActivityService {
         if (!activity.getMembers().contains(userName)) {
             return ApiResponse.error("USER_NOT_EXSIT", "用户不存在");
         }
-        if (membersMapper.selectByUserName(userName, activityId) != null) {
+        if (membersMapper.selectByOpenId(LoginContext.getOpenId(), activityId) != null) {
             return ApiResponse.error("USER_ALREADY_SIGN", "用户已报名");
         }
 

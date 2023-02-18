@@ -6,7 +6,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 @MapperScan(basePackages = {"com.tencent.wxcloudrun.dao"})
 public class WxCloudRunApplication {  
 

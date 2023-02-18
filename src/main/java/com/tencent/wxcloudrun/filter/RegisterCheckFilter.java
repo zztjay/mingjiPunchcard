@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,8 @@ public class RegisterCheckFilter implements Filter {
             log.warn("RegisterCheckFilter, not register, openId:{}",openId);
             return;
         }
+
+        LoginContext.createLoginContext(openId);
 
         filterChain.doFilter(servletRequest,servletResponse);
     }

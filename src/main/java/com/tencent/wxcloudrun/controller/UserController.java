@@ -4,6 +4,7 @@ import com.github.jsonzou.jmockdata.JMockData;
 import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.constants.CoachEnum;
+import com.tencent.wxcloudrun.constants.CommonConstants;
 import com.tencent.wxcloudrun.constants.SuperManagerEnum;
 import com.tencent.wxcloudrun.dto.CounterRequest;
 import com.tencent.wxcloudrun.dto.UserDTO;
@@ -42,8 +43,12 @@ public class UserController {
     @PostMapping(value = "/user/register")
     ApiResponse register(HttpServletRequest servletRequest, @RequestBody UserRequest request) {
 
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+
+        String openId = httpRequest.getHeader(CommonConstants.OPENID);
+
         User user = new User();
-        user.setMemberOpenId(LoginContext.getOpenId());
+        user.setMemberOpenId(openId);
         user.setMemberNick(request.getNick());
         user.setAvator(request.getAvator());
         user.setPhoneNumber(request.getPhoneNum());

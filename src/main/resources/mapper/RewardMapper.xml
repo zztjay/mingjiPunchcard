@@ -132,4 +132,10 @@
             where a.sumRewardPoints <![CDATA[ <= ]]> #{sumRewardPoints}
     </select>
 
+    <select id="deleteByPunchCardId"  >
+        DELETE
+        FROM Rewards
+        WHERE recordId = #{recordId}
+    </select>
+
 </mapper>

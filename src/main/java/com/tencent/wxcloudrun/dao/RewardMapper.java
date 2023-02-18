@@ -28,4 +28,6 @@ public interface RewardMapper extends Mapper<Reward> {
     int sumRewardPoint(RewardQuery query);
 
     int sumRewardPointRank(RewardQuery query);
+
+    void deleteByPunchCardId(@Param("recordId") Long recordId);
 }

@@ -62,7 +62,7 @@ public class PunchCardService {
         punchCardMapper.deleteByPrimaryKey(id);
 
         // 取消点赞积分
-        rewardService.cancel(id,Reward.REWARD_TYPE_PUNCH_CARD);
+        rewardMapper.deleteByPunchCardId(id);
 
         // 删除评论信息
         commentMapper.deleteByPunchCardId(id);

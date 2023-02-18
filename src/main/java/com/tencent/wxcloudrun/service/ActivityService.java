@@ -114,14 +114,17 @@ public class ActivityService {
         query.setOpenId(LoginContext.getOpenId());
         int punchCardCount = punchCardMapper.count(query);
         statistic.put("punchCardCount",punchCardCount);// 用户打卡天数
-        statistic.put("punchCardRate",(double)punchCardCount/punchCardDays); // 打卡率
+        statistic.put("punchCardRate",new BigDecimal((double)punchCardCount/punchCardDays).setScale
+                (2,BigDecimal.ROUND_HALF_DOWN).toString()); // 打卡率
 
         // 获赞总数，日均点赞数
         Integer thumbsupTotal = rewardMapper.count(new RewardQuery(activity.getId(),
                 null,LoginContext.getOpenId(), Reward.REWARD_TYPE_THUMBS_UP, null));
         statistic.put("thumbsupTotal",thumbsupTotal); // 获赞总数
 
-        statistic.put("thumbsupAvg",(double)thumbsupTotal/punchCardDays); // 每天获赞数
+        statistic.put("thumbsupAvg",new BigDecimal((double)thumbsupTotal/punchCardDays).setScale
+                (2,BigDecimal.ROUND_HALF_DOWN).toString() ); // 每天获赞数
+
 
         // 总积分，排名
         int sumRewardPoint = rewardMapper.sumRewardPoint(new RewardQuery(activity.getId(),LoginContext.getOpenId()));
@@ -251,9 +254,6 @@ public class ActivityService {
     }
 
     public static void main(String[] args) {
-        String a = "abc\n" +
-                "def\n" +
-                "ghi";
-        String members[] = a.split("\\r?\\n");
+        System.out.println(new BigDecimal((double)2.111).setScale(2,BigDecimal.ROUND_HALF_DOWN).toString());
     }
 }

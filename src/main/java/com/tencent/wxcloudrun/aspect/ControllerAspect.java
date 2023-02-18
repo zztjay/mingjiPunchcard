@@ -28,7 +28,7 @@ public class ControllerAspect {
      * 定义一个切点，后续通知方法将会使用该节点来进行获取
      *      将Controller层中的所有方法作为切面与业务逻辑交互点
      */
-    @Pointcut("execution(public * com.tencent.wxcloudrun.controller..*Controller.*(..))")
+    @Pointcut("execution(public * com.tencent.wxcloudrun.controller.*..*(..))")
     public void controllerPointcut(){
 
     }

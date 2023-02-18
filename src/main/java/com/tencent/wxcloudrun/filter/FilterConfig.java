@@ -26,7 +26,7 @@ public class FilterConfig {
         registration.setName("registerCheckFilter");
         //过滤器顺序
         registration.setOrder(FilterRegistrationBean.LOWEST_PRECEDENCE);
-        log.warn("regiterFilterRegister init");
+
         return registration;
     }
 

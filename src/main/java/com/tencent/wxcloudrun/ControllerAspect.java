@@ -6,22 +6,14 @@ import com.tencent.wxcloudrun.constants.CommonConstants;
 import lombok.extern.slf4j.Slf4j;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.PropertyFilter;
-import com.alibaba.fastjson.support.spring.PropertyPreFilters;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 /**
  * @Author：zhoutao
@@ -30,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 @Slf4j
-public class ServiceAspect {
+public class ControllerAspect {
 
     /**
      * 定义一个切点，后续通知方法将会使用该节点来进行获取
@@ -51,7 +43,6 @@ public class ServiceAspect {
      */
     @Around("controllerPointcut()")
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-
 
 
             long startTime = System.currentTimeMillis();

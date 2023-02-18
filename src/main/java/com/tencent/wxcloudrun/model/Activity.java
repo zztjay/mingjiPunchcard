@@ -63,4 +63,7 @@ public class Activity implements Serializable {
 
     @Transient
     private JSONObject statistic; // 统计数据
+
+    @Transient
+    private Integer leftRepunchCardDays;// 剩余补卡天数
 }

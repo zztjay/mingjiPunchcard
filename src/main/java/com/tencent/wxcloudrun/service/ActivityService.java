@@ -179,6 +179,13 @@ public class ActivityService {
         // 提取活动信息
         addStatistic(activity);
 
+        // 剩余补卡天数
+        if(activity.getCanRepunchCard() == Activity.IS_SUPPORT_REPUNCHCRD){
+           int repunchCount = punchCardMapper.getRepunchCount(activityId, LoginContext.getOpenId());
+           activity.setLeftRepunchCardDays(activity.getRepunchCardDays() - repunchCount);
+        }
+
+
         return activity;
     }
 

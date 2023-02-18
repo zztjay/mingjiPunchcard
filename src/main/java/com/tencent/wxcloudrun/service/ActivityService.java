@@ -82,6 +82,10 @@ public class ActivityService {
         activity.setCoachs(coaches.toJSONString());
 
         if (activity.getId() != null && activity.getId() > 0L) {
+            Activity activityDB = activityMapper.selectByPrimaryKey(activity.getId());
+            if(activity.getRepunchCardDays() < activityDB.getRepunchCardDays()){
+                return  ApiResponse.error("REPUNCHCARD_DAYS_TOO_SMALL","补卡天数只能增加！");
+            }
             activityMapper.updateByPrimaryKey(activity);
         } else {
             activityMapper.insert(activity);

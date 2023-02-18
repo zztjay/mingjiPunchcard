@@ -217,7 +217,9 @@ public class RewardService {
                 commentDTO.setRootCommentContentType(comment.getRootCommentContentType());
                 commentDTO.setRootCommentContent(comment.getRootCommentContent());
                 commentDTO.setType(comment.getType());
-                commentDTO.setPunchCardTime(DateUtil.getDate2Str(DateUtil.asDate(punchcard.getCreatedAt()))); // 打卡时间
+                if(null != punchcard) {
+                    commentDTO.setPunchCardTime(DateUtil.getDate2Str(DateUtil.asDate(punchcard.getCreatedAt()))); // 打卡时间
+                }
                 commentDTO.setCoach(CoachEnum.isCoach(comment.getCommentUserId())); // 是否为教练
                 commentList.add(commentDTO);
             }

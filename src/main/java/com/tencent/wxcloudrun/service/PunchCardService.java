@@ -4,6 +4,7 @@ import com.github.jsonzou.jmockdata.JMockData;
 import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.constants.CoachEnum;
 import com.tencent.wxcloudrun.dao.ActivityMapper;
 import com.tencent.wxcloudrun.dao.MembersMapper;
 import com.tencent.wxcloudrun.dao.PunchCardMapper;
@@ -165,6 +166,10 @@ public class PunchCardService {
         punchCardDTO.setDeptName(member.getDeptName());
         punchCardDTO.setPositionName(member.getPositionName());
         punchCardDTO.setGroupIdentifier(member.getGroupIdentifier());
+
+        // 是否为本人
+        punchCardDTO.setCanEdit(LoginContext.getOpenId().equals(record.getMemberOpenId()));
+        punchCardDTO.setCoach(CoachEnum.isCoach(LoginContext.getOpenId()));
 
         List<Reward> bestRecords = rewardMapper.getByRecordId(recordId, LoginContext.getOpenId(), Reward.REWARD_TYPE_BEST);
         if (!CollectionUtils.isEmpty(bestRecords)) {

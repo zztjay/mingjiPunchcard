@@ -29,5 +29,8 @@ public class PunchCardDTO implements Serializable {
     private String deptName; // 部门信息
     private String groupIdentifier; // 分组信息
 
+    private boolean canEdit;// 是否为当前登陆人的打卡
+    private boolean isCoach; // 是否是教练
+
     private List<List<CommentDTO>> comments; // 评论列表
 }

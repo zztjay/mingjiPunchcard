@@ -59,7 +59,7 @@ public class Activity implements Serializable {
     private String  ext;// 扩展字段
 
     @Transient
-    private Map<String, Map<String,Boolean>> groupMembers; // 分组名单
+    private List<JSONObject> groupMembers; // 分组名单
 
     @Transient
     private JSONObject statistic; // 统计数据

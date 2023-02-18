@@ -174,7 +174,24 @@ public class ActivityService {
 
         // 提交分组信息
         if (StringUtils.isNotEmpty(activity.getMembers())) {
-            activity.setGroupMembers(getGroupMembers(activity.getMembers(),activityId));
+            List<JSONObject> groups = new ArrayList<>();
+            Map<String, Map<String,Boolean>> map = getGroupMembers(activity.getMembers(),activityId);
+            for (String groupName : map.keySet()) {
+                JSONObject group = new JSONObject();
+                group.put("groupName", groupName);
+                groups.add(group);
+
+                ArrayList<JSONObject> memberList= new ArrayList<>();
+                group.put("memebers", memberList);
+                Map<String,Boolean> memberMap = map.get(groupName);
+                for (String memberName : memberMap.keySet()) {
+                    JSONObject member = new JSONObject();
+                    member.put("name", memberName);
+                    member.put("isBind", memberMap.get(memberName));
+                    memberList.add(member);
+                }
+            }
+            activity.setGroupMembers(groups);
         }
         // 提取活动信息
         addStatistic(activity);

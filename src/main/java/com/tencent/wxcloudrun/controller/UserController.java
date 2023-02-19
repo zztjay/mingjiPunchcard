@@ -43,7 +43,6 @@ public class UserController {
     @PostMapping(value = "/user/register")
    public ApiResponse register(HttpServletRequest servletRequest, @RequestBody UserRequest request) {
 
-
         User user = new User();
         user.setMemberOpenId(LoginContext.getOpenId());
         user.setMemberNick(request.getNick());

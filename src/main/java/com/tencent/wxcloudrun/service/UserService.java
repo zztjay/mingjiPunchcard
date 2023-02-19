@@ -29,7 +29,7 @@ public class UserService {
         User userDB = getUser(user.getMemberOpenId());
         if (userDB != null) {
             user.setId(userDB.getId());
-            usersMapper.updateByPrimaryKey(user);
+            usersMapper.updateByPrimaryKeySelective(user);
             return user.getId();
         } else {
             usersMapper.insert(user);

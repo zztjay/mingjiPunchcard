@@ -33,8 +33,9 @@ public class RewardQuery extends QueryBase {
         this.openId = openId;
     }
 
-    public RewardQuery(Long recordId) {
+    public RewardQuery(Long recordId, int rewardType) {
         this.recordId = recordId;
+        this.type = rewardType;
     }
 
     public RewardQuery(Long activityId, String openId, Integer sumRewardPoints) {

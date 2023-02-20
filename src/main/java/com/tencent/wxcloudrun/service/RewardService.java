@@ -325,7 +325,7 @@ public class RewardService {
             messageRequest.addData(MsgArgumentEnum.thing, 1, user.getMemberName());
             messageRequest.addData(MsgArgumentEnum.time, 2, DateUtil.getNow());
             messageRequest.addData(MsgArgumentEnum.number, 3, String.valueOf(
-                    rewardMapper.count(new RewardQuery(punchCardId))));
+                    rewardMapper.count(new RewardQuery(punchCardId,Reward.REWARD_TYPE_THUMBS_UP))));
             messageSendAdaptor.send(messageRequest, null);
         }
 

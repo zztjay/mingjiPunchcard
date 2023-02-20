@@ -316,16 +316,18 @@ public class RewardService {
             rewardMapper.insert(reward);
         }
 
-        // 发送微信通知消息
-        User user = usersMapper.getByOpenId(LoginContext.getOpenId());
-        MessageRequest messageRequest = new MessageRequest();
-        messageRequest.setTemplate_id(MessageTemplateConstant.THUMBSUP_TEMPLATE_ID);
-        messageRequest.setTouser(LoginContext.getOpenId());
-        messageRequest.addData(MsgArgumentEnum.thing,1, user.getMemberName());
-        messageRequest.addData(MsgArgumentEnum.time,2, DateUtil.getNow());
-        messageRequest.addData(MsgArgumentEnum.number,3, String.valueOf(
-                rewardMapper.count(new RewardQuery(punchCardId))));
-        messageSendAdaptor.send(messageRequest, null);
+        // 点赞发送微信通知消息
+        if(rewardType == Reward.REWARD_TYPE_THUMBS_UP) {
+            User user = usersMapper.getByOpenId(LoginContext.getOpenId());
+            MessageRequest messageRequest = new MessageRequest();
+            messageRequest.setTemplate_id(MessageTemplateConstant.THUMBSUP_TEMPLATE_ID);
+            messageRequest.setTouser(LoginContext.getOpenId());
+            messageRequest.addData(MsgArgumentEnum.thing, 1, user.getMemberName());
+            messageRequest.addData(MsgArgumentEnum.time, 2, DateUtil.getNow());
+            messageRequest.addData(MsgArgumentEnum.number, 3, String.valueOf(
+                    rewardMapper.count(new RewardQuery(punchCardId))));
+            messageSendAdaptor.send(messageRequest, null);
+        }
 
         return ApiResponse.ok(reward.getId());
     }

@@ -8,7 +8,7 @@ package com.tencent.wxcloudrun.constants;
 
 public enum SuperManagerEnum {
     guohui("oOPIl435VLRHenkhYNHybgC2J_GU","国晖"),
-    yinshao("2","英少"),
+    yinshao("oOPIl4wkcibp4hbkb3ORbCYD6-B8","英少"),
     taohe("oOPIl41B88kz0n-1mscSTsH3fJeM","周韬"),
     shicong("oOPIl45BU7yfmV-0bYYKX-Os64G0","邱诗翀");
     private String openId;

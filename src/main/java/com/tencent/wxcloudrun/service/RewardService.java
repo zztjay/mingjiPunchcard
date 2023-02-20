@@ -321,7 +321,7 @@ public class RewardService {
             User user = usersMapper.getByOpenId(LoginContext.getOpenId());
             MessageRequest messageRequest = new MessageRequest();
             messageRequest.setTemplate_id(MessageTemplateConstant.THUMBSUP_TEMPLATE_ID);
-            messageRequest.setTouser(LoginContext.getOpenId());
+            messageRequest.setTouser(record.getMemberOpenId());
             messageRequest.addData(MsgArgumentEnum.thing, 1, user.getMemberName());
             messageRequest.addData(MsgArgumentEnum.time, 2, DateUtil.getNow());
             messageRequest.addData(MsgArgumentEnum.number, 3, String.valueOf(

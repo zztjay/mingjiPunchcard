@@ -8,6 +8,8 @@ import com.tencent.wxcloudrun.dto.MessageRequest;
 import com.tencent.wxcloudrun.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.HttpPost;
+import org.springframework.stereotype.Component;
+import tk.mybatis.mapper.util.StringUtil;
 
 /**
  * 消息发送适配器
@@ -16,6 +18,7 @@ import org.apache.http.client.methods.HttpPost;
  * @Date：2023/2/18 14:31
  */
 @Slf4j
+@Component
 public class MessageSendAdaptor {
 
     /**
@@ -25,8 +28,11 @@ public class MessageSendAdaptor {
      */
     public void send(MessageRequest messageRequest, String accessToken) {
         try {
-            String url = HttpInterfaceUrl.message + "access_token=" + accessToken;
-            HttpPost httpPost = HttpUtil.httpPost(url, JSON.toJSONString(messageRequest));
+            StringBuilder url = new StringBuilder(HttpInterfaceUrl.message);
+            if(StringUtil.isNotEmpty(accessToken)){
+                url.append("?").append(accessToken);
+            }
+            HttpPost httpPost = HttpUtil.httpPost(url.toString(), JSON.toJSONString(messageRequest));
             String result = HttpUtil.httpPost(httpPost);
             if(result!= null ){
                JSONObject resultObject = JSONObject.parseObject(result)   ;

@@ -5,14 +5,16 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.github.jsonzou.jmockdata.JMockData;
+import com.tencent.wxcloudrun.adaptor.MessageSendAdaptor;
 import com.tencent.wxcloudrun.common.LoginContext;
 import com.tencent.wxcloudrun.common.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.constants.CoachEnum;
+import com.tencent.wxcloudrun.constants.CommonConstants;
+import com.tencent.wxcloudrun.constants.MessageTemplateConstant;
+import com.tencent.wxcloudrun.constants.MsgArgumentEnum;
 import com.tencent.wxcloudrun.dao.*;
-import com.tencent.wxcloudrun.dto.CommentDTO;
-import com.tencent.wxcloudrun.dto.CommentQuery;
-import com.tencent.wxcloudrun.dto.PunchCardDTO;
+import com.tencent.wxcloudrun.dto.*;
 import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.model.Record;
 import com.tencent.wxcloudrun.util.DateUtil;
@@ -43,6 +45,9 @@ public class RewardService {
 
     @Resource
     MembersMapper membersMapper;
+
+    @Resource
+    MessageSendAdaptor messageSendAdaptor;
 
     @Resource
     PunchCardService punchCardService;
@@ -310,6 +315,17 @@ public class RewardService {
         } else {
             rewardMapper.insert(reward);
         }
+
+        // 发送微信通知消息
+        User user = usersMapper.getByOpenId(LoginContext.getOpenId());
+        MessageRequest messageRequest = new MessageRequest();
+        messageRequest.setTemplate_id(MessageTemplateConstant.THUMBSUP_TEMPLATE_ID);
+        messageRequest.setTouser(LoginContext.getOpenId());
+        messageRequest.addData(MsgArgumentEnum.thing,1, user.getMemberName());
+        messageRequest.addData(MsgArgumentEnum.time,2, DateUtil.getNow());
+        messageRequest.addData(MsgArgumentEnum.number,3, String.valueOf(
+                rewardMapper.count(new RewardQuery(punchCardId))));
+        messageSendAdaptor.send(messageRequest, null);
 
         return ApiResponse.ok(reward.getId());
     }

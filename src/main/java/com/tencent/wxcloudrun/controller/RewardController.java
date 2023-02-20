@@ -49,7 +49,7 @@ public class RewardController {
      * @return API response json
      */
     @GetMapping(value = "/api/comment/query")
-    public      ApiResponse query(int pageSize, int currentPage) {
+    public    ApiResponse query(int pageSize, int currentPage) {
         CommentQuery commentQuery = new CommentQuery();
         commentQuery.setUserId(LoginContext.getOpenId());
         commentQuery.setPageSize(pageSize);

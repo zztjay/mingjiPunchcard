@@ -320,6 +320,9 @@ public class RewardService {
         if(rewardType == Reward.REWARD_TYPE_THUMBS_UP) {
             User user = usersMapper.getByOpenId(LoginContext.getOpenId());
             MessageRequest messageRequest = new MessageRequest();
+            String page = "/pages/detail/index?recordId=" + record.getId() + "&activityId="
+                    + activity.getId();
+            messageRequest.setPage(page);
             messageRequest.setTemplate_id(MessageTemplateConstant.THUMBSUP_TEMPLATE_ID);
             messageRequest.setTouser(record.getMemberOpenId());
             messageRequest.addData(MsgArgumentEnum.thing, 1, user.getMemberName());

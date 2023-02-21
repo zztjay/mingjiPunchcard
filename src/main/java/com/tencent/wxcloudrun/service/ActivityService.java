@@ -82,11 +82,11 @@ public class ActivityService {
         try {
             if(StringUtils.isNotEmpty(activity.getRewardRule())
                     && JSONArray.parseArray(activity.getRewardRule()) == null){
-                return ApiResponse.error("REWARD_RULE_NOT_ILLAGLE", "奖励规则解析失败");
+                return ApiResponse.error("REWARD_RULE_NOT_ILLAGLE", "奖励规则填写有误");
             }
         } catch (Exception e) {
             log.error("奖励规则解析失败，配置不合法,activity:{}",activity, e);
-            return ApiResponse.error("REWARD_RULE_NOT_ILLAGLE", "奖励规则解析失败");
+            return ApiResponse.error("REWARD_RULE_NOT_ILLAGLE", "奖励规则填写有误");
         }
 
         // 检查是否为超级管理员

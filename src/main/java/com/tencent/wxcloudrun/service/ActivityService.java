@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import tk.mybatis.mapper.util.StringUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -65,6 +66,28 @@ public class ActivityService {
                 activity.getActivityName()) && null != activity.getActivityStartTime()
                 && null != activity.getActivityEndTime()
                 && StringUtils.isNotEmpty(activity.getMembers()));
+
+        // 用户名单参数检查
+        String memberInfos[] = activity.getMembers().split("\\r?\\n");
+        if (memberInfos.length == 0) {
+            return ApiResponse.error("ACTIIVTY_MEMBERS_NOT_ILLAGLE","活动用户名单不合法，要求格式：用户名称,部门名称,职位名称,分组");
+        }
+        for (String memberInfo : memberInfos) {
+            String[] result = memberInfo.split(",");
+            if (result.length != 4) {
+                return ApiResponse.error("ACTIIVTY_MEMBERS_NOT_ILLAGLE", "活动用户名单不合法，要求格式：用户名称,部门名称,职位名称,分组");
+            }
+        }
+        // 奖励规则参数检查
+        try {
+            if(StringUtils.isNotEmpty(activity.getRewardRule())
+                    && JSONArray.parseArray(activity.getRewardRule()) == null){
+                return ApiResponse.error("REWARD_RULE_NOT_ILLAGLE", "奖励规则解析失败");
+            }
+        } catch (Exception e) {
+            log.error("奖励规则解析失败，配置不合法,activity:{}",activity, e);
+            return ApiResponse.error("REWARD_RULE_NOT_ILLAGLE", "奖励规则解析失败");
+        }
 
         // 检查是否为超级管理员
         if(!SuperManagerEnum.isSuper(LoginContext.getOpenId())){

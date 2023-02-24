@@ -24,6 +24,7 @@
         SELECT activityId
         FROM Members
         WHERE memberOpenId = #{openId}
+        order by createdAt desc
     </select>
 
     <select id="sumMembers" resultType="java.lang.Integer" >

@@ -107,7 +107,7 @@ public class PunchCardService {
             if(punchCardTimeDate.before(DateUtil.asDate(activity.getActivityStartTime()))){
                 return ApiResponse.error("PUNCHCARD_TIME_BEFORE_START_TIME","打卡时间早于活动开始时间！");
             }
-            if (punchCardTimeDate.getDay() < LocalDateTime.now().getDayOfMonth()) {
+            if (punchCardTimeDate.getDate() < LocalDateTime.now().getDayOfMonth()) {
                 if (activity.getCanRepunchCard() == Activity.IS_SUPPORT_REPUNCHCRD) {
 
                     // 补卡次数判断
@@ -135,6 +135,17 @@ public class PunchCardService {
             record.setContent(content);
             punchCardMapper.updateByPrimaryKey(record);
             return ApiResponse.ok(record.getId());
+        }
+    }
+
+    public static void main(String[] args) {
+        String punchCardTime = "2023-02-24";
+        Date punchCardTimeDate = DateUtil.getymdStr2SDate(punchCardTime);
+        System.out.println(punchCardTimeDate.getDate());
+        System.out.println(LocalDateTime.now().getDayOfMonth());
+
+        if (punchCardTimeDate.getDate() < LocalDateTime.now().getDayOfMonth()){
+            System.out.println("wrong");
         }
     }
 

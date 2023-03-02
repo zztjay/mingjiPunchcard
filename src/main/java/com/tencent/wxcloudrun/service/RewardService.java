@@ -18,6 +18,9 @@ import com.tencent.wxcloudrun.dto.*;
 import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.model.Record;
 import com.tencent.wxcloudrun.util.DateUtil;
+import com.vdurmont.emoji.EmojiManager;
+import com.vdurmont.emoji.EmojiParser;
+import com.vdurmont.emoji.EmojiTrie;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
@@ -88,6 +91,12 @@ public class RewardService {
             comment.setCommentUserType(Reward.REWARD_USRE_TYPE_COACH);
         } else {
             comment.setCommentUserType(Reward.REWARD_USRE_TYPE_MEMBER);
+        }
+
+        // 处理表情相关的逻辑
+        EmojiTrie.Matches matches = EmojiManager.isEmoji(content.toCharArray());
+        if(!matches.impossibleMatch()){
+            content = EmojiParser.parseToHtmlDecimal(content);
         }
         comment.setContent(content);
 
@@ -167,7 +176,7 @@ public class RewardService {
             List<Comment> comments = commentMapper.getCommentsReverse(lastComment.getRootCommentId(),lastComment.getId());
             for (Comment comment : comments) {
                 CommentDTO commentDTO = new CommentDTO();
-                commentDTO.setContent(comment.getContent());
+                commentDTO.setContent(EmojiParser.parseToUnicode(comment.getContent()));
                 commentDTO.setId(comment.getId());
                 commentDTO.setReceiveUserName(comment.getReceiveUserName());
                 commentDTO.setReceiveUserAvator(comment.getReceiveUserAvator());

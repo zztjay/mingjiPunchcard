@@ -132,7 +132,7 @@ public class ActivityService {
         // 活动打卡天数
         Date startDate = DateUtil.asDate(activity.getActivityStartTime());
         Date endDate = new Date();
-        Long punchCardDays = DateUtil.getBetweenDays(startDate,endDate);
+        Long punchCardDays = DateUtil.getBetweenDays(startDate,endDate) + 1;
         statistic.put("punchCardDays",punchCardDays); // 活动进行总天数
 
         // 打卡数，打卡率
@@ -143,8 +143,8 @@ public class ActivityService {
         statistic.put("punchCardCount",punchCardCount);// 用户打卡天数
 
         if(null != punchCardDays &&  punchCardDays > 0){
-            statistic.put("punchCardRate",new BigDecimal((double)punchCardCount/punchCardDays).setScale
-                    (2,BigDecimal.ROUND_HALF_DOWN).toString()); // 打卡率
+            statistic.put("punchCardRate",new BigDecimal((double)punchCardCount/punchCardDays).multiply
+                    (new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_DOWN).toString()); // 打卡率
         }
 
 

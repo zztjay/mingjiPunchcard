@@ -2,3 +2,4 @@
 !/src/test/java/com/tencent/wxcloudrun/service/
 !/container.config.json
 !/src/main/resources/application.yml
+/target/

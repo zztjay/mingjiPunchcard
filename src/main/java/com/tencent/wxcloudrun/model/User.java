@@ -36,10 +36,9 @@ public class User implements Serializable {
     private String ext; // 扩展信息
 
     public void addExt(String key, Object value) {
-        if (StringUtils.isEmpty(ext)) {
-            ext = new JSONObject().toJSONString();
-        }
-        JSONObject.parseObject(ext).put(key,value);
+        JSONObject newExt = getExtJSONValue();
+        newExt.put(key,value);
+        ext = newExt.toJSONString();
     }
 
     public JSONObject getExtJSONValue() {

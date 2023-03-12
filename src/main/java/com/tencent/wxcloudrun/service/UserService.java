@@ -37,6 +37,12 @@ public class UserService {
         }
     }
 
+    public void updateUnread(String openId, boolean unread){
+        User user = usersMapper.getByOpenId(openId);
+        user.addExt("unread",unread);
+        usersMapper.updateByPrimaryKeySelective(user);
+    }
+
     public boolean isUserRegister(String openId) {
         User user = usersMapper.getByOpenId(openId);
         if (user == null) {

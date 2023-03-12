@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,6 +46,9 @@ import java.util.*;
 public class RewardService {
     @Resource
     RewardMapper rewardMapper;
+
+    @Resource
+    UserService userService;
 
     @Resource
     MembersMapper membersMapper;
@@ -109,6 +113,7 @@ public class RewardService {
             }
             Member receiveMember = membersMapper.selectByOpenId(record.getMemberOpenId(), record.getActivityId());
             User receiveUser = usersMapper.getByOpenId(record.getMemberOpenId());
+
             comment.setReceiveUserId(receiveMember.getMemberOpenId());
             comment.setReceiveUserName(receiveMember.getMemberName());
             comment.setReceiveUserAvator(receiveUser.getAvator());
@@ -118,6 +123,9 @@ public class RewardService {
             // 写入内容
             comment.setRootCommentContent(record.getContent());
             comment.setType(Comment.COMMENT_TYPE_COMMENT);
+
+            // 更新未读
+            userService.updateUnread(receiveUser.getMemberOpenId(),true);
         }
         // 对评论的回复
         else if ( null != replyCommentId ) {
@@ -140,6 +148,9 @@ public class RewardService {
             comment.setRootCommentContent(replyComment.getRootCommentContent());
             comment.setRootCommentContentType(replyComment.getRootCommentContentType());
             comment.setType(Comment.COMMENT_TYPE_REPLY);
+
+            // 更新未读
+            userService.updateUnread(receiveUser.getMemberOpenId(),true);
         }
 
         // 针对内容的评论，要写入rootCommentId
@@ -149,9 +160,9 @@ public class RewardService {
             comment.setId(comment.getId());
             commentMapper.updateByPrimaryKey(comment);
         }
-
         return ApiResponse.ok(comment.getId());
     }
+
 
     public Page<List<CommentDTO>> getUserLastComments(CommentQuery query){
         Page<List<CommentDTO>> page = new Page<>();
@@ -163,6 +174,9 @@ public class RewardService {
         }
         page.setTotalRecords(total);
         page.setCurrentPage(query.getCurrentPage());
+
+        // 更新已读
+        userService.updateUnread(query.getUserId(),false);
         return page;
     }
 
@@ -344,4 +358,11 @@ public class RewardService {
         return ApiResponse.ok(reward.getId());
     }
 
+
+    public static void main(String[] args) {
+        String str = "An 😀awesome 😃string with a few 😉emojis!";
+
+        String resultDecimal = EmojiParser.parseToHtmlDecimal(str);
+        System.out.println(resultDecimal);
+    }
 }

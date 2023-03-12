@@ -8,7 +8,9 @@ import com.tencent.wxcloudrun.dto.CommentDTO;
 import com.tencent.wxcloudrun.dto.CommentQuery;
 import com.tencent.wxcloudrun.dto.CommentRequest;
 import com.tencent.wxcloudrun.dto.PunchCardDTO;
+import com.tencent.wxcloudrun.model.User;
 import com.tencent.wxcloudrun.service.RewardService;
+import com.tencent.wxcloudrun.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,8 @@ public class RewardController {
     @Resource
     RewardService rewardService;
 
+    @Resource
+    UserService userService;
 
     /**
      * 活动打卡评论服务
@@ -44,18 +48,32 @@ public class RewardController {
     }
 
     /**
-     * 活动打卡评论查询服务，包含被评论的内容
+     * 活动打卡评论查询服务，包含被评论的内容，对应小程序的"消息"
      *
      * @return API response json
      */
     @GetMapping(value = "/api/comment/query")
-    public    ApiResponse query(int pageSize, int currentPage) {
+    public ApiResponse query(int pageSize, int currentPage) {
         CommentQuery commentQuery = new CommentQuery();
         commentQuery.setUserId(LoginContext.getOpenId());
         commentQuery.setPageSize(pageSize);
         commentQuery.setCurrentPage(currentPage);
         Page<List<CommentDTO>> comments = rewardService.getUserLastComments(commentQuery);
         return ApiResponse.ok(comments);
+    }
+
+    /**
+     * 查看活动打卡存在多少未读评论
+     *
+     * @return API response json
+     */
+    @GetMapping(value = "/api/comment/unread")
+    public  ApiResponse unread() {
+       User user = userService.getUser(LoginContext.getOpenId());
+       if(user.getExtJSONValue().getBooleanValue("unread") == false){
+           return ApiResponse.ok(0);
+       }
+       return ApiResponse.ok(Integer.MAX_VALUE);
     }
 
     /**

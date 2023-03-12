@@ -1,5 +1,8 @@
 package com.tencent.wxcloudrun.model;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.github.jsonzou.jmockdata.util.StringUtils;
 import lombok.Data;
 import tk.mybatis.mapper.annotation.NameStyle;
 import tk.mybatis.mapper.code.Style;
@@ -31,4 +34,18 @@ public class User implements Serializable {
     private String memberNick; // 用户微信昵称
     private String phoneNumber; //手机号
     private String ext; // 扩展信息
+
+    public void addExt(String key, Object value) {
+        if (StringUtils.isEmpty(ext)) {
+            ext = new JSONObject().toJSONString();
+        }
+        JSONObject.parseObject(ext).put(key,value);
+    }
+
+    public JSONObject getExtJSONValue() {
+        if (StringUtils.isEmpty(ext)) {
+            return new JSONObject();
+        }
+        return JSONObject.parseObject(ext);
+    }
 }

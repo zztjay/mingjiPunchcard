@@ -38,6 +38,7 @@ public class Record {
         // ● type; //内部还是外部客户，1:内部，2:外部
         // ● positive：正向
         //  {
+        //  ○ type: //内部还是外部客户，1:内部，2:外部
         //  ○ full：表示完整的
         //  ○ toWho：对象
         //  ○ scene：场景
@@ -47,6 +48,7 @@ public class Record {
         //  }
     // ● inpositive：负向
         // {
+        //  ○ type: //内部还是外部客户，1:内部，2:外部
         //  ○ full：表示完整的
         //  ○ toWho：对象
         //  ○ scene：场景
